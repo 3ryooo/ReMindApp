@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		864404EC2DEECE78007AA15B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 864404EB2DEECE78007AA15B /* README.txt */; };
+		864404EC2DEECE78007AA15B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 864404EB2DEECE78007AA15B /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		864404D62DEECCE6007AA15B /* ReMindApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReMindApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		864404EB2DEECE78007AA15B /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		864404EB2DEECE78007AA15B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +37,7 @@
 		864404CD2DEECCE6007AA15B = {
 			isa = PBXGroup;
 			children = (
-				864404EB2DEECE78007AA15B /* README.txt */,
+				864404EB2DEECE78007AA15B /* README.md */,
 				864404D82DEECCE6007AA15B /* ReMindApp */,
 				864404D72DEECCE6007AA15B /* Products */,
 			);
@@ -115,7 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				864404EC2DEECE78007AA15B /* README.txt in Resources */,
+				864404EC2DEECE78007AA15B /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
