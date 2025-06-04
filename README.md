@@ -14,15 +14,13 @@
 
 ## 開発環境 (予定)
 
-* 言語: Swift
-* フレームワーク: SwiftUI
-* IDE: Xcode
-* ターゲットOS: iOS (最新版を想定)
+* 言語：Swift
+* フレームワーク：SwiftUI
+* IDE：Xcode
+* ターゲットOS：iOS (最新版を想定)
 * データ永続化: SwiftData
+* ユーザーフロー図：FigJam
+* ワイヤーフレーム：Goodnotes+Marvel
 
-## 開発ステータス
-
-* プロジェクト初期セットアップ完了
-* 基本的なデータモデル定義中
 
 *このREADMEは開発の進捗に合わせて随時更新されます。*
