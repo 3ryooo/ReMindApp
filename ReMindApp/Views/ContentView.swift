@@ -19,6 +19,7 @@ struct ContentView: View {
                 ForEach(items) { item in
                     Text(item.text)
                 }
+                .onDelete(perform: deleteItems)
             }
             .navigationTitle("リマインドリスト")
             .toolbar {
@@ -33,6 +34,12 @@ struct ContentView: View {
             .sheet(isPresented: $showingAddReminderSheet) {
                 AddReminderView()
             }
+        }
+    }
+    
+    func deleteItems(offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(items[index])
         }
     }
 }
