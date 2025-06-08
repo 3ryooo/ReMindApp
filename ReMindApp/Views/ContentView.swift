@@ -10,15 +10,30 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ReminderItem]
     
+    @State private var showingAddReminderSheet = false
+    
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(items) { item in
+                    Text(item.text)
+                }
+            }
+            .navigationTitle("リマインドリスト")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingAddReminderSheet = true
+                    } label: {
+                        Label("リマインド追加", systemImage: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddReminderSheet) {
+                AddReminderView()
+            }
         }
-        .padding()
     }
 }
 
