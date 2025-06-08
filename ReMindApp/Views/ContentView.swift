@@ -34,6 +34,15 @@ struct ContentView: View {
             .sheet(isPresented: $showingAddReminderSheet) {
                 AddReminderView()
             }
+            .overlay {
+                if items.isEmpty {
+                    ContentUnavailableView {
+                        Label("リマインダーなし", systemImage: "tray.fill")
+                    } description: {
+                        Text("右上からタスクを追加してください")
+                    }
+                }
+            }
         }
     }
     
