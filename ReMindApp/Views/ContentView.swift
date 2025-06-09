@@ -17,7 +17,9 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(items) { item in
-                    Text(item.text)
+                    NavigationLink(destination: EditReminderView(reminderItem: item)) {
+                        Text(item.text)
+                    }
                 }
                 .onDelete(perform: deleteItems)
             }

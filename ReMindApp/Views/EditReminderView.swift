@@ -1,0 +1,49 @@
+//
+//  EditReminderView.swift
+//  ReMindApp
+//
+
+import SwiftUI
+
+struct EditReminderView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    
+    @Bindable var reminderItem: ReminderItem
+    
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                TextField("リマインドテキスト", text: $reminderItem.text)
+                Toggle(isOn: $reminderItem.isNotificationEnable) {
+                    Text("リマインド対象")
+                }
+                Button("追加") {
+//                    addProduct()
+                    dismiss()
+                }
+                .disabled(reminderItem.text.isEmpty ? true : false)
+            }
+            .navigationTitle("編集")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("キャンセル") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        
+    }
+    
+//    func addProduct() {
+//        let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification)
+//        modelContext.insert(newReminder)
+//    }
+}
+
+#Preview {
+    EditReminderView(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true))
+        .modelContainer(for: ReminderItem.self)
+}
