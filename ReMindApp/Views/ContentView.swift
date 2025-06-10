@@ -19,6 +19,7 @@ struct ContentView: View {
                 ForEach(items) { item in
                     NavigationLink(destination: EditReminderView(reminderItem: item)) {
                         Text(item.text)
+                            .opacity(item.isNotificationEnable ? 1 : 0.2)
                     }
                 }
                 .onDelete(perform: deleteItems)
