@@ -11,10 +11,16 @@ struct ContentView: View {
     @Query private var items: [ReminderItem]
     
     @State private var showingAddReminderSheet = false
+    @State private var showingSettingSheet = false
     
     
     var body: some View {
         NavigationStack {
+            NavigationLink {
+                SettingsView()
+            } label: {
+                Text("設定ビューテスト")
+            }
             List {
                 ForEach(items) { item in
                     NavigationLink(destination: EditReminderView(reminderItem: item)) {
@@ -33,6 +39,13 @@ struct ContentView: View {
                         Label("リマインド追加", systemImage: "plus")
                     }
                 }
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button {
+//                        showingSettingSheet = true
+//                    } label: {
+//                        Label("設定", systemImage: "gear")
+//                    }
+//                }
             }
             .sheet(isPresented: $showingAddReminderSheet) {
                 AddReminderView()

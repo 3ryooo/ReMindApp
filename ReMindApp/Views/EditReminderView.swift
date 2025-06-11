@@ -20,7 +20,7 @@ struct EditReminderView: View {
                     Text("リマインド対象")
                 }
                 Button("追加") {
-//                    addProduct()
+//                    addReminder()
                     dismiss()
                 }
                 .disabled(reminderItem.text.isEmpty ? true : false)
@@ -37,7 +37,7 @@ struct EditReminderView: View {
         
     }
     
-//    func addProduct() {
+//    func addReminder() {
 //        let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification)
 //        modelContext.insert(newReminder)
 //    }
