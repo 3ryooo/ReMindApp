@@ -82,6 +82,12 @@ struct SettingsView: View {
                         dismiss()
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("保存") {
+//                        保存の処理追加
+                        dismiss()
+                    }
+                }
             }
         }
     }
