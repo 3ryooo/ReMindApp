@@ -18,11 +18,11 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Toggle(isOn: $isNotificationEnabled) {
-                    Text("通知ON")
+                    Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
                 }
                 if isNotificationEnabled {
                     
-                    Picker("頻度を選択", selection: $remindFrequency) {
+                    Picker("通知の頻度", selection: $remindFrequency) {
                         Text("1時間に1回")
                         Text("2時間に1回")
                         Text("3時間に1回")
