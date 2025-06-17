@@ -45,9 +45,6 @@ struct SettingsView: View {
                     
                 }
 //                アラート追加？・保存ボタン等
-                Button("追加") {
-                    dismiss()
-                }
                 Text("1日あたりの上限はxx回です")
             }
             .navigationTitle("設定")
