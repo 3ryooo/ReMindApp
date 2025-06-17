@@ -23,6 +23,7 @@ struct SettingsView: View {
                 if isNotificationEnabled {
                     
 //                    TODO:tagを頻度に沿った値に変更する
+//                    TODO:remindTimesも追加で設定する
                     Picker("通知の頻度", selection: $remindFrequency) {
                         Text("1時間に1回").tag(5)
                         Text("2時間に1回").tag(5)
