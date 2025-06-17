@@ -22,23 +22,24 @@ struct SettingsView: View {
                 }
                 if isNotificationEnabled {
                     
+//                    TODO:tagを頻度に沿った値に変更する
                     Picker("通知の頻度", selection: $remindFrequency) {
-                        Text("1時間に1回")
-                        Text("2時間に1回")
-                        Text("3時間に1回")
-                        Text("6時間に1回")
-                        Text("9時間に1回")
-                        Text("12時間に1回")
-                        Text("1日に1回")
-                        Text("2日に1回")
-                        Text("3日に1回")
-                        Text("5日に1回")
-                        Text("1週間に1回")
-                        Text("2週間に1回")
-                        Text("1ヶ月に1回")
-                        Text("3ヶ月に1回")
-                        Text("半年に1回")
-                        Text("1年に1回")
+                        Text("1時間に1回").tag(5)
+                        Text("2時間に1回").tag(5)
+                        Text("3時間に1回").tag(5)
+                        Text("6時間に1回").tag(5)
+                        Text("9時間に1回").tag(5)
+                        Text("12時間に1回").tag(5)
+                        Text("1日に1回").tag(5)
+                        Text("2日に1回").tag(5)
+                        Text("3日に1回").tag(5)
+                        Text("5日に1回").tag(5)
+                        Text("1週間に1回").tag(5)
+                        Text("2週間に1回").tag(5)
+                        Text("1ヶ月に1回").tag(5)
+                        Text("3ヶ月に1回").tag(5)
+                        Text("半年に1回").tag(5)
+                        Text("1年に1回").tag(5)
                     }
                     
                 }
