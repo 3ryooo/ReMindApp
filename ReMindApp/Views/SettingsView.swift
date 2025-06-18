@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct SettingsView: View {
     
@@ -18,9 +19,14 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
+//                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
+                Button("通知確認") {
+                    requestAuthorization()
+                }
                 Toggle(isOn: $isNotificationEnabled) {
                     Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
                 }
+//                TODO:通知のベースの時間を追加（1日以下のときの説明や処理を検討）
                 if isNotificationEnabled {
 //                    TODO:tagを頻度に沿った値に変更する
 //                    TODO:remindTimesも追加で設定する
@@ -63,6 +69,19 @@ struct SettingsView: View {
             }
         }
     }
+    
+    private func requestAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("許可")
+            } else if let error = error {
+                print("失敗：\(error.localizedDescription)")
+            }
+            
+        }
+    }
+    
+    
 }
 
 #Preview {
