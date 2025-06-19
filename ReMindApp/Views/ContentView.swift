@@ -25,7 +25,7 @@ struct ContentView: View {
                 }
                 .onDelete(perform: deleteItems)
             }
-            .navigationTitle("リマインドリスト")
+            .navigationTitle("Re:Mind")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
