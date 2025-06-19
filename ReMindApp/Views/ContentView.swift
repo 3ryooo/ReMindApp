@@ -51,9 +51,9 @@ struct ContentView: View {
             .overlay {
                 if items.isEmpty {
                     ContentUnavailableView {
-                        Label("リマインダーなし", systemImage: "tray.fill")
+                        Label("リストが空です", systemImage: "tray.fill")
                     } description: {
-                        Text("右上からタスクを追加してください")
+                        Text("右上の＋から新しく追加してください")
                     }
                 }
             }
