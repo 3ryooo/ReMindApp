@@ -20,8 +20,11 @@ struct SettingsView: View {
         NavigationView {
             Form {
 //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
-                Button("通知確認") {
+                Button("通知認証") {
                     requestAuthorization()
+                }
+                Button("通知テスト") {
+                    schaduleNotification()
                 }
                 Toggle(isOn: $isNotificationEnabled) {
                     Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
@@ -78,6 +81,24 @@ struct SettingsView: View {
                 print("失敗：\(error.localizedDescription)")
             }
             
+        }
+    }
+    
+    private func schaduleNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "通知タイトル" // ランダムで作成？
+        content.body = "通知ボディ" // テキストから抽出
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("スケジューリング失敗：\(error.localizedDescription)")
+            } else {
+                print("スケジューリング成功")
+            }
         }
     }
     
