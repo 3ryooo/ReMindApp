@@ -28,10 +28,19 @@ struct SettingsView: View {
                     schaduleNotification()
                 }
                 Button("デバッグ用") {
-                    let cal = Calendar.current
-                    let comp = cal.dateComponents([Calendar.Component.hour, Calendar.Component.minute], from: baseTime)
+//                    let cal = Calendar.current
+//                    let baseTimeHour = cal.dateComponents([Calendar.Component.hour], from: baseTime)
+//                    let baseTimeMinute = cal.dateComponents([Calendar.Component.minute], from: baseTime)
+//                    
+//                    print(baseTimeHour)
+//                    print(baseTimeMinute)
                     
-                    print(comp.minute)
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "H", options: 0, locale: Locale(identifier: "ja_JP"))
+                    print(formatter.string(from: baseTime))
+                    
+                    
+                    
                 }
 //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                 DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
@@ -100,7 +109,16 @@ struct SettingsView: View {
         content.body = "通知ボディ" // テキストから抽出
         content.sound = .default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let cal = Calendar(identifier: .gregorian)
+        let baseTimeHour = cal.component(.hour, from: baseTime)
+        let baseTimeMinute = cal.component(.minute, from: baseTime)
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = baseTimeHour
+        dateComponents.minute = baseTimeMinute
+        
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
