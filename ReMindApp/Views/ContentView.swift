@@ -37,7 +37,8 @@ struct ContentView: View {
             
             .navigationTitle("Re:Mind")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    EditButton()
                     Button {
                         showingAddReminderSheet = true
                     } label: {
