@@ -44,6 +44,6 @@ struct EditReminderView: View {
 }
 
 #Preview {
-    EditReminderView(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true))
+    EditReminderView(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true, createdAt: Date.now))
         .modelContainer(for: ReminderItem.self)
 }

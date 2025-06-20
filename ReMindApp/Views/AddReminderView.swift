@@ -40,7 +40,7 @@ struct AddReminderView: View {
     }
     
     func addProduct() {
-        let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification)
+        let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification, createdAt: Date.now)
         modelContext.insert(newReminder)
     }
     

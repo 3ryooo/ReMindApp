@@ -6,12 +6,30 @@
 import SwiftUI
 import SwiftData
 
+enum SortOption {
+    case name, timestamp
+}
+
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ReminderItem]
     
     @State private var showingAddReminderSheet = false
     @State private var showingSettingSheet = false
+    
+    @State private var sortOption: SortOption = .timestamp
+    
+    private var displayedItems: [ReminderItem] {
+        var filtered = items
+        
+        switch sortOption {
+        case .name:
+            filtered.sort {$0.text < $1.text}
+        case .timestamp:
+            filtered.sort {$0.createdAt > $1.createdAt}
+        }
+        return filtered
+    }
     
     
     var body: some View {
@@ -26,7 +44,7 @@ struct ContentView: View {
                 schaduleNotification()
             }
             List {
-                ForEach(items) { item in
+                ForEach(displayedItems) { item in
                     NavigationLink(destination: EditReminderView(reminderItem: item)) {
                         Text(item.text)
                             .opacity(item.isNotificationEnable ? 1 : 0.2)
@@ -44,8 +62,15 @@ struct ContentView: View {
                     } label: {
                         Label("リマインド追加", systemImage: "plus")
                     }
+                    Menu("並び順", systemImage: "arrow.up.arrow.down") {
+                        Picker("並び順", selection: $sortOption) {
+                            Text("名前順").tag(SortOption.name)
+                            Text("新しい順").tag(SortOption.timestamp)
+                        }
+                    }
                 }
-                ToolbarItem(placement: .topBarLeading) {
+                
+                ToolbarItemGroup(placement: .topBarLeading) {
                     Button {
                         showingSettingSheet = true
                     } label: {
