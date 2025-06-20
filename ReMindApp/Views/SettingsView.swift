@@ -72,6 +72,9 @@ struct SettingsView: View {
                         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
                         dismiss()
                     }
+                    Button("デバッグ用") {
+                        
+                    }
                 }
             }
         }
