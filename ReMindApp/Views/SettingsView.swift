@@ -13,6 +13,8 @@ struct SettingsView: View {
     
     @State private var remindTimes = ""
     
+    @State private var baseTime = Date.now
+    
     @Environment(\.dismiss) private var dismiss
     
     
@@ -26,6 +28,8 @@ struct SettingsView: View {
                 Button("通知テスト") {
                     schaduleNotification()
                 }
+//                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
+                DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
                 Toggle(isOn: $isNotificationEnabled) {
                     Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
                 }
