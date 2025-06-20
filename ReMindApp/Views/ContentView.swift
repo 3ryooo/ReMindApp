@@ -13,9 +13,20 @@ struct ContentView: View {
     @State private var showingAddReminderSheet = false
     @State private var showingSettingSheet = false
     
+    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+    
     
     var body: some View {
         NavigationStack {
+            Button("通知認証") {
+                requestAuthorization()
+            }
+            Button("通知テスト") {
+                schaduleNotification()
+            }
+            Button("デバッグ用") {
+                schaduleNotification()
+            }
             List {
                 ForEach(items) { item in
                     NavigationLink(destination: EditReminderView(reminderItem: item)) {
@@ -25,6 +36,7 @@ struct ContentView: View {
                 }
                 .onDelete(perform: deleteItems)
             }
+            
             .navigationTitle("Re:Mind")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -65,6 +77,46 @@ struct ContentView: View {
             modelContext.delete(items[index])
         }
     }
+    
+    private func requestAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("許可")
+            } else if let error = error {
+                print("失敗：\(error.localizedDescription)")
+            }
+            
+        }
+    }
+    
+    private func schaduleNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Re:Mind" // ランダムで作成？
+        content.body = "頑張っていきましょう！" // テキストから抽出
+        content.sound = .default
+        
+        let cal = Calendar(identifier: .gregorian)
+        let baseTimeHour = cal.component(.hour, from: baseTime)
+        let baseTimeMinute = cal.component(.minute, from: baseTime)
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = baseTimeHour
+        dateComponents.minute = baseTimeMinute
+        
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("スケジューリング失敗：\(error.localizedDescription)")
+            } else {
+                print("スケジューリング成功")
+            }
+        }
+    }
+    
+    
 }
 
 #Preview {

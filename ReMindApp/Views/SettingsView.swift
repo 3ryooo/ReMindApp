@@ -10,7 +10,7 @@ struct SettingsView: View {
     
     @State private var isNotificationEnabled = true // テスト中のためtrue
     @State private var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
     
     @State private var remindTimes = ""
     
@@ -21,26 +21,8 @@ struct SettingsView: View {
         NavigationView {
             Form {
 //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
-                Button("通知認証") {
-                    requestAuthorization()
-                }
-                Button("通知テスト") {
-                    schaduleNotification()
-                }
+
                 Button("デバッグ用") {
-//                    let cal = Calendar.current
-//                    let baseTimeHour = cal.dateComponents([Calendar.Component.hour], from: baseTime)
-//                    let baseTimeMinute = cal.dateComponents([Calendar.Component.minute], from: baseTime)
-//                    
-//                    print(baseTimeHour)
-//                    print(baseTimeMinute)
-                    
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "H", options: 0, locale: Locale(identifier: "ja_JP"))
-                    print(formatter.string(from: baseTime))
-                    
-                    
-                    
                 }
 //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                 DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
@@ -92,43 +74,9 @@ struct SettingsView: View {
         }
     }
     
-    private func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("許可")
-            } else if let error = error {
-                print("失敗：\(error.localizedDescription)")
-            }
-            
-        }
-    }
+
     
-    private func schaduleNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "通知タイトル" // ランダムで作成？
-        content.body = "通知ボディ" // テキストから抽出
-        content.sound = .default
-        
-        let cal = Calendar(identifier: .gregorian)
-        let baseTimeHour = cal.component(.hour, from: baseTime)
-        let baseTimeMinute = cal.component(.minute, from: baseTime)
-        
-        var dateComponents = DateComponents()
-        dateComponents.hour = baseTimeHour
-        dateComponents.minute = baseTimeMinute
-        
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("スケジューリング失敗：\(error.localizedDescription)")
-            } else {
-                print("スケジューリング成功")
-            }
-        }
-    }
+
     
     
 }
