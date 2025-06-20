@@ -10,10 +10,9 @@ struct SettingsView: View {
     
     @State private var isNotificationEnabled = true // テスト中のためtrue
     @State private var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
+    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
     
     @State private var remindTimes = ""
-    
-    @State private var baseTime = Date.now
     
     @Environment(\.dismiss) private var dismiss
     
@@ -29,7 +28,10 @@ struct SettingsView: View {
                     schaduleNotification()
                 }
                 Button("デバッグ用") {
+                    let cal = Calendar.current
+                    let comp = cal.dateComponents([Calendar.Component.hour, Calendar.Component.minute], from: baseTime)
                     
+                    print(comp.minute)
                 }
 //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                 DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
@@ -73,6 +75,7 @@ struct SettingsView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
                         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
+                        UserDefaults.standard.set(baseTime, forKey: "baseTime")
                         dismiss()
                     }
                 }
