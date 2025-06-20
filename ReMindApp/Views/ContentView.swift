@@ -91,6 +91,11 @@ struct ContentView: View {
 //    TODO:トリガーを変更する
     private func schaduleNotification() {
         
+//        TODO:全てを削除して問題ないか、個別に削除をしたほうがいいか後日確認
+        let lcNotification = UNUserNotificationCenter.current()
+        lcNotification.removeAllPendingNotificationRequests()
+        
+        
         let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
         var textRange: Int {
             if items.count > 0 {
