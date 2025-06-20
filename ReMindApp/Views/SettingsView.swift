@@ -28,6 +28,9 @@ struct SettingsView: View {
                 Button("通知テスト") {
                     schaduleNotification()
                 }
+                Button("デバッグ用") {
+                    
+                }
 //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                 DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
                 Toggle(isOn: $isNotificationEnabled) {
@@ -71,9 +74,6 @@ struct SettingsView: View {
                     Button("保存") {
                         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
                         dismiss()
-                    }
-                    Button("デバッグ用") {
-                        
                     }
                 }
             }
