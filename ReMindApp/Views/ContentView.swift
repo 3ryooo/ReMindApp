@@ -13,8 +13,6 @@ struct ContentView: View {
     @State private var showingAddReminderSheet = false
     @State private var showingSettingSheet = false
     
-    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
-    
     
     var body: some View {
         NavigationStack {
@@ -89,10 +87,36 @@ struct ContentView: View {
         }
     }
     
+//    TODO:トリガーを変更する
     private func schaduleNotification() {
+        
+        let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+        var textRange: Int {
+            if items.count > 0 {
+                return items.count
+            } else {
+                return 1
+            }
+        }
+        
+        var remindTexts: [String] = []
+        
+        
+        if items.count > 0 {
+            for i in items {
+                remindTexts.append(i.text)
+            }
+        } else {
+            remindTexts.append("リストが空です")
+        }
+        
+        let randomNumber = Int.random(in: 0..<textRange)
+        print(remindTexts)
+        
+        
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind" // ランダムで作成？
-        content.body = "頑張っていきましょう！" // テキストから抽出
+        content.body = remindTexts[randomNumber]
         content.sound = .default
         
         let cal = Calendar(identifier: .gregorian)
@@ -102,6 +126,7 @@ struct ContentView: View {
         var dateComponents = DateComponents()
         dateComponents.hour = baseTimeHour
         dateComponents.minute = baseTimeMinute
+        
         
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
