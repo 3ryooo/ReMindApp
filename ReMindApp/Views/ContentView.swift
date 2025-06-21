@@ -19,6 +19,11 @@ struct ContentView: View {
     
     @State private var sortOption: SortOption = .timestamp
     
+    let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
+    
+//    テスト中のため数を少なめに設定
+    let lastNotificationId = 1
+    
     private var displayedItems: [ReminderItem] {
         var filtered = items
         
@@ -38,11 +43,11 @@ struct ContentView: View {
                 requestAuthorization()
             }
             Button("通知テスト") {
-//                schaduleNotification()
-                debugFunc()
+                setNotificationList()
+//                debugFunc()
             }
             Button("デバッグ用") {
-                schaduleNotification()
+                debugFunc()
             }
             List {
                 ForEach(displayedItems) { item in
@@ -114,15 +119,22 @@ struct ContentView: View {
         }
     }
     
-//    TODO:トリガーを変更する
-    private func schaduleNotification() {
+    func setNotificationList() {
         
-//        TODO:全てを削除して問題ないか、個別に削除をしたほうがいいか後日確認
+//        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         let lcNotification = UNUserNotificationCenter.current()
         lcNotification.removeAllPendingNotificationRequests()
         
+        for i in 1...lastNotificationId {
+            setNotification(i)
+        }
         
-        let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+        
+    }
+    
+//    TODO:トリガーを変更する
+    private func setNotification(_ id : Int) {
+        
         var textRange: Int {
             if items.count > 0 {
                 return items.count
@@ -143,56 +155,43 @@ struct ContentView: View {
         }
         
         let randomNumber = Int.random(in: 0..<textRange)
-        print(remindTexts)
         
         
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind" // ランダムで作成？
         content.body = remindTexts[randomNumber]
+        
+        if id == lastNotificationId {
+            content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
+        }
+        
+        
+        
         content.sound = .default
         
-        let cal = Calendar(identifier: .gregorian)
-        let baseTimeHour = cal.component(.hour, from: baseTime)
-        let baseTimeMinute = cal.component(.minute, from: baseTime)
+        let date = Date()
+//        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date)
         
-        var dateComponents = DateComponents()
-        dateComponents.hour = baseTimeHour
-        dateComponents.minute = baseTimeMinute
+//        テスト用
+        let newDate = Date(timeInterval: TimeInterval(60 * id), since: date)
         
         
+        let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
+        
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
             } else {
-                print("スケジューリング成功")
+                print("スケジューリング成功\nid:\(id)\n通知予定：\(newDate)")
             }
         }
     }
     
     func debugFunc() {
-        let content = UNMutableNotificationContent()
-        content.title = "テスト通知"
-        content.body = "これはUserNotificationsのサンプルです。" // .subtitleと何が違う？
-        content.sound = .default
-        
-        // 5秒後に通知を発行するトリガーを作成
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
-        
-        // 通知リクエストを作成
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        // 通知リクエストをシステムに追加
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("通知のスケジュールに失敗しました: \(error.localizedDescription)")
-            } else {
-                print("5秒後に通知がスケジュールされました")
-            }
-        }
     }
     
     
