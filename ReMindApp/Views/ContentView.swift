@@ -38,7 +38,8 @@ struct ContentView: View {
                 requestAuthorization()
             }
             Button("通知テスト") {
-                schaduleNotification()
+//                schaduleNotification()
+                debugFunc()
             }
             Button("デバッグ用") {
                 schaduleNotification()
@@ -168,6 +169,28 @@ struct ContentView: View {
                 print("スケジューリング失敗：\(error.localizedDescription)")
             } else {
                 print("スケジューリング成功")
+            }
+        }
+    }
+    
+    func debugFunc() {
+        let content = UNMutableNotificationContent()
+        content.title = "テスト通知"
+        content.body = "これはUserNotificationsのサンプルです。" // .subtitleと何が違う？
+        content.sound = .default
+        
+        // 5秒後に通知を発行するトリガーを作成
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+        
+        // 通知リクエストを作成
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        // 通知リクエストをシステムに追加
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("通知のスケジュールに失敗しました: \(error.localizedDescription)")
+            } else {
+                print("5秒後に通知がスケジュールされました")
             }
         }
     }
