@@ -36,6 +36,14 @@ struct ContentView: View {
         return filtered
     }
     
+    private var notifiedItems: [ReminderItem] {
+        var filterd = items
+        
+        filterd = filterd.filter { $0.isNotificationEnable == true }
+        
+        return filterd
+    }
+    
     
     var body: some View {
         NavigationStack {
@@ -135,9 +143,10 @@ struct ContentView: View {
 //    TODO:トリガーを変更する
     private func setNotification(_ id : Int) {
         
+//        TODO:個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
         var textRange: Int {
-            if items.count > 0 {
-                return items.count
+            if notifiedItems.count > 0 {
+                return notifiedItems.count
             } else {
                 return 1
             }
@@ -146,8 +155,8 @@ struct ContentView: View {
         var remindTexts: [String] = []
         
         
-        if items.count > 0 {
-            for i in items {
+        if notifiedItems.count > 0 {
+            for i in notifiedItems {
                 remindTexts.append(i.text)
             }
         } else {
