@@ -22,7 +22,7 @@ struct ContentView: View {
     let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     
 //    テスト中のため数を少なめに設定
-    let lastNotificationId = 1
+    let lastNotificationId = 5
     
     private var displayedItems: [ReminderItem] {
         var filtered = items
@@ -153,8 +153,7 @@ struct ContentView: View {
         }
         
         var remindTexts: [String] = []
-        
-        
+         
         if notifiedItems.count > 0 {
             for i in notifiedItems {
                 remindTexts.append(i.text)
@@ -162,6 +161,8 @@ struct ContentView: View {
         } else {
             remindTexts.append("リストが空です")
         }
+        
+        print(remindTexts)
         
         let randomNumber = Int.random(in: 0..<textRange)
         
@@ -201,8 +202,30 @@ struct ContentView: View {
     }
     
     func debugFunc() {
+        addSampleReminder()
     }
     
+    func addSampleReminder() {
+        
+        do {
+            try modelContext.delete(model: ReminderItem.self)
+            print("モデル削除成功")
+        } catch {
+            print("モデル削除失敗")
+        }
+        
+        modelContext.insert(ReminderItem(text: "未来を予測する最善の方法は、それを発明することだ。", isNotificationEnable: false, createdAt: Date(timeIntervalSinceNow: -432000)))
+        modelContext.insert(ReminderItem(text: "千里の道も一歩から。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: 129600)))
+        modelContext.insert(ReminderItem(text: "成功とは、情熱を失わずに失敗を重ねることである。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: -587321)))
+        modelContext.insert(ReminderItem(text: "人生は自転車のようなものだ。倒れないようにするには走り続けなければならない。", isNotificationEnable: false, createdAt: Date(timeIntervalSinceNow: 345600)))
+        modelContext.insert(ReminderItem(text: "困難の中に機会がある。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: 86400)))
+        modelContext.insert(ReminderItem(text: "夢見ることができれば、それは実現できる。", isNotificationEnable: false, createdAt: Date(timeIntervalSinceNow: -259200)))
+        modelContext.insert(ReminderItem(text: "唯一の真の知恵は、自分が何も知らないということを知ることにある。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: 518400)))
+        modelContext.insert(ReminderItem(text: "行動はすべての成功の基本的な鍵である。", isNotificationEnable: false, createdAt: Date(timeIntervalSinceNow: -172800)))
+        modelContext.insert(ReminderItem(text: "学び続ける限り、人は老いない。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: -302400)))
+        modelContext.insert(ReminderItem(text: "幸福は目的地ではない。旅の仕方だ。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: 216000)))
+        
+    }
     
 }
 

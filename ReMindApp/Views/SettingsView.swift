@@ -33,6 +33,7 @@ struct SettingsView: View {
                 if isNotificationEnabled {
 //                    TODO:tagを頻度に沿った値に変更する
 //                    TODO:remindTimesも追加で設定する
+//                    TODO:短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     Picker("通知の頻度", selection: $selectedFrequency) {
                         Text("1時間に1回").tag(1)
                         Text("2時間に1回").tag(2)
