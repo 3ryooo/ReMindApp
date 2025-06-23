@@ -49,10 +49,10 @@ struct SettingsView: View {
                         Text("半年に1回").tag(4320)
                         Text("1年に1回").tag(8640)
                     }
-                    
+                    //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
+                    DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
                 }
-                //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
-                DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
+
 //                アラート追加？・保存ボタン等
 //                TODO:レビューや連絡のボタン
             }
