@@ -16,7 +16,7 @@ struct SettingsView: View {
     @State private var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
     
-    @State private var remindTimes = ""
+    @State private var randomRemind = false
     @State private var showingAuthorizationAlert = false
     
     //    テスト中のため数を少なめに設定
@@ -48,7 +48,7 @@ struct SettingsView: View {
 //                TODO:通知のベースの時間を追加（1日以下のときの説明や処理を検討）
                 if isNotificationEnabled {
 //                    TODO:tagを頻度に沿った値に変更する
-//                    TODO:remindTimesも追加で設定する
+//                    TODO:randomRemind機能の実装
 //                    TODO:短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     Picker("通知の頻度", selection: $selectedFrequency) {
                         Text("1時間に1回").tag(1)
