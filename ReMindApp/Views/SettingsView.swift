@@ -21,8 +21,6 @@ struct SettingsView: View {
         NavigationView {
             Form {
 //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
-//                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
-                DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
                 Toggle(isOn: $isNotificationEnabled) {
                     Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
                 }
@@ -51,6 +49,8 @@ struct SettingsView: View {
                     }
                     
                 }
+                //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
+                DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
 //                アラート追加？・保存ボタン等
 //                TODO:レビューや連絡のボタン
             }
@@ -68,6 +68,9 @@ struct SettingsView: View {
                         dismiss()
                     }
                 }
+            }
+            .onAppear {
+                
             }
         }
     }
