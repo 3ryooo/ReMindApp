@@ -19,10 +19,11 @@ struct ContentView: View {
     
     @State private var sortOption: SortOption = .timestamp
     
-    @State private var firstStart = true
+    @AppStorage("firstStart") var firstStart  = true
     
     let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     
+    @State private var showingAuthorizationAlert = false
 
     
 //    テスト中のため数を少なめに設定
@@ -69,6 +70,7 @@ struct ContentView: View {
                     }
                 }
                 .onDelete(perform: deleteItems)
+                
             }
             
             .navigationTitle("Re:Mind")
@@ -117,10 +119,19 @@ struct ContentView: View {
                     print("設定変更")
                     UserDefaults.standard.set(24, forKey: "frequencyKey")
                     UserDefaults.standard.set(Date.now, forKey: "baseTime")
-                    UserDefaults.standard.set(true, forKey: "isNotificationEnabled")
-                    firstStart = false
+                    UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
                     requestAuthorization()
+                    firstStart = false
                 }
+            }
+            .alert("通知がオフになっています", isPresented: $showingAuthorizationAlert) {
+                Button("キャンセル", role: .cancel) { }
+                Button("設定を開く") {
+                    
+                }
+            } message: {
+//                TODO:もう少し丁寧な説明をしたい
+                Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
             }
         }
     }
@@ -139,7 +150,14 @@ struct ContentView: View {
                 print("失敗：\(error.localizedDescription)")
             }
             
+            if !success {
+                DispatchQueue.main.async {
+                    showingAuthorizationAlert = true
+                }
+            }
+            
         }
+        
     }
     
     func setNotificationList() {
@@ -240,6 +258,14 @@ struct ContentView: View {
         modelContext.insert(ReminderItem(text: "学び続ける限り、人は老いない。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: -302400)))
         modelContext.insert(ReminderItem(text: "幸福は目的地ではない。旅の仕方だ。", isNotificationEnable: true, createdAt: Date(timeIntervalSinceNow: 216000)))
         
+    }
+    
+    private func openAppSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
     }
     
 }
