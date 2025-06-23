@@ -84,6 +84,7 @@ struct SettingsView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
+                        UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
                         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
                         UserDefaults.standard.set(baseTime, forKey: "baseTime")
                         setNotificationList()
