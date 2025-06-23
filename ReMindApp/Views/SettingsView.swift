@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
     
     @State private var remindTimes = ""
+    @State private var showingAuthorizationAlert = false
     
     
     
@@ -25,6 +26,9 @@ struct SettingsView: View {
 //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
                 Toggle(isOn: $isNotificationEnabled) {
                     Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
+                }
+                .onChange(of: isNotificationEnabled) {
+                    requestAuthorization()
                 }
 //                TODO:通知のベースの時間を追加（1日以下のときの説明や処理を検討）
                 if isNotificationEnabled {
@@ -71,14 +75,43 @@ struct SettingsView: View {
                     }
                 }
             }
-            
+            .alert("通知がオフになっています", isPresented: $showingAuthorizationAlert) {
+                Button("キャンセル", role: .cancel) { }
+                Button("設定を開く") {
+                    openAppSettings()
+                }
+            } message: {
+                //                TODO:もう少し丁寧な説明をしたい
+                Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
+            }
         }
     }
     
-
+    private func requestAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("許可")
+            } else if let error = error {
+                print("失敗：\(error.localizedDescription)")
+            }
+            
+            if !success {
+                DispatchQueue.main.async {
+                    showingAuthorizationAlert = true
+                }
+            }
+            
+        }
+        
+    }
     
-
-    
+    private func openAppSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+    }
     
 }
 

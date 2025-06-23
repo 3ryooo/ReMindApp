@@ -23,7 +23,7 @@ struct ContentView: View {
     
     let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     
-    @State private var showingAuthorizationAlert = false
+    
 
     
 //    テスト中のため数を少なめに設定
@@ -52,9 +52,6 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            Button("通知認証") {
-                requestAuthorization()
-            }
             Button("通知テスト") {
                 setNotificationList()
 //                debugFunc()
@@ -120,18 +117,8 @@ struct ContentView: View {
                     UserDefaults.standard.set(24, forKey: "frequencyKey")
                     UserDefaults.standard.set(Date.now, forKey: "baseTime")
                     UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
-                    requestAuthorization()
                     firstStart = false
                 }
-            }
-            .alert("通知がオフになっています", isPresented: $showingAuthorizationAlert) {
-                Button("キャンセル", role: .cancel) { }
-                Button("設定を開く") {
-                    
-                }
-            } message: {
-//                TODO:もう少し丁寧な説明をしたい
-                Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
             }
         }
     }
@@ -142,24 +129,7 @@ struct ContentView: View {
         }
     }
     
-    private func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("許可")
-            } else if let error = error {
-                print("失敗：\(error.localizedDescription)")
-            }
-            
-            if !success {
-                DispatchQueue.main.async {
-                    showingAuthorizationAlert = true
-                }
-            }
-            
-        }
-        
-    }
-    
+
     func setNotificationList() {
         
 //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
@@ -260,13 +230,7 @@ struct ContentView: View {
         
     }
     
-    private func openAppSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        }
-    }
+    
     
 }
 
