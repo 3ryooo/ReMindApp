@@ -87,7 +87,12 @@ struct SettingsView: View {
                         UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
                         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
                         UserDefaults.standard.set(baseTime, forKey: "baseTime")
-                        setNotificationList()
+                        if isNotificationEnabled {
+                            setNotificationList()
+                        } else {
+                            removeAllNotification()
+                        }
+                        
                         dismiss()
                     }
                 }
@@ -132,15 +137,22 @@ struct SettingsView: View {
     
     func setNotificationList() {
         
-        //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
-        let lcNotification = UNUserNotificationCenter.current()
-        lcNotification.removeAllPendingNotificationRequests()
+        removeAllNotification()
+        
+        
         
         for i in 1...lastNotificationId {
             setNotification(i)
         }
         
         
+    }
+    
+    private func removeAllNotification() {
+        //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
+        let lcNotification = UNUserNotificationCenter.current()
+        lcNotification.removeAllPendingNotificationRequests()
+        print("通知全消去")
     }
     
     //    TODO:トリガーを変更する
