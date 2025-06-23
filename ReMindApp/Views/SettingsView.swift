@@ -165,8 +165,6 @@ struct SettingsView: View {
             remindTexts.append("リストが空です")
         }
         
-        print(remindTexts)
-        
         let randomNumber = Int.random(in: 0..<textRange)
         
         
@@ -199,7 +197,7 @@ struct SettingsView: View {
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
             } else {
-                print("スケジューリング成功\nid:\(id)\n通知予定：\(newDate)")
+                print("スケジューリング成功： id:\(id) 通知予定：\(newDate)")
             }
         }
     }

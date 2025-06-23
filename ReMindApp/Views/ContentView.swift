@@ -96,9 +96,7 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                print("開始")
                 if firstStart {
-                    print("設定変更")
                     UserDefaults.standard.set(24, forKey: "frequencyKey")
                     UserDefaults.standard.set(Date.now, forKey: "baseTime")
                     UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
