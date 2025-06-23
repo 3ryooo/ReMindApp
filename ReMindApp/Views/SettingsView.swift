@@ -8,11 +8,13 @@ import UserNotifications
 
 struct SettingsView: View {
     
-    @State private var isNotificationEnabled = true // テスト中のためtrue
+    @State private var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     @State private var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
     
     @State private var remindTimes = ""
+    
+    
     
     @Environment(\.dismiss) private var dismiss
     
@@ -69,9 +71,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .onAppear {
-                
-            }
+            
         }
     }
     

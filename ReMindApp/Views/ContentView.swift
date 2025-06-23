@@ -19,7 +19,11 @@ struct ContentView: View {
     
     @State private var sortOption: SortOption = .timestamp
     
+    @State private var firstStart = true
+    
     let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
+    
+
     
 //    テスト中のため数を少なめに設定
     let lastNotificationId = 5
@@ -105,6 +109,17 @@ struct ContentView: View {
                     } description: {
                         Text("右上の＋から新しく追加してください")
                     }
+                }
+            }
+            .onAppear {
+                print("開始")
+                if firstStart {
+                    print("設定変更")
+                    UserDefaults.standard.set(24, forKey: "frequencyKey")
+                    UserDefaults.standard.set(Date.now, forKey: "baseTime")
+                    UserDefaults.standard.set(true, forKey: "isNotificationEnabled")
+                    firstStart = false
+                    requestAuthorization()
                 }
             }
         }
