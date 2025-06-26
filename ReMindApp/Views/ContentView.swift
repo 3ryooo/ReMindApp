@@ -13,14 +13,12 @@ enum SortOption {
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ReminderItem]
+    @State private var sortOption: SortOption = .timestamp
     
     @State private var showingAddReminderSheet = false
     @State private var showingSettingSheet = false
     
-    @State private var sortOption: SortOption = .timestamp
-    
     @AppStorage("firstStart") var firstStart  = true
-    
     let selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     
 
