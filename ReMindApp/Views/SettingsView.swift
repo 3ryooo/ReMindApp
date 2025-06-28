@@ -17,7 +17,6 @@ struct SettingsView: View {
         Bindable(notificationStore)
     }
     
-    
     @State private var randomRemind = false
     
     @Environment(\.dismiss) private var dismiss

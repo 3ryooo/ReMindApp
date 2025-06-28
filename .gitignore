@@ -4,18 +4,33 @@
 ### Swift ###
 # Xcode
 #
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+# gitignore寄稿者へ: Global/Xcode.gitignore、Objective-C.gitignore、Swift.gitignoreの更新を忘れずに
 
-## User settings
+#==============================================================================
+# システム・OS関連
+#==============================================================================
+
+## macOS固有のファイル
+.DS_Store
+
+#==============================================================================
+# Xcode関連
+#==============================================================================
+
+## ユーザー設定
 xcuserdata/
 
-## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
+## ビルド・生成ファイル
+build/
+DerivedData/
+.build/
+
+## 互換性関連ファイル
+# Xcode 8以前との互換性（Xcode 9以降では無視する必要なし）
 *.xcscmblueprint
 *.xccheckout
 
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
-build/
-DerivedData/
+# Xcode 3以前との互換性（Xcode 4以降では無視する必要なし）
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -26,97 +41,120 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 
-## Obj-C/Swift specific
+## Swift/Objective-C固有
 *.hmap
 
-## App packaging
+## アプリパッケージング
 *.ipa
 *.dSYM.zip
 *.dSYM
 
-## Playgrounds
+## Xcode Playgrounds
 timeline.xctimeline
 playground.xcworkspace
 
-# Swift Package Manager
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+#==============================================================================
+# 依存関係管理
+#==============================================================================
+
+## Swift Package Manager
+# Swift Package Managerの依存関係からソースコードをチェックインしたくない場合はこの行を追加
 # Packages/
 # Package.pins
 # Package.resolved
 # *.xcodeproj
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
+# Xcodeは.xcworkspacedataファイルとxcuserdataを含むこのディレクトリを自動生成するため
+# プロジェクトにパッケージ設定ファイルを追加していない限り不要
 # .swiftpm
 
-.build/
-
-# CocoaPods
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
+## CocoaPods
+# Podsディレクトリを.gitignoreに追加することは推奨しません。ただし、
+# 自分で判断してください。長所と短所については以下で説明されています:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 # Pods/
-# Add this line if you want to avoid checking in source code from the Xcode workspace
+# Xcodeワークスペースからソースコードをチェックインしたくない場合はこの行を追加
 # *.xcworkspace
 
-# Carthage
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
+## Carthage
+# Carthageの依存関係からソースコードをチェックインしたくない場合はこの行を追加
 # Carthage/Checkouts
-
 Carthage/Build/
 
-# Accio dependency management
+## Accio依存関係管理
 Dependencies/
 .accio/
 
-# fastlane
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
+#==============================================================================
+# ビルド・デプロイツール
+#==============================================================================
 
+## fastlane
+# スクリーンショットをgitリポジトリに保存することは推奨されません。
+# 代わりに、必要な時にfastlaneを使用してスクリーンショットを再生成してください。
+# 推奨セットアップの詳細については以下を参照:
+# https://docs.fastlane.tools/best-practices/source-control/#source-control
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# Code Injection
-# After new code Injection tools there's a generated folder /iOSInjectionProject
+## コードインジェクション
+# 新しいコードインジェクションツール後、生成されたフォルダ /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
-
 iOSInjectionProject/
 
-# End of https://www.toptal.com/developers/gitignore/api/swift
+#==============================================================================
+# データ・モデルファイル
+#==============================================================================
 
-.DS_Store
+## 機械学習モデル
 *.mlmodel
 
-# Secrets or config files
-Secrets.plist
-*.env
-
-# Google Services (e.g. GoogleService-Info.plist)
-GoogleService-Info.plist
-
-# AWS
-awsconfiguration.json
-amplifyconfiguration.json
-
-# Firebase
-firebase_app_id_file.json
-
-# Realm
+## データベース（Realm）
 *.realm
 *.realm.lock
 *.realm.management/
 
-# Config files that might contain secrets
+#==============================================================================
+# 設定・秘密情報
+#==============================================================================
+
+## 基本的な秘密情報
+Secrets.plist
+*.env
 *.xcconfig
 
-# Sensitive content in property lists
+## クラウドサービス設定
+# Google Services（例: GoogleService-Info.plist）
+GoogleService-Info.plist
+
+# AWS設定
+awsconfiguration.json
+amplifyconfiguration.json
+
+# Firebase設定
+firebase_app_id_file.json
+
+## プロパティリスト内の機密コンテンツ
 **/Configuration/*.plist
 **/Private/*.plist
 
-# 個人メモ
+#==============================================================================
+# 個人・開発用ファイル
+#==============================================================================
+
+## 個人メモ・一時ファイル
 Memo
 .specstory
 .cursorindexingignore
+
+#==============================================================================
+# カスタム追加エリア
+#==============================================================================
+# ここに手動でファイルやディレクトリを追加してください
+# 例:
+# MyCustomFile.txt
+# temp/
+# logs/
+
+# End of https://www.toptal.com/developers/gitignore/api/swift
