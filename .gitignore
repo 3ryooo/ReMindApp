@@ -115,3 +115,8 @@ firebase_app_id_file.json
 # Sensitive content in property lists
 **/Configuration/*.plist
 **/Private/*.plist
+
+# 個人メモ
+Memo
+.specstory
+.cursorindexingignore

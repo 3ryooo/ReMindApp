@@ -9,28 +9,16 @@ import UserNotifications
 
 struct SettingsView: View {
     
+    @Environment(NotificationStore.self) private var notificationStore
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ReminderItem]
     
-    @State private var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
-    @State private var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    @State private var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
-    
-    @State private var randomRemind = false
-    @State private var showingAuthorizationAlert = false
-    
-    //    テスト中のため数を少なめに設定
-    let lastNotificationId = 5
-    
-    private var notifiedItems: [ReminderItem] {
-        var filterd = items
-        
-        filterd = filterd.filter { $0.isNotificationEnable == true }
-        
-        return filterd
+    private var bindableNotificationStore: Bindable<NotificationStore> {
+        Bindable(notificationStore)
     }
     
     
+    @State private var randomRemind = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -39,18 +27,18 @@ struct SettingsView: View {
         NavigationView {
             Form {
 //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
-                Toggle(isOn: $isNotificationEnabled) {
-                    Text("通知\(isNotificationEnabled ? "ON" : "OFF")")
+                Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
+                    Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
                 }
-                .onChange(of: isNotificationEnabled) {
-                    requestAuthorization()
+                .onChange(of: notificationStore.isNotificationEnabled) {
+                    notificationStore.requestAuthorization()
                 }
 //                TODO:通知のベースの時間を追加（1日以下のときの説明や処理を検討）
-                if isNotificationEnabled {
+                if notificationStore.isNotificationEnabled {
 //                    TODO:tagを頻度に沿った値に変更する
 //                    TODO:randomRemind機能の実装
 //                    TODO:短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
-                    Picker("通知の頻度", selection: $selectedFrequency) {
+                    Picker("通知の頻度", selection: bindableNotificationStore.selectedFrequency) {
                         Text("1時間に1回").tag(1)
                         Text("2時間に1回").tag(2)
                         Text("3時間に1回").tag(3)
@@ -69,7 +57,7 @@ struct SettingsView: View {
                         Text("1年に1回").tag(8640)
                     }
                     //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
-                    DatePicker("基準時間", selection: $baseTime, displayedComponents: .hourAndMinute)
+                    DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
                 }
 
 //                アラート追加？・保存ボタン等
@@ -84,23 +72,21 @@ struct SettingsView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
-                        UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
-                        UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
-                        UserDefaults.standard.set(baseTime, forKey: "baseTime")
-                        if isNotificationEnabled {
-                            setNotificationList()
+                        notificationStore.saveSettings()
+                        if notificationStore.isNotificationEnabled {
+                            notificationStore.setNotificationList(for: items)
                         } else {
-                            removeAllNotification()
+                            notificationStore.removeAllNotification()
                         }
                         
                         dismiss()
                     }
                 }
             }
-            .alert("通知がオフになっています", isPresented: $showingAuthorizationAlert) {
+            .alert("通知がオフになっています", isPresented: bindableNotificationStore.showingAuthorizationAlert) {
                 Button("キャンセル", role: .cancel) { }
                 Button("設定を開く") {
-                    openAppSettings()
+                    NotificationManager().openAppSettings()
                 }
             } message: {
                 //                TODO:もう少し丁寧な説明をしたい
@@ -109,112 +95,19 @@ struct SettingsView: View {
         }
     }
     
-    private func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-            if success {
-                print("許可")
-            } else if let error = error {
-                print("失敗：\(error.localizedDescription)")
-            }
-            
-            if !success {
-                DispatchQueue.main.async {
-                    showingAuthorizationAlert = true
-                }
-            }
-            
-        }
-        
+   
+    
+    
+    
+     
     }
     
-    private func openAppSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        }
-    }
     
-    func setNotificationList() {
-        
-        removeAllNotification()
-        
-        
-        
-        for i in 1...lastNotificationId {
-            setNotification(i)
-        }
-        
-        
-    }
-    
-    private func removeAllNotification() {
-        //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
-        let lcNotification = UNUserNotificationCenter.current()
-        lcNotification.removeAllPendingNotificationRequests()
-        print("通知全消去")
-    }
     
     //    TODO:トリガーを変更する
-    private func setNotification(_ id : Int) {
-        
-        //        TODO:個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
-        var textRange: Int {
-            if notifiedItems.count > 0 {
-                return notifiedItems.count
-            } else {
-                return 1
-            }
-        }
-        
-        var remindTexts: [String] = []
-        
-        if notifiedItems.count > 0 {
-            for i in notifiedItems {
-                remindTexts.append(i.text)
-            }
-        } else {
-            remindTexts.append("リストが空です")
-        }
-        
-        let randomNumber = Int.random(in: 0..<textRange)
-        
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Re:Mind" // ランダムで作成？
-        content.body = remindTexts[randomNumber]
-        
-        if id == lastNotificationId {
-            content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
-        }
-        
-        
-        
-        content.sound = .default
-        
-        let date = Date()
-        //        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date)
-        
-        //        テスト用
-        let newDate = Date(timeInterval: TimeInterval(60 * id), since: date)
-        
-        
-        let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("スケジューリング失敗：\(error.localizedDescription)")
-            } else {
-                print("スケジューリング成功： id:\(id) 通知予定：\(newDate)")
-            }
-        }
-    }
+
     
-}
+
 
 #Preview {
     SettingsView()
