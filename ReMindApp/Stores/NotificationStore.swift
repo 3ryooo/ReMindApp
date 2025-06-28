@@ -40,6 +40,7 @@ class NotificationStore {
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
     }
     
+    //    TODO:トリガーを変更する
     func setNotificationList(for items: [ReminderItem]) {
         
         removeAllNotification()
