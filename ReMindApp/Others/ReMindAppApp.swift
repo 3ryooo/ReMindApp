@@ -14,7 +14,7 @@ struct ReMindAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 .modelContainer(for: ReminderItem.self)
                 .environment(reminderStore)
                 .environment(notificationStore)

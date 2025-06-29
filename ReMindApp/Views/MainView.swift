@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  ReMindApp
 //
 
@@ -10,7 +10,7 @@ enum SortOption {
     case name, timestamp
 }
 
-struct ContentView: View {
+struct MainView: View {
     
     @Environment(ReminderStore.self) private var reminderStore
     @Environment(NotificationStore.self) private var notificationStore
@@ -106,5 +106,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainView()
 }
