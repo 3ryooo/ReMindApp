@@ -107,4 +107,6 @@ struct MainView: View {
 
 #Preview {
     MainView()
+        .environment(ReminderStore())
+        .environment(NotificationStore())
 }
