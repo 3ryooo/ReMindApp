@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 import UserNotifications
 
 struct SettingsView: View {
@@ -20,6 +21,7 @@ struct SettingsView: View {
     @State private var randomRemind = false
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
     
     
     var body: some View {
@@ -57,6 +59,14 @@ struct SettingsView: View {
                     }
                     //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                     DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
+                }
+                
+                Button("評価する") {
+                    //                    TODO:自動的なトリガーを設定
+                    requestReview()
+                }
+                Button("お問い合わせ") {
+                    //                    TODO:作成予定
                 }
                 
                 //                アラート追加？・保存ボタン等
