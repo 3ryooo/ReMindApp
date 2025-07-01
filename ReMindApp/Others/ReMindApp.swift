@@ -7,7 +7,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct ReMindAppApp: App {
+struct ReMindApp: App {
     
     @State private var reminderStore = ReminderStore()
     @State private var notificationStore = NotificationStore()
