@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct EditReminderView: View {
+struct EditReminderScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
@@ -44,6 +44,6 @@ struct EditReminderView: View {
 }
 
 #Preview {
-    EditReminderView(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true, createdAt: Date.now))
+    EditReminderScreen(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true, createdAt: Date.now))
         .modelContainer(for: ReminderItem.self)
 }

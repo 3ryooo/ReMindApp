@@ -6,7 +6,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddReminderView: View {
+struct AddReminderScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
@@ -47,5 +47,5 @@ struct AddReminderView: View {
 }
 
 #Preview {
-    AddReminderView()
+    AddReminderScreen()
 }

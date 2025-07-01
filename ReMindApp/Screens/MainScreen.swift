@@ -10,7 +10,7 @@ enum SortOption {
     case name, timestamp
 }
 
-struct MainView: View {
+struct MainScreen: View {
     
     @Environment(ReminderStore.self) private var reminderStore
     @Environment(NotificationStore.self) private var notificationStore
@@ -35,7 +35,7 @@ struct MainView: View {
             }
             List {
                 ForEach(displayedItems) { item in
-                    NavigationLink(destination: EditReminderView(reminderItem: item)) {
+                    NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
                         Text(item.text)
                             .opacity(item.isNotificationEnable ? 1 : 0.2)
                     }
@@ -70,10 +70,10 @@ struct MainView: View {
                 }
             }
             .sheet(isPresented: bindableReminderStore.showingAddReminderSheet) {
-                AddReminderView()
+                AddReminderScreen()
             }
             .sheet(isPresented: bindableReminderStore.showingSettingSheet) {
-                SettingsView()
+                SettingsScreen()
             }
             .overlay {
                 if items.isEmpty {
@@ -106,7 +106,7 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    MainScreen()
         .environment(ReminderStore())
         .environment(NotificationStore())
 }

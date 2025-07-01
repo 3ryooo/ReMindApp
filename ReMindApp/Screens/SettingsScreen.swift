@@ -8,7 +8,7 @@ import SwiftData
 import StoreKit
 import UserNotifications
 
-struct SettingsView: View {
+struct SettingsScreen: View {
     
     @Environment(NotificationStore.self) private var notificationStore
     @Environment(\.modelContext) private var modelContext
@@ -109,6 +109,6 @@ struct SettingsView: View {
 
 
 #Preview {
-    SettingsView()
+    SettingsScreen()
         .environment(NotificationStore())
 }
