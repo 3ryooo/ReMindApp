@@ -61,6 +61,14 @@ struct SettingsScreen: View {
                     DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
                 }
                 
+                Button("インポート") {
+                    
+                }
+                
+                Button("エクスポート") {
+                    
+                }
+                
                 Button("評価する") {
                     //                    TODO:自動的なトリガーを設定
                     requestReview()
