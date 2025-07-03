@@ -10,6 +10,7 @@ import UserNotifications
 @Observable
 class NotificationStore {
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
+    var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
     var showingAuthorizationAlert = false
@@ -36,6 +37,7 @@ class NotificationStore {
     
     func saveSettings() {
         UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
+        UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
     }

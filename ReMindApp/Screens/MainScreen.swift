@@ -89,6 +89,7 @@ struct MainScreen: View {
                     UserDefaults.standard.set(24, forKey: "frequencyKey")
                     UserDefaults.standard.set(Date.now, forKey: "baseTime")
                     UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
+                    UserDefaults.standard.set(false, forKey: "isRandomTimeEnabled")
                     firstStart = false
                 }
             }

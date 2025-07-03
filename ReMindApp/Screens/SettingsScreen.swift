@@ -57,6 +57,10 @@ struct SettingsScreen: View {
                         Text("半年に1回").tag(4320)
                         Text("1年に1回").tag(8640)
                     }
+//                    TODO:時間ランダム時のbasetimeの処理
+                    Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
+                        Text("時間ランダム")
+                    }
                     //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
                     DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
                 }
