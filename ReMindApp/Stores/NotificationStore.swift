@@ -13,6 +13,7 @@ class NotificationStore {
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
+    
     var showingAuthorizationAlert = false
     
     //    テスト中のため数を少なめに設定
@@ -104,11 +105,8 @@ class NotificationStore {
         //        テスト用
         let newDate = Date(timeInterval: TimeInterval(60 * id), since: date)
         
-        
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
-        
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
-        
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
