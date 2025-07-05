@@ -105,6 +105,15 @@ class NotificationStore {
         //        テスト用
         let newDate = Date(timeInterval: TimeInterval(60 * id), since: date)
         
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ja_JP")
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
+        let japanTime = formatter.string(from: newDate)
+        
+        
+        
+        
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -113,7 +122,7 @@ class NotificationStore {
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
             } else {
-                print("スケジューリング成功： id:\(id) 通知予定：\(newDate)")
+                print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
             }
         }
     }
