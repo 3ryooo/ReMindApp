@@ -5,6 +5,7 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 @main
 struct ReMindApp: App {
@@ -18,6 +19,22 @@ struct ReMindApp: App {
                 .modelContainer(for: ReminderItem.self)
                 .environment(reminderStore)
                 .environment(notificationStore)
+                .onAppear {
+                    UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+                }
         }
     }
+}
+
+class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = NotificationDelegate()
+    
+    private override init() {
+        super.init()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+
 }
