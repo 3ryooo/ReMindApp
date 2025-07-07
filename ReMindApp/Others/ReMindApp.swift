@@ -33,6 +33,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         super.init()
     }
     
+//    TODO:タップ後の挙動を調整？
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
