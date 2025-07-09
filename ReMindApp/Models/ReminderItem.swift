@@ -13,6 +13,9 @@ class ReminderItem: Identifiable {
     var isNotificationEnable: Bool
     var createdAt: Date
     
+    @Transient
+    var errorMessages: [ReminderFormError] = []
+    
 //    感情ログ追加予定
     
     init(id: UUID = UUID(), text: String, isNotificationEnable: Bool, createdAt: Date) {
@@ -21,4 +24,19 @@ class ReminderItem: Identifiable {
         self.isNotificationEnable = isNotificationEnable
         self.createdAt = createdAt
     }
+    
+    func validate() -> Bool {
+        
+        errorMessages.removeAll()
+        
+        if text.isEmptyOrWhiteSpace {
+            if text.isEmptyOrWhiteSpace {
+                errorMessages.append(.text)
+            }
+        }
+        
+        return errorMessages.isEmpty
+    }
+    
+    
 }
