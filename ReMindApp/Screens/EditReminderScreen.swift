@@ -11,7 +11,6 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
-    
     var body: some View {
         NavigationView {
             Form {

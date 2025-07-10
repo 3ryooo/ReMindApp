@@ -16,7 +16,7 @@ class ReminderItem: Identifiable {
     @Transient
     var errorMessages: [ReminderFormError] = []
     
-//    感情ログ追加予定
+//    TODO:感情ログ追加予定
     
     init(id: UUID = UUID(), text: String, isNotificationEnable: Bool, createdAt: Date) {
         self.id = id
