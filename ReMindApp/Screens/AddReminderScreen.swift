@@ -13,7 +13,6 @@ struct AddReminderScreen: View {
     @State private var newReminderText = ""
     @State private var newReminderNotification = true
     
-    
     var body: some View {
         NavigationView {
             Form {
