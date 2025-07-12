@@ -16,6 +16,7 @@ struct AddReminderScreen: View {
     var body: some View {
         NavigationView {
             Form {
+//                TODO:テキストの表示領域の改善
                 TextField("リマインドテキスト", text: $newReminderText)
                 Toggle(isOn: $newReminderNotification) {
                     Text("リマインド対象")
