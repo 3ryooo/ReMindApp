@@ -14,7 +14,7 @@ struct EditReminderScreen: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("リマインドテキスト", text: $reminderItem.text)
+                TextField("リマインドテキスト", text: $reminderItem.text, axis: .vertical)
                 Toggle(isOn: $reminderItem.isNotificationEnable) {
                     Text("リマインド対象")
                 }
