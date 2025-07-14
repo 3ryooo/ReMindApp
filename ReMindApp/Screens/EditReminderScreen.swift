@@ -22,7 +22,7 @@ struct EditReminderScreen: View {
 //                    addReminder()
                     dismiss()
                 }
-                .disabled(reminderItem.text.isEmpty ? true : false)
+                .disabled(reminderItem.text.isEmptyOrWhiteSpace)
             }
             .navigationTitle("編集")
             .toolbar {

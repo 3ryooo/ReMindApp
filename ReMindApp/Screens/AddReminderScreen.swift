@@ -24,7 +24,7 @@ struct AddReminderScreen: View {
                     addProduct()
                     dismiss()
                 }
-                .disabled(newReminderText.isEmpty ? true : false)
+                .disabled(newReminderText.isEmptyOrWhiteSpace)
             }
             .navigationTitle("新規追加")
             .toolbar {
