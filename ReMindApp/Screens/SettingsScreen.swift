@@ -74,7 +74,6 @@ struct SettingsScreen: View {
                 }
                 
                 Button("評価する") {
-                    //                    TODO:自動的なトリガーを設定
                     requestReview()
                 }
                 Button("お問い合わせ") {
@@ -93,6 +92,11 @@ struct SettingsScreen: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
+                        
+                        if notificationStore.notificationSaveTimes == 10 {
+                            requestReview()
+                        }
+                        
                         notificationStore.saveSettings()
                         if notificationStore.isNotificationEnabled {
                             notificationStore.setNotificationList(for: items)
