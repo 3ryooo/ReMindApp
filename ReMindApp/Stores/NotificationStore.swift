@@ -17,7 +17,7 @@ class NotificationStore {
     
     var showingAuthorizationAlert = false
     
-    //    テスト中のため数を少なめに設定
+//  TODO: 本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = 5
     
     func requestAuthorization() {
@@ -48,7 +48,7 @@ class NotificationStore {
         UserDefaults.standard.set(notificationSaveTimes, forKey: "notificationSaveTimes")
     }
     
-    //    TODO:トリガーを変更する
+    //    TODO: トリガーを変更する
     func setNotificationList(for items: [ReminderItem]) {
         
         removeAllNotification()
@@ -70,7 +70,7 @@ class NotificationStore {
         
         
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
-        //        TODO:個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
+        //        TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
         var textRange: Int {
             if notifiedItems.count > 0 {
                 return notifiedItems.count
@@ -100,15 +100,13 @@ class NotificationStore {
             content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
         }
         
-        
-        
         content.sound = .default
         
         let date = Date()
-        //        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date)
         
-        //        テスト用
-        let newDate = Date(timeInterval: TimeInterval(60 * id), since: date)
+//      TODO: 本番用切り替え
+//        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date) // 本番用
+        let newDate = Date(timeInterval: TimeInterval(60 * id), since: date) // テスト用
         
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ja_JP")

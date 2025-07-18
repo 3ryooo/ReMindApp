@@ -27,18 +27,17 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationView {
             Form {
-                //                TODO:　通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
+                //                TODO: 通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
                 Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
                     Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
                 }
                 .onChange(of: notificationStore.isNotificationEnabled) {
                     notificationStore.requestAuthorization()
                 }
-                //                TODO:通知のベースの時間を追加（1日以下のときの説明や処理を検討）
+                //                TODO: 通知のベースの時間を追加（1日以下のときの説明や処理を検討）
                 if notificationStore.isNotificationEnabled {
-                    //                    TODO:tagを頻度に沿った値に変更する
-                    //                    TODO:randomRemind機能の実装
-                    //                    TODO:短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
+                    //                    TODO: randomRemind機能の実装
+                    //                    TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     Picker("通知の頻度", selection: bindableNotificationStore.selectedFrequency) {
                         Text("1時間に1回").tag(1)
                         Text("2時間に1回").tag(2)
@@ -57,16 +56,16 @@ struct SettingsScreen: View {
                         Text("半年に1回").tag(4320)
                         Text("1年に1回").tag(8640)
                     }
-//                    TODO:時間ランダム時のbasetimeの処理
+//                    TODO: 時間ランダム時のbasetimeの処理
                     Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
                         Text("時間ランダム")
                     }
-                    //                ユーザーさんにとって基準時間はわかりにくい。（補足を用意する）
+//                    TODO: 基準時間の補足説明文章
                     DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
                 }
                 
                 Button("インポート") {
-//                    TODO:エクスポート機能とマージ？
+//                    TODO: エクスポート機能とマージ？
                 }
                 
                 Button("エクスポート") {
@@ -77,11 +76,11 @@ struct SettingsScreen: View {
                     requestReview()
                 }
                 Button("お問い合わせ") {
-                    //                    TODO:作成予定
+                    //                    TODO: 作成予定
                 }
                 
                 //                アラート追加？・保存ボタン等
-                //                TODO:レビューや連絡のボタン
+                //                TODO: レビューや連絡のボタン
             }
             .navigationTitle("設定")
             .toolbar {
@@ -114,7 +113,7 @@ struct SettingsScreen: View {
                     NotificationManager().openAppSettings()
                 }
             } message: {
-                //                TODO:もう少し丁寧な説明をしたい
+                // TODO: もう少し丁寧な説明をしたい
                 Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
             }
         }
