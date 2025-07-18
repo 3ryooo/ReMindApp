@@ -13,8 +13,8 @@ class ReminderItem: Identifiable {
     var isNotificationEnable: Bool
     var createdAt: Date
     
-    @Transient
-    var errorMessages: [ReminderFormError] = []
+//    @Transient
+//    var errorMessages: [ReminderFormError] = []
     
 //    TODO: 感情ログ追加予定
     
@@ -25,16 +25,17 @@ class ReminderItem: Identifiable {
         self.createdAt = createdAt
     }
     
-    func validate() -> Bool {
-        
-        errorMessages.removeAll()
-        
-        if text.isEmptyOrWhiteSpace {
-            errorMessages.append(.text)
-        }
-        
-        return errorMessages.isEmpty
-    }
+    // 現在未使用（複数のバリデーション発生時使用予定）
+//    func validate() -> Bool {
+//        
+//        errorMessages.removeAll()
+//        
+//        if text.isEmptyOrWhiteSpace {
+//            errorMessages.append(.text)
+//        }
+//        
+//        return errorMessages.isEmpty
+//    }
     
     
 }

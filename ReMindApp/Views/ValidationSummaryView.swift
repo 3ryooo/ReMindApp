@@ -5,6 +5,8 @@
 
 import SwiftUI
 
+
+// 現在未使用（複数のバリデーション発生時使用予定）
 struct ValidationSummaryView: View {
     let errorMessages: [ReminderFormError]
     

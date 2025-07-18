@@ -5,6 +5,7 @@
 
 import Foundation
 
+// 現在未使用（複数のバリデーション発生時使用予定）w
 enum ReminderFormError: LocalizedError, Identifiable {
     case text
     
