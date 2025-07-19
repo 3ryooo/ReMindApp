@@ -6,11 +6,13 @@
 import SwiftUI
 
 struct EditReminderScreen: View {
+    // MARK: - プロパティ
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @Bindable var reminderItem: ReminderItem
     
+    // MARK: - EditView
     var body: some View {
         NavigationView {
             Form {
@@ -42,6 +44,7 @@ struct EditReminderScreen: View {
 //    }
 }
 
+// MARK: - プレビュー
 #Preview {
     EditReminderScreen(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true, createdAt: Date.now))
         .modelContainer(for: ReminderItem.self)

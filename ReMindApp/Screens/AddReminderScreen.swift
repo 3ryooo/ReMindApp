@@ -7,12 +7,14 @@ import SwiftUI
 import SwiftData
 
 struct AddReminderScreen: View {
+    // MARK: - プロパティ
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
     @State private var newReminderText = ""
     @State private var newReminderNotification = true
     
+    // MARK: - AddView
     var body: some View {
         NavigationView {
             Form {
@@ -38,6 +40,7 @@ struct AddReminderScreen: View {
         
     }
     
+    // MARK: - メソッド
     func addProduct() {
         let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification, createdAt: Date.now)
         modelContext.insert(newReminder)
@@ -45,6 +48,7 @@ struct AddReminderScreen: View {
     
 }
 
+// MARK: - プレビュー
 #Preview {
     AddReminderScreen()
 }

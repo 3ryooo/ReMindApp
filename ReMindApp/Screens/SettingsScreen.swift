@@ -10,6 +10,7 @@ import UserNotifications
 
 struct SettingsScreen: View {
     
+    // MARK: - プロパティ
     @Environment(NotificationStore.self) private var notificationStore
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [ReminderItem]
@@ -23,7 +24,7 @@ struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.requestReview) private var requestReview
     
-    
+    // MARK: - SettingView
     var body: some View {
         NavigationView {
             Form {
@@ -123,6 +124,7 @@ struct SettingsScreen: View {
 }
 
 
+// MARK: - プレビュー
 #Preview {
     SettingsScreen()
         .environment(NotificationStore())

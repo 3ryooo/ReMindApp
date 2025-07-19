@@ -12,10 +12,12 @@ import SwiftData
 @Observable
 class ReminderStore {
     
+    // MARK: - プロパティ
     var sortOption: SortOption = .timestamp
     var showingAddReminderSheet = false
     var showingSettingSheet = false
     
+    // MARK: - ソートメソッド
     func getSortedItems (_ items: [ReminderItem]) -> [ReminderItem] {
         var filtered = items
         
@@ -28,12 +30,14 @@ class ReminderStore {
         return filtered
     }
     
+    // MARK: - データ管理
     func deleteItems(at offsets: IndexSet, from items: [ReminderItem], context: ModelContext) {
         for index in offsets {
             context.delete(items[index])
         }
     }
     
+    // MARK: - サンプルデータ
     func addSampleReminder(context: ModelContext) {
         
         do {

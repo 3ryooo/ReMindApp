@@ -9,21 +9,26 @@ import UserNotifications
 
 @Observable
 class NotificationStore {
+    
+    // MARK: - プロパティ
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     var notificationSaveTimes = UserDefaults.standard.integer(forKey: "notificationSaveTimes")
-    var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO:二重になっているので修正する
+    var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO: 二重になっているので修正する
     
     var showingAuthorizationAlert = false
     
+
 //  TODO: 本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = 5
     
+    
+    // MARK: - 通知（認証）
     func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
-                print("許可")
+                print("許可")// FIXME: 「○○を修正する必要がある」の意味
             } else if let error = error {
                 print("失敗：\(error.localizedDescription)")
             }
@@ -37,6 +42,7 @@ class NotificationStore {
         }
     }
     
+    // MARK: - 設定保存
     func saveSettings() {
         
         notificationSaveTimes += 1
@@ -48,6 +54,7 @@ class NotificationStore {
         UserDefaults.standard.set(notificationSaveTimes, forKey: "notificationSaveTimes")
     }
     
+    // MARK: - リマインド設定
     //    TODO: トリガーを変更する
     func setNotificationList(for items: [ReminderItem]) {
         

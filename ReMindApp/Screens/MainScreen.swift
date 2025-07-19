@@ -6,12 +6,15 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ソート用enum
+// enumの位置は適切か？
 enum SortOption {
     case name, timestamp
 }
 
 struct MainScreen: View {
     
+    // MARK: - プロパティ
     @Environment(ReminderStore.self) private var reminderStore
     @Environment(NotificationStore.self) private var notificationStore
     
@@ -28,6 +31,7 @@ struct MainScreen: View {
         return reminderStore.getSortedItems(items)
     }
 
+    // MARK: - MainView
     var body: some View {
         NavigationStack {
             Button("デバッグ用") {
@@ -97,6 +101,7 @@ struct MainScreen: View {
         }
     }
     
+    // MARK: - メソッド
     func deleteItems(offsets: IndexSet) {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
     }
@@ -107,6 +112,7 @@ struct MainScreen: View {
     
 }
 
+// MARK: - プレビュー
 #Preview {
     MainScreen()
         .environment(ReminderStore())
