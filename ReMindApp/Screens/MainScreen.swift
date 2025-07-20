@@ -6,26 +6,18 @@
 import SwiftUI
 import SwiftData
 
-// MARK: - ソート用enum
-// enumの位置は適切か？
-enum SortOption {
-    case name, timestamp
-}
-
 struct MainScreen: View {
     
     // MARK: - プロパティ
+    @Environment(\.modelContext) private var modelContext
     @Environment(ReminderStore.self) private var reminderStore
     @Environment(NotificationStore.self) private var notificationStore
+    @AppStorage("firstStart") var firstStart  = true
+    @Query private var items: [ReminderItem]
     
     private var bindableReminderStore: Bindable<ReminderStore> {
         Bindable(reminderStore)
     }
-    
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [ReminderItem]
-    
-    @AppStorage("firstStart") var firstStart  = true
     
     private var displayedItems: [ReminderItem] {
         return reminderStore.getSortedItems(items)
@@ -59,8 +51,8 @@ struct MainScreen: View {
                     }
                     Menu("並び順", systemImage: "arrow.up.arrow.down") {
                         Picker("並び順", selection: bindableReminderStore.sortOption) {
-                            Text("名前順").tag(SortOption.name)
-                            Text("新しい順").tag(SortOption.timestamp)
+                            Text(SortOption.name.displayTitle).tag(SortOption.name)
+                            Text(SortOption.timestamp.displayTitle).tag(SortOption.timestamp)
                         }
                     }
                 }

@@ -13,16 +13,15 @@ struct SettingsScreen: View {
     // MARK: - プロパティ
     @Environment(NotificationStore.self) private var notificationStore
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
     @Query private var items: [ReminderItem]
+    @State private var randomRemind = false
     
     private var bindableNotificationStore: Bindable<NotificationStore> {
         Bindable(notificationStore)
     }
     
-    @State private var randomRemind = false
-    
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.requestReview) private var requestReview
     
     // MARK: - SettingView
     var body: some View {
