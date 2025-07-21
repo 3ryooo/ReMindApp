@@ -39,7 +39,25 @@ struct MainScreen: View {
                 .onDelete(perform: deleteItems)
                 
             }
-            
+            .overlay {
+                if items.isEmpty {
+                    ContentUnavailableView {
+                        Label("リストが空です", systemImage: "tray.fill")
+                    } description: {
+                        Text("右上の＋から新しく追加してください")
+                    }
+                }
+            }
+            .onAppear {
+                if firstStart {
+                    UserDefaults.standard.set(24, forKey: "frequencyKey")
+                    UserDefaults.standard.set(0, forKey: "notificationSaveTimes")
+                    UserDefaults.standard.set(Date.now, forKey: "baseTime")
+                    UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
+                    UserDefaults.standard.set(false, forKey: "isRandomTimeEnabled")
+                    firstStart = false
+                }
+            }
             .navigationTitle("Re:Mind")
             .toolbar {
                 ToolbarItemGroup(placement: .topBarTrailing) {
@@ -71,25 +89,7 @@ struct MainScreen: View {
             .sheet(isPresented: bindableReminderStore.showingSettingSheet) {
                 SettingsScreen()
             }
-            .overlay {
-                if items.isEmpty {
-                    ContentUnavailableView {
-                        Label("リストが空です", systemImage: "tray.fill")
-                    } description: {
-                        Text("右上の＋から新しく追加してください")
-                    }
-                }
-            }
-            .onAppear {
-                if firstStart {
-                    UserDefaults.standard.set(24, forKey: "frequencyKey")
-                    UserDefaults.standard.set(0, forKey: "notificationSaveTimes")
-                    UserDefaults.standard.set(Date.now, forKey: "baseTime")
-                    UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
-                    UserDefaults.standard.set(false, forKey: "isRandomTimeEnabled")
-                    firstStart = false
-                }
-            }
+            
         }
     }
     
