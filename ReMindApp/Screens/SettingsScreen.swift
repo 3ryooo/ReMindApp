@@ -38,24 +38,7 @@ struct SettingsScreen: View {
                 if notificationStore.isNotificationEnabled {
                     //                    TODO: randomRemind機能の実装
                     //                    TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
-                    Picker("通知の頻度", selection: bindableNotificationStore.selectedFrequency) {
-                        Text("1時間に1回").tag(1)
-                        Text("2時間に1回").tag(2)
-                        Text("3時間に1回").tag(3)
-                        Text("6時間に1回").tag(6)
-                        Text("9時間に1回").tag(9)
-                        Text("12時間に1回").tag(12)
-                        Text("1日に1回").tag(24)
-                        Text("2日に1回").tag(48)
-                        Text("3日に1回").tag(72)
-                        Text("5日に1回").tag(120)
-                        Text("1週間に1回").tag(168)
-                        Text("2週間に1回").tag(336)
-                        Text("1ヶ月に1回").tag(720)
-                        Text("3ヶ月に1回").tag(2160)
-                        Text("半年に1回").tag(4320)
-                        Text("1年に1回").tag(8640)
-                    }
+                    frequencyPicker
 //                    TODO: 時間ランダム時のbasetimeの処理
                     Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
                         Text("時間ランダム")
@@ -117,8 +100,29 @@ struct SettingsScreen: View {
                 Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
             }
         }
+        
     }
     
+    var frequencyPicker: some View {
+        Picker("通知の頻度", selection: bindableNotificationStore.selectedFrequency) {
+            Text("1時間に1回").tag(1)
+            Text("2時間に1回").tag(2)
+            Text("3時間に1回").tag(3)
+            Text("6時間に1回").tag(6)
+            Text("9時間に1回").tag(9)
+            Text("12時間に1回").tag(12)
+            Text("1日に1回").tag(24)
+            Text("2日に1回").tag(48)
+            Text("3日に1回").tag(72)
+            Text("5日に1回").tag(120)
+            Text("1週間に1回").tag(168)
+            Text("2週間に1回").tag(336)
+            Text("1ヶ月に1回").tag(720)
+            Text("3ヶ月に1回").tag(2160)
+            Text("半年に1回").tag(4320)
+            Text("1年に1回").tag(8640)
+        }
+    }
     
 }
 
