@@ -28,7 +28,7 @@ class NotificationStore {
     func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
-                print("許可")// FIXME: 「○○を修正する必要がある」の意味
+                print("許可")
             } else if let error = error {
                 print("失敗：\(error.localizedDescription)")
             }
@@ -75,9 +75,8 @@ class NotificationStore {
     
     private func setNotification(_ id : Int, items: [ReminderItem]) {
         
-        
-        let notifiedItems = items.filter { $0.isNotificationEnable == true }
-        //        TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
+        var remindTexts: [String] = []
+        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
         var textRange: Int {
             if notifiedItems.count > 0 {
                 return notifiedItems.count
@@ -86,7 +85,9 @@ class NotificationStore {
             }
         }
         
-        var remindTexts: [String] = []
+        let notifiedItems = items.filter { $0.isNotificationEnable == true }
+        let randomNumber = Int.random(in: 0..<textRange)
+        let date = Date()
         
         if notifiedItems.count > 0 {
             for i in notifiedItems {
@@ -96,34 +97,21 @@ class NotificationStore {
             remindTexts.append("リストが空です")
         }
         
-        let randomNumber = Int.random(in: 0..<textRange)
-        
         
         let content = UNMutableNotificationContent()
-        content.title = "Re:Mind" // ランダムで作成？
+        content.title = "Re:Mind"
         content.body = remindTexts[randomNumber]
+        content.sound = .default
         
         if id == lastNotificationId {
             content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
         }
-        
-        content.sound = .default
-        
-        let date = Date()
-        
+
 //      TODO: 本番用切り替え
 //        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date) // 本番用
         let newDate = Date(timeInterval: TimeInterval(60 * id), since: date) // テスト用
         
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ja_JP")
-        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        formatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
-        let japanTime = formatter.string(from: newDate)
-        
-        
-        
-        
+        let japanTime = DateConverter().japanTime(newDate)
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
