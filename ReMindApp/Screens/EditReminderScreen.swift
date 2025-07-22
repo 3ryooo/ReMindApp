@@ -20,28 +20,11 @@ struct EditReminderScreen: View {
                 Toggle(isOn: $reminderItem.isNotificationEnable) {
                     Text("リマインド対象")
                 }
-                Button("追加") {
-//                    addReminder()
-                    dismiss()
-                }
-                .disabled(reminderItem.text.isEmptyOrWhiteSpace)
             }
             .navigationTitle("編集")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("キャンセル") {
-                        dismiss()
-                    }
-                }
-            }
         }
         
     }
-    
-//    func addReminder() {
-//        let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification)
-//        modelContext.insert(newReminder)
-//    }
 }
 
 // MARK: - プレビュー
