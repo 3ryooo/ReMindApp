@@ -27,43 +27,42 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationView {
             Form {
-                //                TODO: 通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
-                Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
-                    Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
-                }
-                .onChange(of: notificationStore.isNotificationEnabled) {
-                    notificationStore.requestAuthorization()
-                }
-                //                TODO: 通知のベースの時間を追加（1日以下のときの説明や処理を検討）
-                if notificationStore.isNotificationEnabled {
-                    //                    TODO: randomRemind機能の実装
-                    //                    TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
+                Section("通知設定") {
+                    // TODO: 通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
+                    Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
+                        Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
+                    }
+                    .onChange(of: notificationStore.isNotificationEnabled) {
+                        notificationStore.requestAuthorization()
+                    }
+                    // TODO: 通知のベースの時間を追加（1日以下のときの説明や処理を検討）
+                    // TODO: randomRemind機能の実装
+                    // TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
-//                    TODO: 時間ランダム時のbasetimeの処理
+                    // TODO: 時間ランダム時のbasetimeの処理
                     Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
                         Text("時間ランダム")
                     }
-//                    TODO: 基準時間の補足説明文章
+                    // TODO: 基準時間の補足説明文章
                     DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
                 }
-                
-                Button("インポート") {
-//                    TODO: エクスポート機能とマージ？
-                }
-                
-                Button("エクスポート") {
+                Section("データ管理"){
+                    Button("インポート") {
+                        // TODO: エクスポート機能とマージ？
+                    }
                     
+                    Button("エクスポート") {
+                        
+                    }
                 }
-                
-                Button("評価する") {
-                    requestReview()
+                Section("アプリについて"){
+                    Button("評価する") {
+                        requestReview()
+                    }
+                    Button("お問い合わせ") {
+                        //  TODO: 作成予定
+                    }
                 }
-                Button("お問い合わせ") {
-                    //                    TODO: 作成予定
-                }
-                
-                //                アラート追加？・保存ボタン等
-                //                TODO: レビューや連絡のボタン
             }
             .navigationTitle("設定")
             .toolbar {
