@@ -67,11 +67,6 @@ struct SettingsScreen: View {
             }
             .navigationTitle("設定")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("キャンセル") {
-                        dismiss()
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
                         
