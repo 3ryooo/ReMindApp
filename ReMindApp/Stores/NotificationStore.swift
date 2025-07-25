@@ -18,6 +18,8 @@ class NotificationStore {
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO: 二重になっているので修正する
     
     var showingAuthorizationAlert = false
+    var showingNotificationErrorAlert = false
+    var notificationErrorMessage = ""
     
 
 //  TODO: 本番用の値に変更（現在はテスト用で少なめ）
@@ -58,10 +60,34 @@ class NotificationStore {
     //    TODO: トリガーを変更する
     func setNotificationList(for items: [ReminderItem]) {
         
+        // エラー状態をリセット
+        showingNotificationErrorAlert = false
+        notificationErrorMessage = ""
+        
+        // 基準日時の作成をテスト
+        guard getFirstNotificationDate() != nil else {
+            DispatchQueue.main.async {
+                self.notificationErrorMessage = "通知の設定に失敗しました。時刻設定を確認してください。"
+                self.showingNotificationErrorAlert = true
+            }
+            return
+        }
+        
         removeAllNotification()
         
+        var failedCount = 0
         for i in 1...lastNotificationId {
-            setNotification(i, items: items)
+            if !setNotification(i, items: items) {
+                failedCount += 1
+            }
+        }
+        
+        // 一部の通知設定に失敗した場合の警告
+        if failedCount > 0 {
+            DispatchQueue.main.async {
+                self.notificationErrorMessage = "一部の通知設定に失敗しました（\(failedCount)件）。アプリを再起動してお試しください。"
+                self.showingNotificationErrorAlert = true
+            }
         }
         
     }
@@ -73,7 +99,7 @@ class NotificationStore {
         print("通知全消去")
     }
     
-    private func setNotification(_ id : Int, items: [ReminderItem]) {
+    private func setNotification(_ id : Int, items: [ReminderItem]) -> Bool {
         
         var remindTexts: [String] = []
         // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
@@ -87,7 +113,6 @@ class NotificationStore {
         
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
         let randomNumber = Int.random(in: 0..<textRange)
-        let date = Date()
         
         if notifiedItems.count > 0 {
             for i in notifiedItems {
@@ -106,13 +131,18 @@ class NotificationStore {
         if id == lastNotificationId {
             content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
         }
+        
+        guard let firstNotificationDate = getFirstNotificationDate() else {
+            print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
+            return false
+        }
 
 //      TODO: 本番用切り替え
-//        let newDate = Date(timeInterval: TimeInterval(60 * 60 * id), since: date) // 本番用
-        let newDate = Date(timeInterval: TimeInterval(60 * id), since: date) // テスト用
+        let notificationDate = Date(timeInterval: TimeInterval(60 * 60 * selectedFrequency * id), since: firstNotificationDate) // 本番用
+//        let notificationDate = Date(timeInterval: TimeInterval(60 * id), since: firstNotificationDate) // テスト用
         
-        let japanTime = DateConverter().japanTime(newDate)
-        let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: newDate)
+        let japanTime = DateConverter().japanTime(notificationDate)
+        let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
@@ -123,6 +153,25 @@ class NotificationStore {
                 print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
             }
         }
+        return true
+    }
+    
+    private func getFirstNotificationDate() -> Date? {
+        let now = Date()
+        let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+        
+        
+        let calendar = Calendar(identifier: .gregorian)
+        
+        let year = calendar.component(.year, from: now)
+        let month = calendar.component(.month, from: now)
+        let day = calendar.component(.day, from: now)
+        
+        let hour = calendar.component(.hour, from: baseTime)
+        let minute = calendar.component(.minute, from: baseTime)
+        
+        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
+    
     }
     
 }

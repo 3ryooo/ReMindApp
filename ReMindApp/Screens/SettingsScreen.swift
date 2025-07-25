@@ -93,6 +93,11 @@ struct SettingsScreen: View {
                 // TODO: もう少し丁寧な説明をしたい
                 Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
             }
+            .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(notificationStore.notificationErrorMessage)
+            }
         }
         
     }
@@ -106,15 +111,15 @@ struct SettingsScreen: View {
             Text("9時間に1回").tag(9)
             Text("12時間に1回").tag(12)
             Text("1日に1回").tag(24)
-            Text("2日に1回").tag(48)
-            Text("3日に1回").tag(72)
-            Text("5日に1回").tag(120)
-            Text("1週間に1回").tag(168)
-            Text("2週間に1回").tag(336)
-            Text("1ヶ月に1回").tag(720)
-            Text("3ヶ月に1回").tag(2160)
-            Text("半年に1回").tag(4320)
-            Text("1年に1回").tag(8640)
+            Text("2日に1回").tag(24 * 2)
+            Text("3日に1回").tag(24 * 3)
+            Text("5日に1回").tag(24 * 5)
+            Text("1週間に1回").tag(24 * 7)
+            Text("2週間に1回").tag(24 * 14)
+            Text("1ヶ月に1回").tag(24 * 30) // FIXME: 日付が固定されない（月ごとに日数が異なるため）
+            Text("3ヶ月に1回").tag(24 * 30 * 3)
+            Text("半年に1回").tag(24 * 30 * 6)
+            Text("1年に1回").tag(24 * 30 * 12)
         }
     }
     

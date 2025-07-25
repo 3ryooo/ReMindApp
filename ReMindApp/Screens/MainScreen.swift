@@ -98,8 +98,11 @@ struct MainScreen: View {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
     }
     
+    // TODO: 検証後削除
     func debugFunc() {
-        reminderStore.addSampleReminder(context: modelContext)
+//        reminderStore.addSampleReminder(context: modelContext)
+        
+        
     }
     
 }
