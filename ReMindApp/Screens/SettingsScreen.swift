@@ -28,23 +28,21 @@ struct SettingsScreen: View {
         NavigationView {
             Form {
                 Section("通知設定") {
-                    // TODO: 通知許可タイミングを設定&失敗したときの処理（操作方法をユーザさんに案内？）
                     Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
                         Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
                     }
                     .onChange(of: notificationStore.isNotificationEnabled) {
                         notificationStore.requestAuthorization()
                     }
-                    // TODO: 通知のベースの時間を追加（1日以下のときの説明や処理を検討）
-                    // TODO: randomRemind機能の実装
                     // TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
-                    // TODO: 時間ランダム時のbasetimeの処理
+                    // TODO: 基準時間の補足説明文章
+                    DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
+                    // TODO: 説明+1日以下では無効
                     Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
                         Text("時間ランダム")
                     }
-                    // TODO: 基準時間の補足説明文章
-                    DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
+                    .disabled(notificationStore.selectedFrequency < 24)
                 }
                 Section("データ管理"){
                     Button("インポート") {

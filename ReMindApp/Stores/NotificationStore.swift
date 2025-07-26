@@ -136,10 +136,12 @@ class NotificationStore {
             print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
             return false
         }
+        
+        guard let notificationDate = notificationTimeConverter(firstNotificationDate, id) else {
+            print("通知の基準日時のコンバートに失敗しました。通知ID: \(id)")
+            return false
+        }
 
-//      TODO: 本番用切り替え
-        let notificationDate = Date(timeInterval: TimeInterval(60 * 60 * selectedFrequency * id), since: firstNotificationDate) // 本番用
-//        let notificationDate = Date(timeInterval: TimeInterval(60 * id), since: firstNotificationDate) // テスト用
         
         let japanTime = DateConverter().japanTime(notificationDate)
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
@@ -160,7 +162,6 @@ class NotificationStore {
         let now = Date()
         let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
         
-        
         let calendar = Calendar(identifier: .gregorian)
         
         let year = calendar.component(.year, from: now)
@@ -173,5 +174,28 @@ class NotificationStore {
         return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
     
     }
+    
+    private func notificationTimeConverter(_ setDate: Date, _ id: Int) -> Date? {
+        let notificationDate = Date(timeInterval: TimeInterval(60 * 60 * selectedFrequency * id), since: setDate) // 本番用
+        
+        let calendar = Calendar(identifier: .gregorian)
+        
+        let year = calendar.component(.year, from: notificationDate)
+        let month = calendar.component(.month, from: notificationDate)
+        let day = calendar.component(.day, from: notificationDate)
+        var hour = calendar.component(.hour, from: notificationDate)
+        var minute = calendar.component(.minute, from: notificationDate)
+        
+        if isRandomTimeEnabled && selectedFrequency >= 24 {
+            hour = Int.random(in: 0..<24)
+            minute = Int.random(in: 0..<59)
+        }
+        
+        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
+        
+        
+    }
+    
+    
     
 }
