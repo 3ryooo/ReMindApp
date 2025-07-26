@@ -17,6 +17,8 @@ struct SettingsScreen: View {
     @Environment(\.requestReview) private var requestReview
     @Query private var items: [ReminderItem]
     @State private var randomRemind = false
+    @State private var showingBaseTimeHelp = false
+    @State private var showingRandomTimeHelp = false
     
     private var bindableNotificationStore: Bindable<NotificationStore> {
         Bindable(notificationStore)
@@ -27,7 +29,7 @@ struct SettingsScreen: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("通知設定") {
+                Section() {
                     Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
                         Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
                     }
@@ -36,13 +38,30 @@ struct SettingsScreen: View {
                     }
                     // TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
-                    // TODO: 基準時間の補足説明文章
-                    DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
-                    // TODO: 説明+1日以下では無効
-                    Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
-                        Text("時間ランダム")
+                    HStack {
+                        DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
+                        Button(action: {
+                            showingBaseTimeHelp = true
+                        }) {
+                            Image(systemName: "questionmark.circle")
+                                .foregroundColor(.secondary)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .disabled(notificationStore.selectedFrequency < 24)
+                    HStack {
+                        Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
+                            Text("時間ランダム")
+                        }
+                        .disabled(notificationStore.selectedFrequency < 24)
+                        
+                        Button(action: {
+                            showingRandomTimeHelp = true
+                        }) {
+                            Image(systemName: "questionmark.circle")
+                                .foregroundColor(.secondary)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 }
                 Section("データ管理"){
                     Button("インポート") {
@@ -95,6 +114,16 @@ struct SettingsScreen: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(notificationStore.notificationErrorMessage)
+            }
+            .alert("基準時間とは？", isPresented: $showingBaseTimeHelp) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("基準時間は通知の開始時刻です。\n\n例：基準時間を9:00、頻度を3時間に設定した場合、9:00、12:00、15:00...の順で通知が送信されます。")
+            }
+            .alert("時間ランダムとは？", isPresented: $showingRandomTimeHelp) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("ONにすると、通知時刻が毎回ランダムな時間（0:00〜23:59）に変更されます。\n\n時間ランダムは1日以上の頻度でのみ有効な機能です。\n\n1日未満の頻度では基準時間から正確な間隔で通知されます。")
             }
         }
         
