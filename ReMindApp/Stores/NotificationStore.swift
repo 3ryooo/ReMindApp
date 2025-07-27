@@ -101,26 +101,17 @@ class NotificationStore {
     
     private func setNotification(_ id : Int, items: [ReminderItem]) -> Bool {
         
-        var remindTexts: [String] = []
         // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
-        var textRange: Int {
-            if notifiedItems.count > 0 {
-                return notifiedItems.count
-            } else {
-                return 1
-            }
-        }
-        
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
-        let randomNumber = Int.random(in: 0..<textRange)
         
+        let remindTexts: [String]
         if notifiedItems.count > 0 {
-            for i in notifiedItems {
-                remindTexts.append(i.text)
-            }
+            remindTexts = notifiedItems.map { $0.text }
         } else {
-            remindTexts.append("リストが空です")
+            remindTexts = ["リストが空です"]
         }
+        
+        let randomNumber = Int.random(in: 0..<remindTexts.count)
         
         
         let content = UNMutableNotificationContent()
