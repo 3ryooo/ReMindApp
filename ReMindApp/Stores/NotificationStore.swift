@@ -101,7 +101,7 @@ class NotificationStore {
     
     private func setNotification(_ id : Int, items: [ReminderItem]) -> Bool {
         
-        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法
+        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
         
         let remindTexts: [String]
