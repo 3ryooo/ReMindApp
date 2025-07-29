@@ -51,7 +51,7 @@ struct MainScreen: View {
             .onAppear {
                 if firstStart {
                     UserDefaults.standard.set(24, forKey: "frequencyKey")
-                    UserDefaults.standard.set(0, forKey: "notificationSaveTimes")
+                    UserDefaults.standard.set(0, forKey: "countForReviewRequest")
                     UserDefaults.standard.set(Date.now, forKey: "baseTime")
                     UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
                     UserDefaults.standard.set(false, forKey: "isRandomTimeEnabled")

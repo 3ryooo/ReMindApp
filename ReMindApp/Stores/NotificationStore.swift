@@ -14,7 +14,7 @@ class NotificationStore {
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    var countForReviewRequest = UserDefaults.standard.integer(forKey: "notificationSaveTimes")
+    var countForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO: 二重になっているので修正する
     
     var showingAuthorizationAlert = false
@@ -53,7 +53,7 @@ class NotificationStore {
         UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
-        UserDefaults.standard.set(, forKey: "notificationSaveTimes")
+        UserDefaults.standard.set(countForReviewRequest, forKey: "countForReviewRequest")
     }
     
     // MARK: - リマインド設定
