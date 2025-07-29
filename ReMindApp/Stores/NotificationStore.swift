@@ -96,6 +96,7 @@ class NotificationStore {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         let lcNotification = UNUserNotificationCenter.current()
         lcNotification.removeAllPendingNotificationRequests()
+        
         print("通知全消去")
     }
     
@@ -183,8 +184,7 @@ class NotificationStore {
         }
         
         return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
-        
-        
+           
     }
     
     
