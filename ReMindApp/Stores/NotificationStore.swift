@@ -14,7 +14,7 @@ class NotificationStore {
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    var notificationSaveTimes = UserDefaults.standard.integer(forKey: "notificationSaveTimes")
+    var countForReviewRequest = UserDefaults.standard.integer(forKey: "notificationSaveTimes")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO: 二重になっているので修正する
     
     var showingAuthorizationAlert = false
@@ -47,13 +47,13 @@ class NotificationStore {
     // MARK: - 設定保存
     func saveSettings() {
         
-        notificationSaveTimes += 1
+        countForReviewRequest += 1
 
         UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
         UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
         UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
-        UserDefaults.standard.set(notificationSaveTimes, forKey: "notificationSaveTimes")
+        UserDefaults.standard.set(, forKey: "notificationSaveTimes")
     }
     
     // MARK: - リマインド設定

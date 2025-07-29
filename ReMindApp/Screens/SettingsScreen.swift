@@ -86,7 +86,7 @@ struct SettingsScreen: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
                         
-                        if notificationStore.notificationSaveTimes == 10 {
+                        if notificationStore.countForReviewRequest == 10 {
                             requestReview()
                         }
                         
