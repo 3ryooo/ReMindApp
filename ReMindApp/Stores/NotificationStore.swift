@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftData
 import Observation
 import UserNotifications
 
@@ -58,7 +59,8 @@ class NotificationStore {
     
     // MARK: - リマインド設定
     //    TODO: トリガーを変更する
-    func setNotificationList(for items: [ReminderItem]) {
+    func setNotificationList(for items: [ReminderItem], context: ModelContext) {
+        
         
         // エラー状態をリセット
         showingNotificationErrorAlert = false
@@ -73,11 +75,11 @@ class NotificationStore {
             return
         }
         
-        removeAllNotification()
+        removeAllNotification(context)
         
         var failedCount = 0
         for i in 1...lastNotificationId {
-            if !setNotification(i, items: items) {
+            if !setNotification(i, items: items, context: context) {
                 failedCount += 1
             }
         }
@@ -92,7 +94,7 @@ class NotificationStore {
         
     }
     
-    func removeAllNotification() {
+    func removeAllNotification(_ context: ModelContext) {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         let lcNotification = UNUserNotificationCenter.current()
         lcNotification.removeAllPendingNotificationRequests()
@@ -100,7 +102,7 @@ class NotificationStore {
         print("通知全消去")
     }
     
-    private func setNotification(_ id : Int, items: [ReminderItem]) -> Bool {
+    private func setNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
         
         // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
         let notifiedItems = items.filter { $0.isNotificationEnable == true }

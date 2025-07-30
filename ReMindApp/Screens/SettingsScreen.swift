@@ -92,9 +92,9 @@ struct SettingsScreen: View {
                         
                         notificationStore.saveSettings()
                         if notificationStore.isNotificationEnabled {
-                            notificationStore.setNotificationList(for: items)
+                            notificationStore.setNotificationList(for: items, context: modelContext)
                         } else {
-                            notificationStore.removeAllNotification()
+                            notificationStore.removeAllNotification(modelContext)
                         }
                         
                         dismiss()
