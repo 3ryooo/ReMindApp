@@ -10,11 +10,11 @@ import SwiftData
 class NotificationList {
     var id: UUID
     var content: String
-    var trigger: Date
+    var notificationDate: Date
     
     init(id: UUID, content: String, trigger: Date) {
         self.id = id
         self.content = content
-        self.trigger = trigger
+        self.notificationDate = trigger
     }
 }
