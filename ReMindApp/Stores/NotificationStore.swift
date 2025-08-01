@@ -61,7 +61,6 @@ class NotificationStore {
     //    TODO: トリガーを変更する
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         
-        
         // エラー状態をリセット
         showingNotificationErrorAlert = false
         notificationErrorMessage = ""
@@ -98,6 +97,12 @@ class NotificationStore {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         let lcNotification = UNUserNotificationCenter.current()
         lcNotification.removeAllPendingNotificationRequests()
+        
+        do {
+            try context.delete(model: NotificationList.self, includeSubclasses: true)
+        } catch {
+            print("error: \(error.localizedDescription)") // TODO: 処理の改善
+        }
         
         print("通知全消去")
     }
