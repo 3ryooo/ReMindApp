@@ -78,7 +78,7 @@ class NotificationStore {
         
         var failedCount = 0
         for i in 1...lastNotificationId {
-            if !setNotification(i, items: items, context: context) {
+            if !setNotification(i, context: context) {
                 failedCount += 1
             }
         }
@@ -107,28 +107,15 @@ class NotificationStore {
         print("通知全消去")
     }
     
-    private func setNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
-        
-        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
-        let notifiedItems = items.filter { $0.isNotificationEnable == true }
-        
-        let remindTexts: [String]
-        if notifiedItems.count > 0 {
-            remindTexts = notifiedItems.map { $0.text }
-        } else {
-            remindTexts = ["リストが空です"]
-        }
-        
-        let randomNumber = Int.random(in: 0..<remindTexts.count)
-        
-        
+    private func setNotification(_ id : Int, context: ModelContext) -> Bool {
+        let item = getNotifiedItem()
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
-        content.body = remindTexts[randomNumber]
+        content.body = item
         content.sound = .default
         
         if id == lastNotificationId {
-            content.body = "\(remindTexts[randomNumber])\n通知の上限に達しました。設定より再度「保存」をタップしてください"
+            content.body = "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
         }
         
         guard let firstNotificationDate = getFirstNotificationDate() else {
@@ -155,6 +142,25 @@ class NotificationStore {
             }
         }
         return true
+    }
+    
+    private func getNotifiedItem() -> String {
+                
+        let items: [ReminderItem]
+                
+        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
+        let notifiedItems = items.filter { $0.isNotificationEnable == true }
+        
+        let remindTexts: [String]
+        if notifiedItems.count > 0 {
+            remindTexts = notifiedItems.map { $0.text }
+        } else {
+            remindTexts = ["リストが空です"]
+        }
+        
+        let randomNumber = Int.random(in: 0..<remindTexts.count)
+        
+        return remindTexts[randomNumber]
     }
     
     private func getFirstNotificationDate() -> Date? {
