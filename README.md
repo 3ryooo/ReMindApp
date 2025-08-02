@@ -21,7 +21,8 @@
 - データ永続化: SwiftData
 - ユーザーフロー図：FigJam
 - ワイヤーフレーム：Goodnotes+Marvel
-- テスト：XCTest,SwiftTest
+- ユニットテスト：SwiftTest
+- UIテスト：XCTest（予定）
 
 
 *このREADMEは開発の進捗に合わせて随時更新されます。*
