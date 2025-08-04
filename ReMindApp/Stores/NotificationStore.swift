@@ -110,9 +110,6 @@ class NotificationStore {
     private func setNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
         let item = getNotifiedItem(context, items: items)
         let content = UNMutableNotificationContent()
-        content.title = "Re:Mind"
-        content.body = item
-        content.sound = .default
         
         if id == lastNotificationId {
             content.body = "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
@@ -127,6 +124,12 @@ class NotificationStore {
             print("通知の基準日時のコンバートに失敗しました。通知ID: \(id)")
             return false
         }
+        
+        content.title = "Re:Mind"
+        content.body = item
+        content.sound = .default
+        
+        // TODO: この行から作業開始
 
         
         let japanTime = DateConverter().japanTime(notificationDate)
