@@ -78,7 +78,7 @@ class NotificationStore {
         
         var failedCount = 0
         for i in 1...lastNotificationId {
-            if !setNotification(i, context: context) {
+            if !setNotification(i, items: items, context: context) {
                 failedCount += 1
             }
         }
@@ -107,8 +107,8 @@ class NotificationStore {
         print("通知全消去")
     }
     
-    private func setNotification(_ id : Int, context: ModelContext) -> Bool {
-        let item = getNotifiedItem()
+    private func setNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
+        let item = getNotifiedItem(context, items: items)
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
         content.body = item
@@ -144,9 +144,7 @@ class NotificationStore {
         return true
     }
     
-    private func getNotifiedItem() -> String {
-                
-        let items: [ReminderItem]
+    private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
                 
         // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
