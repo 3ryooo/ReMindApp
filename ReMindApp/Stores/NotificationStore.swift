@@ -125,11 +125,18 @@ class NotificationStore {
             return false
         }
         
+        let originID = UUID().uuidString
+        
+        let newItem = NotificationList(id: originID, content: item, trigger: notificationDate)
+        context.insert(newItem)
+        
         content.title = "Re:Mind"
         content.body = item
         content.sound = .default
         
         // TODO: この行から作業開始
+        
+       
 
         
         let japanTime = DateConverter().japanTime(notificationDate)
