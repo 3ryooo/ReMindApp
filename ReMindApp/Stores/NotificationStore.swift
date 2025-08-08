@@ -134,7 +134,7 @@ class NotificationStore {
         content.body = item
         content.sound = .default
         
-        // TODO: originIDをベースに呼び出し
+        // TODO: originIDをベースに呼び出し→Predicate使用？
         
        
 
