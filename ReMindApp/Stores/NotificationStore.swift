@@ -135,6 +135,7 @@ class NotificationStore {
         content.sound = .default
         
         // TODO: originIDをベースに呼び出し→Predicate使用？
+        // https://zenn.dev/maeken/articles/9f907250ffba23
         
        
 
