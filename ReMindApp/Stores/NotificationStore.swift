@@ -130,9 +130,33 @@ class NotificationStore {
         let newItem = NotificationList(id: originID, content: item, trigger: notificationDate)
         context.insert(newItem)
         
-        content.title = "Re:Mind"
-        content.body = item
-        content.sound = .default
+        // 編集時のみにしたほうが良いかもしれない
+        do {
+            try context.save()
+            
+            let descriptor = FetchDescriptor<NotificationList>(
+                predicate: #Predicate<NotificationList> { notification in
+                    notification.id == originID
+                }
+            )
+            
+            let fetchedNotifications = try context.fetch(descriptor)
+            
+            if let fetchedNotification = fetchedNotifications.first {
+                content.title = "Re:Mind"
+                content.body = fetchedNotification.content
+                content.sound = .default
+            } else {
+                content.title = "Re:Mind"
+                content.body = item
+                content.sound = .default
+            }
+        } catch {
+            print("\(error.localizedDescription)")
+            content.title = "Re:Mind"
+            content.body = item
+            content.sound = .default
+        }
         
         // TODO: originIDをベースに呼び出し→Predicate使用？
         // https://zenn.dev/maeken/articles/9f907250ffba23
