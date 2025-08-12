@@ -78,7 +78,7 @@ class NotificationStore {
         
         var failedCount = 0
         for i in 1...lastNotificationId {
-            if !setNotification(i, items: items, context: context) {
+            if !createNotification(i, items: items, context: context) {
                 failedCount += 1
             }
         }
@@ -107,7 +107,7 @@ class NotificationStore {
         print("通知全消去")
     }
     
-    private func setNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
+    private func createNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
         let item = getNotifiedItem(context, items: items)
         let content = UNMutableNotificationContent()
         
