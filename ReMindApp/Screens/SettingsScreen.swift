@@ -148,6 +148,7 @@ struct SettingsScreen: View {
             Text("半年に1回").tag(24 * 30 * 6)
             Text("1年に1回").tag(24 * 30 * 12)
         }
+
     }
     
 }

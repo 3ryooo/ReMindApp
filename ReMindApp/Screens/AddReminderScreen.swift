@@ -10,6 +10,7 @@ struct AddReminderScreen: View {
     // MARK: - プロパティ
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(NotificationStore.self) private var notificationStore
     
     @State private var newReminderText = ""
     @State private var newReminderNotification = true
@@ -44,6 +45,9 @@ struct AddReminderScreen: View {
     func addProduct() {
         let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification, createdAt: Date.now)
         modelContext.insert(newReminder)
+        
+        // アイテム追加後に通知を更新
+        notificationStore.updateNotification(context: modelContext)
     }
     
 }

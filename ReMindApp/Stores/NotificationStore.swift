@@ -110,9 +110,6 @@ class NotificationStore {
     private func createNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
         let item = getNotifiedItem(context, items: items)
         
-        
-
-        
         guard let firstNotificationDate = getFirstNotificationDate() else {
             print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
             return false
@@ -204,6 +201,55 @@ class NotificationStore {
         
         return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
            
+    }
+
+    
+    // MARK: - 通知更新
+    func updateNotification(context: ModelContext) {
+
+        if !isNotificationEnabled { return }
+        do {
+            let existingNotifications = try context.fetch(
+                FetchDescriptor<NotificationList>(
+                    sortBy: [SortDescriptor(\.notificationDate, order: .forward)]
+                )
+            )
+
+            let items = try context.fetch(
+                FetchDescriptor<ReminderItem>(
+                    sortBy: [SortDescriptor(\.createdAt, order: .forward)]
+                )
+            )
+            let texts: [String] = {
+                let enabled = items.filter { $0.isNotificationEnable }.map { $0.text }
+                return enabled.isEmpty ? ["リストが空です"] : enabled
+            }()
+
+            for (index, notification) in existingNotifications.enumerated() {
+                let baseBody = texts.randomElement() ?? "リストが空です"
+                let isLast = index == existingNotifications.count - 1
+                let newBody = isLast
+                ? "\(baseBody)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
+                : baseBody
+                notification.content = newBody
+
+                if notification.notificationDate > Date() {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Re:Mind"
+                    content.body = newBody
+                    content.sound = .default
+
+                    let dc = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notification.notificationDate)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dc, repeats: false)
+                    let req = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(req)
+                }
+            }
+
+            try context.save()
+        } catch {
+            print("通知内容一括更新エラー: \(error.localizedDescription)")
+        }
     }
     
     

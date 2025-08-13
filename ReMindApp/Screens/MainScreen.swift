@@ -99,6 +99,9 @@ struct MainScreen: View {
     // MARK: - メソッド
     func deleteItems(offsets: IndexSet) {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
+        
+        // アイテム削除後に通知を更新
+        notificationStore.updateNotification(context: modelContext)
     }
     
     // TODO: 検証後削除
