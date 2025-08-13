@@ -109,11 +109,9 @@ class NotificationStore {
     
     private func createNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
         let item = getNotifiedItem(context, items: items)
-        let content = UNMutableNotificationContent()
         
-        if id == lastNotificationId {
-            content.body = "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
-        }
+        
+
         
         guard let firstNotificationDate = getFirstNotificationDate() else {
             print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
@@ -130,22 +128,24 @@ class NotificationStore {
         let newItem = NotificationList(id: originID, content: item, trigger: notificationDate)
         context.insert(newItem)
         
+        let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
-        content.body = item
+        content.body = id == lastNotificationId ? "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください" : item
         content.sound = .default
         
         // TODO: originIDをベースに呼び出し→Predicate使用？
         // https://zenn.dev/maeken/articles/9f907250ffba23
          
-        let japanTime = DateConverter().japanTime(notificationDate)
+        
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: originID, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
             } else {
+                let japanTime = DateConverter().japanTime(notificationDate)
                 print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
             }
         }
