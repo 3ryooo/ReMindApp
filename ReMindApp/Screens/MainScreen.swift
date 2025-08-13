@@ -18,6 +18,9 @@ struct MainScreen: View {
     private var bindableReminderStore: Bindable<ReminderStore> {
         Bindable(reminderStore)
     }
+    private var bindableNotificationStore: Bindable<NotificationStore> {
+        Bindable(notificationStore)
+    }
     
     private var displayedItems: [ReminderItem] {
         return reminderStore.getSortedItems(items)
@@ -91,6 +94,11 @@ struct MainScreen: View {
             }
             .sheet(isPresented: bindableReminderStore.showingSettingSheet) {
                 SettingsScreen()
+            }
+            .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(notificationStore.notificationErrorMessage)
             }
             
         }

@@ -76,6 +76,8 @@ class NotificationStore {
         
         removeAllNotification(context)
         
+        
+        
         var failedCount = 0
         for i in 1...lastNotificationId {
             if !createNotification(i, items: items, context: context) {
@@ -101,7 +103,11 @@ class NotificationStore {
         do {
             try context.delete(model: NotificationList.self, includeSubclasses: true)
         } catch {
-            print("error: \(error.localizedDescription)") // TODO: 処理の改善
+            print("error: \(error.localizedDescription)") 
+            DispatchQueue.main.async {
+                self.notificationErrorMessage = "通知の削除に失敗しました。アプリを再起動してお試しください。"
+                self.showingNotificationErrorAlert = true
+            }
         }
         
         print("通知全消去")
@@ -129,9 +135,6 @@ class NotificationStore {
         content.title = "Re:Mind"
         content.body = id == lastNotificationId ? "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください" : item
         content.sound = .default
-        
-        // TODO: originIDをベースに呼び出し→Predicate使用？
-        // https://zenn.dev/maeken/articles/9f907250ffba23
          
         
         let component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
@@ -141,6 +144,10 @@ class NotificationStore {
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.notificationErrorMessage = "通知のスケジューリングに失敗しました。アプリを再起動してお試しください。"
+                    self.showingNotificationErrorAlert = true
+                }
             } else {
                 let japanTime = DateConverter().japanTime(notificationDate)
                 print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
@@ -151,7 +158,6 @@ class NotificationStore {
     
     private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
                 
-        // TODO: 個別のリマインダーをON・OFFしたときにスケジュールを残したまま対象のアイテムを変更する方法→idを配列で管理？
         let notifiedItems = items.filter { $0.isNotificationEnable == true }
         
         let remindTexts: [String]
@@ -242,13 +248,25 @@ class NotificationStore {
                     let dc = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notification.notificationDate)
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dc, repeats: false)
                     let req = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
-                    UNUserNotificationCenter.current().add(req)
+                    UNUserNotificationCenter.current().add(req) { error in
+                        if let error = error {
+                            print("通知更新時のスケジューリング失敗: \(error.localizedDescription)")
+                            DispatchQueue.main.async {
+                                self.notificationErrorMessage = "通知の更新に失敗しました。アプリを再起動してお試しください。"
+                                self.showingNotificationErrorAlert = true
+                            }
+                        }
+                    }
                 }
             }
 
             try context.save()
         } catch {
             print("通知内容一括更新エラー: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.notificationErrorMessage = "通知の更新に失敗しました。アプリを再起動してお試しください。"
+                self.showingNotificationErrorAlert = true
+            }
         }
     }
     

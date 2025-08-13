@@ -10,6 +10,7 @@ struct EditReminderScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(NotificationStore.self) private var notificationStore
+    private var bindableNotificationStore: Bindable<NotificationStore> { Bindable(notificationStore) }
     
     @Bindable var reminderItem: ReminderItem
     
@@ -29,6 +30,11 @@ struct EditReminderScreen: View {
                 notificationStore.updateNotification(context: modelContext)
             }
             .navigationTitle("編集")
+        }
+        .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(notificationStore.notificationErrorMessage)
         }
         
     }
