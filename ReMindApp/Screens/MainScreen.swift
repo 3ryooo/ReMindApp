@@ -29,6 +29,9 @@ struct MainScreen: View {
             Button("デバッグ用") {
                 debugFunc()
             }
+            Button("デバッグ用2") {
+                debugFunc2()
+            }
             List {
                 ForEach(displayedItems) { item in
                     NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
@@ -100,9 +103,21 @@ struct MainScreen: View {
     
     // TODO: 検証後削除
     func debugFunc() {
-//        reminderStore.addSampleReminder(context: modelContext)
+        reminderStore.addSampleReminder(context: modelContext)
         
         
+    }
+    
+    func debugFunc2() {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            for request in requests {
+                print("ID: \(request.identifier)")
+                print("Title: \(request.content.title)")
+                print("Body: \(request.content.body)")
+                print("Trigger: \(String(describing: request.trigger))")
+                print("------")
+            }
+        }
     }
     
 }
