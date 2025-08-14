@@ -22,6 +22,17 @@ class NotificationStore {
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
     
+    init() {
+        if selectedFrequency == 0 {
+            selectedFrequency = 24
+            UserDefaults.standard.set(24, forKey: "frequencyKey")
+        }
+        if UserDefaults.standard.object(forKey: "baseTime") == nil {
+            baseTime = Date()
+            UserDefaults.standard.set(baseTime, forKey: "baseTime")
+        }
+    }
+    
 
 //  TODO: （保留）本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = 5
