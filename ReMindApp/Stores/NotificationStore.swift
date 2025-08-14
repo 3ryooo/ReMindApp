@@ -16,14 +16,14 @@ class NotificationStore {
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     var countForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
-    var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date() // TODO: 二重になっているので修正する
+    var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
     
     var showingAuthorizationAlert = false
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
     
 
-//  TODO: 本番用の値に変更（現在はテスト用で少なめ）
+//  TODO: （保留）本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = 5
     
     
@@ -58,7 +58,7 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
-    //    TODO: トリガーを変更する
+    //    TODO: （保留）トリガーを変更する
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         
         // エラー状態をリセット

@@ -107,8 +107,7 @@ struct SettingsScreen: View {
                     NotificationManager().openAppSettings()
                 }
             } message: {
-                // TODO: もう少し丁寧な説明をしたい
-                Text("リマインド機能をオンにするには、設定アプリから通知をオンにしてください")
+                Text("リマインド機能をオンにするには、設定アプリから「通知を許可」をオンにしてください")
             }
             .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
                 Button("OK", role: .cancel) { }
