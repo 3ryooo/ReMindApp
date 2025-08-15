@@ -3,6 +3,7 @@
 //  ReMindApp
 //
 
+import MessageUI
 import SwiftUI
 import SwiftData
 import StoreKit
@@ -19,6 +20,7 @@ struct SettingsScreen: View {
     @State private var randomRemind = false
     @State private var showingBaseTimeHelp = false
     @State private var showingRandomTimeHelp = false
+    @State private var isShowingMailView = false
     
     private var bindableNotificationStore: Bindable<NotificationStore> {
         Bindable(notificationStore)
@@ -36,7 +38,7 @@ struct SettingsScreen: View {
                     .onChange(of: notificationStore.isNotificationEnabled) {
                         notificationStore.requestAuthorization()
                     }
-                    // TODO: 短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
+                    // TODO: （保留）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
                     HStack {
                         DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
@@ -77,7 +79,25 @@ struct SettingsScreen: View {
                         requestReview()
                     }
                     Button("お問い合わせ") {
-                        //  TODO: 作成予定
+                        if MFMailComposeViewController.canSendMail() {
+                            isShowingMailView = true
+                        } else {
+                            let email = "a@example.com"
+                            let subject = "問い合わせ"
+                            let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+                            
+                            let urlString = "mailto:\(email)?subject=\(encodedSubject)"
+                            
+                            if let emailURL = URL(string: urlString) {
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.open(emailURL) { success in
+                                        if !success {
+                                            print("メールアプリを開けませんでした")
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -123,6 +143,9 @@ struct SettingsScreen: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("ONにすると、通知時刻が毎回ランダムな時間（0:00〜23:59）に変更されます。\n\n時間ランダムは1日以上の頻度でのみ有効な機能です。\n\n1日未満の頻度では基準時間から正確な間隔で通知されます。")
+            }
+            .sheet(isPresented: $isShowingMailView) {
+                MailScreen(isShowing: $isShowingMailView)
             }
         }
         

@@ -112,7 +112,7 @@ struct MainScreen: View {
         notificationStore.updateNotification(context: modelContext)
     }
     
-    // TODO: 検証後削除
+    // TODO: （保留）検証後削除
     func debugFunc() {
         reminderStore.addSampleReminder(context: modelContext)
         
