@@ -67,7 +67,8 @@ struct SettingsScreen: View {
                 }
                 Section("データ管理"){
                     Button("インポート") {
-                        // TODO: エクスポート機能とマージ？
+                        // TODO:（保留）CloudKitに変更？　要開発者アカウント
+                        //エクスポート機能とマージ？
                     }
                     
                     Button("エクスポート") {
