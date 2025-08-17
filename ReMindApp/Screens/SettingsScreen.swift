@@ -21,6 +21,21 @@ struct SettingsScreen: View {
     @State private var showingBaseTimeHelp = false
     @State private var showingRandomTimeHelp = false
     @State private var isShowingMailView = false
+    @State private var tempIsNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
+    @State private var tempIsRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
+    @State private var tempSelectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
+    @State private var tempCountForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
+    @State private var tempBaseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+    @State private var showingSaveAlert = false
+    
+    private var isChanged: Bool {
+        return !(
+            notificationStore.isNotificationEnabled == tempIsNotificationEnabled &&
+            notificationStore.isRandomTimeEnabled == tempIsRandomTimeEnabled &&
+            notificationStore.selectedFrequency == tempSelectedFrequency &&
+            notificationStore.baseTime == tempBaseTime
+        )
+    }
     
     private var bindableNotificationStore: Bindable<NotificationStore> {
         Bindable(notificationStore)
@@ -29,19 +44,20 @@ struct SettingsScreen: View {
     
     // MARK: - SettingView
     var body: some View {
-        NavigationView {
-            Form {
+        Form {
                 Section() {
-                    Toggle(isOn: bindableNotificationStore.isNotificationEnabled) {
-                        Text("通知\(notificationStore.isNotificationEnabled ? "ON" : "OFF")")
+                    Toggle(isOn: $tempIsNotificationEnabled) {
+                        Text("通知\(tempIsNotificationEnabled ? "ON" : "OFF")")
                     }
-                    .onChange(of: notificationStore.isNotificationEnabled) {
-                        notificationStore.requestAuthorization()
+                    .onChange(of: tempIsNotificationEnabled) {
+                        if tempIsNotificationEnabled {
+                            notificationStore.requestAuthorization()
+                        }
                     }
                     // TODO: （保留）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
                     HStack {
-                        DatePicker("基準時間", selection: bindableNotificationStore.baseTime, displayedComponents: .hourAndMinute)
+                        DatePicker("基準時間", selection: $tempBaseTime, displayedComponents: .hourAndMinute)
                         Button(action: {
                             showingBaseTimeHelp = true
                         }) {
@@ -51,10 +67,10 @@ struct SettingsScreen: View {
                         .buttonStyle(PlainButtonStyle())
                     }
                     HStack {
-                        Toggle(isOn: bindableNotificationStore.isRandomTimeEnabled) {
+                        Toggle(isOn: $tempIsRandomTimeEnabled) {
                             Text("時間ランダム")
                         }
-                        .disabled(notificationStore.selectedFrequency < 24)
+                        .disabled(tempSelectedFrequency < 24)
                         
                         Button(action: {
                             showingRandomTimeHelp = true
@@ -101,15 +117,35 @@ struct SettingsScreen: View {
                         }
                     }
                 }
-            }
-            .navigationTitle("設定")
-            .toolbar {
+        }
+        .navigationTitle("設定")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        if isChanged == true {
+                            showingSaveAlert = true
+                        } else {
+                            dismiss()
+                        }
+                    }) {
+                        Image(systemName: "chevron.backward")
+                            .foregroundStyle(.primary)
+                        Text("戻る")
+                            .foregroundStyle(.primary)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("保存") {
                         
                         if notificationStore.countForReviewRequest == 10 {
                             requestReview()
                         }
+                        
+                        notificationStore.isNotificationEnabled = tempIsNotificationEnabled
+                        notificationStore.isRandomTimeEnabled = tempIsRandomTimeEnabled
+                        notificationStore.selectedFrequency = tempSelectedFrequency
+                        notificationStore.baseTime = tempBaseTime
                         
                         notificationStore.saveSettings()
                         if notificationStore.isNotificationEnabled {
@@ -148,12 +184,19 @@ struct SettingsScreen: View {
             .sheet(isPresented: $isShowingMailView) {
                 MailScreen(isShowing: $isShowingMailView)
             }
-        }
+            .alert("変更を保存せず終了しますか？", isPresented: $showingSaveAlert) {
+                Button("キャンセル", role: .cancel) { }
+                Button("終了", role: .destructive) {
+                    dismiss()
+                }
+            } message: {
+                Text("変更を保存する場合、「キャンセル」後に「保存」をタップしてください")
+            }
         
     }
     
     var frequencyPicker: some View {
-        Picker("通知の頻度", selection: bindableNotificationStore.selectedFrequency) {
+        Picker("通知の頻度", selection: $tempSelectedFrequency) {
             Text("1時間に1回").tag(1)
             Text("2時間に1回").tag(2)
             Text("3時間に1回").tag(3)
