@@ -28,4 +28,6 @@ final class ReMindAppUITestsLaunchTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+    
+    // UIテスト（最小限）
 }

@@ -43,5 +43,6 @@ final class ReMindAppUITests: XCTestCase {
     // OSの日時変更での挙動
     // 様々な文字列（短い・長い・特殊文字）
     
+    // ロジックテスト
     
 }
