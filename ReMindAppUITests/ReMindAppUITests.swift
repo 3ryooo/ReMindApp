@@ -44,8 +44,9 @@ final class ReMindAppUITests: XCTestCase {
     // 様々な文字列（短い・長い・特殊文字）
     
     // ロジックテスト
+    // テストピラミッドに沿ってユニットから行う
     
-    // TODO: Xcode CloudでのCI/CDもテストを行う
+    // TODO: Xcode CloudでのCI/CDもテストを行う →　連絡待ち
     // TODO: Apple Developer Programの設定
     
 }
