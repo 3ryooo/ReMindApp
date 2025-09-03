@@ -201,22 +201,18 @@ class NotificationStore {
     }
     
     private func notificationTimeConverter(_ setDate: Date, _ id: Int) -> Date? {
-        let notificationDate = Date(timeInterval: TimeInterval(60 * 60 * selectedFrequency * id), since: setDate) // 本番用
+        let notificationDate = setDate.addingTimeInterval(TimeInterval(60 * 60 * selectedFrequency * id)) // 本番用
         
         let calendar = Calendar(identifier: .gregorian)
         
-        let year = calendar.component(.year, from: notificationDate)
-        let month = calendar.component(.month, from: notificationDate)
-        let day = calendar.component(.day, from: notificationDate)
-        var hour = calendar.component(.hour, from: notificationDate)
-        var minute = calendar.component(.minute, from: notificationDate)
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
         
         if isRandomTimeEnabled && selectedFrequency >= 24 {
-            hour = Int.random(in: 0..<24)
-            minute = Int.random(in: 0..<59)
+            components.hour = Int.random(in: 0..<24)
+            components.minute = Int.random(in: 0..<59)
         }
         
-        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
+        return calendar.date(from: components)
            
     }
 
