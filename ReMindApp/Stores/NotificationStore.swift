@@ -178,9 +178,7 @@ class NotificationStore {
             remindTexts = ["リストが空です"]
         }
         
-        let randomNumber = Int.random(in: 0..<remindTexts.count)
-        
-        return remindTexts[randomNumber]
+        return remindTexts.randomElement() ?? "リストが空です"
     }
     
     private func getFirstNotificationDate() -> Date? {
