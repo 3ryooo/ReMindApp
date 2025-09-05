@@ -25,6 +25,13 @@
 			remoteGlobalIDString = 864404D52DEECCE6007AA15B;
 			remoteInfo = ReMindApp;
 		};
+		866918CF2E6AF81200530112 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 864404CE2DEECCE6007AA15B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 864404D52DEECCE6007AA15B;
+			remoteInfo = ReMindApp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +39,7 @@
 		864404EB2DEECE78007AA15B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		864B464A2E546B5700A49863 /* ReMindAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReMindAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		865B91002E5339130010B485 /* ReMindAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReMindAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		866918CB2E6AF81200530112 /* ReMindAppIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReMindAppIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -63,6 +71,11 @@
 			path = ReMindAppTests;
 			sourceTree = "<group>";
 		};
+		866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ReMindAppIntegrationTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +100,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		866918C82E6AF81200530112 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -97,6 +117,7 @@
 				864404D82DEECCE6007AA15B /* ReMindApp */,
 				865B91012E5339140010B485 /* ReMindAppTests */,
 				864B464B2E546B5700A49863 /* ReMindAppUITests */,
+				866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */,
 				864404D72DEECCE6007AA15B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +128,7 @@
 				864404D62DEECCE6007AA15B /* ReMindApp.app */,
 				865B91002E5339130010B485 /* ReMindAppTests.xctest */,
 				864B464A2E546B5700A49863 /* ReMindAppUITests.xctest */,
+				866918CB2E6AF81200530112 /* ReMindAppIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -182,6 +204,29 @@
 			productReference = 865B91002E5339130010B485 /* ReMindAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		866918CA2E6AF81200530112 /* ReMindAppIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 866918D32E6AF81200530112 /* Build configuration list for PBXNativeTarget "ReMindAppIntegrationTests" */;
+			buildPhases = (
+				866918C72E6AF81200530112 /* Sources */,
+				866918C82E6AF81200530112 /* Frameworks */,
+				866918C92E6AF81200530112 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				866918D02E6AF81200530112 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */,
+			);
+			name = ReMindAppIntegrationTests;
+			packageProductDependencies = (
+			);
+			productName = ReMindAppIntegrationTests;
+			productReference = 866918CB2E6AF81200530112 /* ReMindAppIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -200,6 +245,10 @@
 						TestTargetID = 864404D52DEECCE6007AA15B;
 					};
 					865B90FF2E5339130010B485 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 864404D52DEECCE6007AA15B;
+					};
+					866918CA2E6AF81200530112 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 864404D52DEECCE6007AA15B;
 					};
@@ -223,6 +272,7 @@
 				864404D52DEECCE6007AA15B /* ReMindApp */,
 				865B90FF2E5339130010B485 /* ReMindAppTests */,
 				864B46492E546B5700A49863 /* ReMindAppUITests */,
+				866918CA2E6AF81200530112 /* ReMindAppIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +294,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		865B90FE2E5339130010B485 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		866918C92E6AF81200530112 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -274,6 +331,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		866918C72E6AF81200530112 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -286,6 +350,11 @@
 			isa = PBXTargetDependency;
 			target = 864404D52DEECCE6007AA15B /* ReMindApp */;
 			targetProxy = 865B91042E5339140010B485 /* PBXContainerItemProxy */;
+		};
+		866918D02E6AF81200530112 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 864404D52DEECCE6007AA15B /* ReMindApp */;
+			targetProxy = 866918CF2E6AF81200530112 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -545,6 +614,42 @@
 			};
 			name = Release;
 		};
+		866918D12E6AF81200530112 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ViewsAndModifiers.ReMindAppIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReMindApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReMindApp";
+			};
+			name = Debug;
+		};
+		866918D22E6AF81200530112 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ViewsAndModifiers.ReMindAppIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReMindApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReMindApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -580,6 +685,15 @@
 			buildConfigurations = (
 				865B91072E5339140010B485 /* Debug */,
 				865B91082E5339140010B485 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		866918D32E6AF81200530112 /* Build configuration list for PBXNativeTarget "ReMindAppIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				866918D12E6AF81200530112 /* Debug */,
+				866918D22E6AF81200530112 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
