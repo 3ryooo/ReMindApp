@@ -112,9 +112,10 @@ class NotificationStore {
         lcNotification.removeAllPendingNotificationRequests()
         
         do {
-            try context.delete(model: NotificationList.self, includeSubclasses: true)
+            try context.delete(model: NotificationList.self, includeSubclasses: true) // TODO: 一括削除に問題あり？デバッグにて確認
+            try context.save()
         } catch {
-            print("error: \(error.localizedDescription)") 
+            print("error: \(error.localizedDescription)")
             DispatchQueue.main.async {
                 self.notificationErrorMessage = "通知の削除に失敗しました。アプリを再起動してお試しください。"
                 self.showingNotificationErrorAlert = true
