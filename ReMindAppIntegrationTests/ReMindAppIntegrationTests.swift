@@ -28,5 +28,7 @@ struct ReMindAppIntegrationTests {
         #expect(savedItems.first?.text == "テスト用リマインダー", "正しいテキストが保存される")
         
     }
+    
+    // TODO: 詳細の統合テストを作成（VSCODEのメモから引用）
 
 }
