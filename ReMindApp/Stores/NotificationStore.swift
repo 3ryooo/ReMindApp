@@ -112,8 +112,14 @@ class NotificationStore {
         lcNotification.removeAllPendingNotificationRequests()
         
         do {
-            try context.delete(model: NotificationList.self, includeSubclasses: true) // TODO: 一括削除に問題あり？デバッグにて確認
+            let existingNotifications = try context.fetch(FetchDescriptor<NotificationList>())
+            
+            for notification in existingNotifications {
+                context.delete(notification)
+            }
+            
             try context.save()
+            
         } catch {
             print("error: \(error.localizedDescription)")
             DispatchQueue.main.async {
