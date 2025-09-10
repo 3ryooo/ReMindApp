@@ -83,7 +83,7 @@ struct SettingsScreen: View {
                 }
                 Section("データ管理"){
                     Button("インポート") {
-                        // TODO:（保留）CloudKitに変更？　要開発者アカウント
+                        // TODO:（保留）CloudKitに変更？ JSON形式も検討
                         //エクスポート機能とマージ？
                     }
                     
