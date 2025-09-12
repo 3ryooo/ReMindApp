@@ -432,4 +432,6 @@ struct ReMindAppTests {
             #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
         }
     }
+    
+    // TODO: パフォーマンステスト（SwiftDataでのデータ追加）
 }
