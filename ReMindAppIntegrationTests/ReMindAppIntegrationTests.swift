@@ -137,5 +137,37 @@ struct ReMindAppIntegrationTests {
         #expect(finalReminders.count == 1, "リマインダーは残っている")
         
     }
+    
+    @Test("空文字列と特殊文字の処理テスト")
+    func testSpecialCharacterHandling() async throws {
+        
+        let problematicStrings = [
+            "", // 空文字
+            "   ", // 空白
+            "🎉🎊✨",
+            "ああああああああああああああああああああああああああああああああああああああああああああ", // 長い日本語
+            "Line1\nLine2\nLine3", // 改行文字
+            "\"Quote\" 'Single' `Backtick`", // 引用符
+            "<script>alert('test')</script>", // HTMLタグ
+            "Test with    multiple   spaces", // 複数スペース
+        ]
+        
+        for testString in problematicStrings {
+            // 空文字・空白のみの場合のバリデーション
+            let isEmpty = testString.isEmptyOrWhiteSpace
+            if testString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                #expect(isEmpty == true, "空文字・空白のみは正しく検出される: '\(testString)'")
+            } else {
+                #expect(isEmpty == false, "有効な文字列は正しく検出される: '\(testString)'")
+                
+                let item = ReminderItem(text: testString, isNotificationEnable: true, createdAt: Date())
+                #expect(item.text == testString, "特殊文字を含む文字列が正しく保存される")
+                
+                // 通知メッセージとして使用可能か
+                let notificationBody = item.text
+                #expect(!notificationBody.isEmpty, "通知メッセージとして空でない文字列が生成される")
+            }
+        }
+    }
 
 }
