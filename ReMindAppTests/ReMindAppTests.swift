@@ -433,5 +433,9 @@ struct ReMindAppTests {
         }
     }
     
-    // TODO: パフォーマンステスト（SwiftDataでのデータ追加）
+    @Test("パフォーマンステスト")
+    func testSwiftDataPerformance() async throws {
+        // TODO: パフォーマンステスト（SwiftDataでのデータ追加）
+    }
+    
 }
