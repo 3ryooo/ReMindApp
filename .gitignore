@@ -19,6 +19,17 @@
 
 ## ユーザー設定
 xcuserdata/
+.xcuserstate
+
+# チームでビルド設定（Scheme）を共有する場合は、この行をアンコメント
+# xcshareddata/
+
+## ワークスペース
+# プロジェクトファイルとワークスペース設定を分ける場合に生成されるため、無視します
+# （例: CocoaPodsを利用している場合など）
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/project.xcworkspace/xcshareddata/
+*.xcworkspace/xcshareddata/
 
 ## ビルド・生成ファイル
 build/
@@ -45,6 +56,31 @@ DerivedData/
 *.hmap
 
 ## アプリパッケージング
+*.xcarchive
+
+#==============================================================================
+# 署名 / 認証情報 (Signing / credentials)
+#==============================================================================
+# 証明書や秘密鍵などの機密情報
+*.p12
+*.mobileprovision
+*.cer
+*.pem
+*.p8
+*.key
+*.keystore
+
+#==============================================================================
+# 機密情報 (Secrets)
+#==============================================================================
+# APIキーや環境変数ファイルなど
+Secrets/
+Secrets/*
+.env.*
+
+# Firebaseなど外部サービスの設定ファイル
+GoogleService-Info.plist
+google-service-info.plist
 *.ipa
 *.dSYM.zip
 *.dSYM
