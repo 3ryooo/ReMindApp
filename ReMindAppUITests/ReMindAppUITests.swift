@@ -37,7 +37,7 @@ final class ReMindAppUITests: XCTestCase {
         }
     }
     
-    // TODO: テスト内容
+    // TODO: （NEXT）テスト内容
     // Instruments（Time Profiler, Leaksなど）を使い、簡単なパフォーマンスチェックとメモリリークの確認
     // 大量のデータと0件のデータ
     // OSの日時変更での挙動

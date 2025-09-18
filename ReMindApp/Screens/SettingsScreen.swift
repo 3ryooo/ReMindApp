@@ -54,7 +54,7 @@ struct SettingsScreen: View {
                             notificationStore.requestAuthorization()
                         }
                     }
-                    // TODO: （保留）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
+                    // TODO: （NEXT）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
                     HStack {
                         DatePicker("基準時間", selection: $tempBaseTime, displayedComponents: .hourAndMinute)
@@ -83,7 +83,7 @@ struct SettingsScreen: View {
                 }
                 Section("データ管理"){
                     Button("インポート") {
-                        // TODO:（保留）CloudKitに変更？ JSON形式も検討
+                        // TODO:（NEXT）CloudKitに変更？ JSON形式も検討
                         //エクスポート機能とマージ？
                     }
                     

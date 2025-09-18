@@ -69,7 +69,7 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
-    //    TODO: （保留）トリガーを変更する
+    //    TODO: （NEXT）トリガーを変更する
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         
         // エラー状態をリセット
