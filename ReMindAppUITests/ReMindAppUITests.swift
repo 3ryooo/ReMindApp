@@ -41,12 +41,5 @@ final class ReMindAppUITests: XCTestCase {
     // Instruments（Time Profiler, Leaksなど）を使い、簡単なパフォーマンスチェックとメモリリークの確認
     // 大量のデータと0件のデータ
     // OSの日時変更での挙動
-    // 様々な文字列（短い・長い・特殊文字）
-    
-    // ロジックテスト
-    // テストピラミッドに沿ってユニットから行う
-    
-    // TODO: Xcode CloudでのCI/CDもテストを行う →　公式ドキュメントをベースに設定
-    // TODO: Apple Developer Programの設定
     
 }
