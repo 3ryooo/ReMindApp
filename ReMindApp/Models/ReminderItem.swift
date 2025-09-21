@@ -7,7 +7,7 @@ import Foundation
 import SwiftData
 
 @Model
-class ReminderItem: Identifiable {
+final class ReminderItem: Identifiable {
     var id: UUID
     var text: String
     var isNotificationEnable: Bool

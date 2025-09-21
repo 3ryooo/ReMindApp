@@ -7,7 +7,7 @@ import Foundation
 import SwiftData
 
 @Model
-class NotificationList {
+final class NotificationList {
     var id: String
     var content: String
     var notificationDate: Date
