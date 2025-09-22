@@ -146,7 +146,7 @@ class NotificationStore {
         
         let originID = UUID().uuidString
         
-        let newItem = NotificationList(id: originID, content: item, trigger: notificationDate)
+        let newItem = NotificationList(id: originID, content: item, notificationDate: notificationDate)
         context.insert(newItem)
         
         let content = UNMutableNotificationContent()

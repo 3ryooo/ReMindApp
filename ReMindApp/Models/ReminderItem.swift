@@ -8,18 +8,17 @@ import SwiftData
 
 @Model
 final class ReminderItem: Identifiable {
-    var id: UUID
-    var text: String
-    var isNotificationEnable: Bool
-    var createdAt: Date
+    var id: UUID = UUID()
+    var text: String = ""
+    var isNotificationEnable: Bool = false
+    var createdAt: Date = Date()
     
-//    @Transient
-//    var errorMessages: [ReminderFormError] = []
+    //    @Transient
+    //    var errorMessages: [ReminderFormError] = []
     
-//    TODO: （保留）感情ログ追加予定
+    //    TODO: （保留）感情ログ追加予定
     
-    init(id: UUID = UUID(), text: String, isNotificationEnable: Bool, createdAt: Date) {
-        self.id = id
+    init(text: String, isNotificationEnable: Bool, createdAt: Date) {
         self.text = text
         self.isNotificationEnable = isNotificationEnable
         self.createdAt = createdAt

@@ -8,13 +8,13 @@ import SwiftData
 
 @Model
 final class NotificationList {
-    var id: String
-    var content: String
-    var notificationDate: Date
+    var id: String = ""
+    var content: String = ""
+    var notificationDate: Date = Date()
     
-    init(id: String, content: String, trigger: Date) {
+    init(id: String, content: String, notificationDate: Date) {
         self.id = id
         self.content = content
-        self.notificationDate = trigger
+        self.notificationDate = notificationDate
     }
 }
