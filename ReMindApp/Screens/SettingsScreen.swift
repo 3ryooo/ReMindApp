@@ -81,16 +81,6 @@ struct SettingsScreen: View {
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
-                Section("データ管理"){
-                    Button("インポート") {
-                        // TODO:（NEXT）CloudKitに変更？ JSON形式も検討
-                        //エクスポート機能とマージ？
-                    }
-                    
-                    Button("エクスポート") {
-                        
-                    }
-                }
                 Section("アプリについて"){
                     Button("評価する") {
                         requestReview()
