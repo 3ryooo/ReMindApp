@@ -81,6 +81,7 @@ struct SettingsScreen: View {
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
+                // TODO: CloudKitにてDeploy Scheme Changesを行う
                 Section("アプリについて"){
                     Button("評価する") {
                         requestReview()
