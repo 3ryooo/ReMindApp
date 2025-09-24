@@ -254,30 +254,6 @@ struct ReMindAppTests {
         
     }
 
-    @Test("通知メッセージ生成のビジネスロジックテスト")
-    func testNotificationMessageGeneration() async throws {
-        
-        let lastNotificationId = 10
-        let normalMessage = "テストメッセージ"
-        
-        // TODO: ヘルパー関数の有用性を確認
-        func generateNotificationBody(message: String, currentId: Int, maxId: Int) -> String {
-            return currentId == maxId 
-                ? "\(message)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
-                : message
-        }
-        
-        let normalId = 5
-        let normalBody = generateNotificationBody(message: normalMessage, currentId: normalId, maxId: lastNotificationId)
-        #expect(normalBody == normalMessage, "通常時はメッセージそのまま")
-
-        let lastId = 10
-        let lastBody = generateNotificationBody(message: normalMessage, currentId: lastId, maxId: lastNotificationId)
-        let expectedLastMessage = "\(normalMessage)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
-        #expect(lastBody == expectedLastMessage, "上限時は特別メッセージ追加")
-        
-    }
-
     @Test("ランダム通知時刻生成のテスト")
     func testRandomNotificationTimeGeneration() async throws {
         
