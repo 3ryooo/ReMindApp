@@ -90,6 +90,7 @@ struct SettingsScreen: View {
                         if MFMailComposeViewController.canSendMail() {
                             isShowingMailView = true
                         } else {
+                            // TODO: （保留）実際のアドレスを入力
                             let email = "a@example.com"
                             let subject = "問い合わせ"
                             let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""

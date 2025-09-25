@@ -10,10 +10,12 @@ import MessageUI
 struct MailScreen: UIViewControllerRepresentable {
     @Binding var isShowing: Bool
     
+    
     func makeUIViewController(context: Context) -> MFMailComposeViewController {
         let vc = MFMailComposeViewController()
         vc.mailComposeDelegate = context.coordinator
         
+        // TODO: （保留）実際のアドレスを入力
         vc.setToRecipients(["a@exaple.com"])
         vc.setSubject("お問い合わせ")
         vc.setMessageBody("", isHTML: false)
