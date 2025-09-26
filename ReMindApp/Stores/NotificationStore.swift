@@ -12,6 +12,7 @@ import UserNotifications
 class NotificationStore {
     
     // MARK: - プロパティ
+    private let scheduler: NotificationScheduling
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
@@ -22,7 +23,8 @@ class NotificationStore {
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
     
-    init() {
+    init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
+        self.scheduler = scheduler
         if selectedFrequency == 0 {
             selectedFrequency = 24
             UserDefaults.standard.set(24, forKey: "frequencyKey")
@@ -108,8 +110,7 @@ class NotificationStore {
     
     func removeAllNotification(_ context: ModelContext) {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
-        let lcNotification = UNUserNotificationCenter.current()
-        lcNotification.removeAllPendingNotificationRequests()
+        scheduler.removeAllPendingNotificationRequests()
         
         do {
             let existingNotifications = try context.fetch(FetchDescriptor<NotificationList>())
@@ -159,7 +160,7 @@ class NotificationStore {
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
         let request = UNNotificationRequest(identifier: originID, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request) { error in
+        scheduler.add(request) { error in
             if let error = error {
                 print("スケジューリング失敗：\(error.localizedDescription)")
                 DispatchQueue.main.async {
