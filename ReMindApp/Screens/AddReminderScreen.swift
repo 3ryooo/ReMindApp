@@ -11,7 +11,6 @@ struct AddReminderScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Environment(NotificationStore.self) private var notificationStore
-    private var bindableNotificationStore: Bindable<NotificationStore> { Bindable(notificationStore) }
     
     @State private var newReminderText = ""
     @State private var newReminderNotification = true
@@ -20,10 +19,7 @@ struct AddReminderScreen: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("リマインドテキスト", text: $newReminderText, axis: .vertical)
-                Toggle(isOn: $newReminderNotification) {
-                    Text("リマインド対象")
-                }
+                ReminderFormView(text: $newReminderText, isNotificationEnabled: $newReminderNotification)
                 Button("追加") {
                     addProduct()
                     dismiss()
@@ -38,11 +34,7 @@ struct AddReminderScreen: View {
                     }
                 }
             }
-            .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text(notificationStore.notificationErrorMessage)
-            }
+            .notificationErrorAlert()
         }
         
     }
