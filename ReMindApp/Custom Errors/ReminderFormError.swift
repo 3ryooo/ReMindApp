@@ -13,6 +13,7 @@ enum ReminderFormError: LocalizedError, Identifiable {
         UUID()
     }
     
+    // TODO: バリデーション設定（文字数？）
     var errorDescription: String? {
         switch self {
         case .text:
