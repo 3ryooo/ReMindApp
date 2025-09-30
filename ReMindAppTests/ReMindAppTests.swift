@@ -8,6 +8,8 @@ import Foundation
 @testable import ReMindApp
 
 struct ReMindAppTests {
+    
+    // TODO: Coverage確認
 
     @Test("日本時間フォーマットの確認")
     func testDateConverterJapanTime() async throws {
