@@ -24,6 +24,8 @@ final class ReminderItem: Identifiable {
         self.createdAt = createdAt
     }
     
+    // TODO: バリデーションをモデル側で担保する
+    
     // 現在未使用（複数のバリデーション発生時使用予定）
 //    func validate() -> Bool {
 //        
