@@ -215,5 +215,6 @@ struct SettingsScreen: View {
 // MARK: - プレビュー
 #Preview {
     SettingsScreen()
+        .modelContainer(for: [ReminderItem.self, NotificationList.self])
         .environment(NotificationStore())
 }
