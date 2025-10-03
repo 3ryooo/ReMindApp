@@ -7,17 +7,19 @@ import Foundation
 
 // 現在未使用（複数のバリデーション発生時使用予定）
 enum ReminderFormError: LocalizedError, Identifiable {
-    case text
+    case empty
+    case overChar
     
     var id: UUID {
         UUID()
     }
     
-    // TODO: バリデーション設定（文字数？）
     var errorDescription: String? {
         switch self {
-        case .text:
+        case .empty:
             return NSLocalizedString("テキストは空白にできません", comment: "")
+        case .overChar:
+            return NSLocalizedString("テキストの文字数制限を超過しています", comment: "")
         }
     }
 }
