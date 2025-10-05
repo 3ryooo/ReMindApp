@@ -6,6 +6,9 @@
 import Foundation
 
 extension String {
+    
+    // TODO: text用の必要なバリデーションを確認
+    
     var isEmptyOrWhiteSpace: Bool {
         trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
