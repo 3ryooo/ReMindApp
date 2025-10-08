@@ -82,6 +82,7 @@ struct SettingsScreen: View {
                     }
                 }
                 // TODO: (保留)CloudKitにてDeploy Scheme Changesを行う
+               // TODO: （保留）デフォルトのプリセットリスト
                 Section("アプリについて"){
                     Button("評価する") {
                         requestReview()
