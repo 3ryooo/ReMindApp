@@ -14,17 +14,21 @@ struct AddReminderScreen: View {
     
     @State private var newReminderText = ""
     @State private var newReminderNotification = true
+    @State private var attemptedSubmit = false
     
     // MARK: - AddView
     var body: some View {
         NavigationView {
             Form {
+                ValidationSummaryView(errorMessages: addFormErrors)
                 ReminderFormView(text: $newReminderText, isNotificationEnabled: $newReminderNotification)
                 Button("追加") {
+                    attemptedSubmit = true
+                    guard addFormErrors.isEmpty else { return }
                     addProduct()
                     dismiss()
                 }
-                .disabled(newReminderText.isEmptyOrWhiteSpace)
+                .disabled(newReminderText.isEmptyOrWhiteSpace || newReminderText.isOver200Characters)
             }
             .navigationTitle("新規追加")
             .toolbar {
@@ -46,6 +50,13 @@ struct AddReminderScreen: View {
         
         // アイテム追加後に通知を更新
         notificationStore.updateNotification(context: modelContext)
+    }
+    
+    private var addFormErrors: [ReminderFormError] {
+        var result: [ReminderFormError] = []
+        if newReminderText.isOver200Characters { result.append(.overChar) }
+        if attemptedSubmit && newReminderText.isEmptyOrWhiteSpace { result.append(.empty) }
+        return result
     }
     
 }

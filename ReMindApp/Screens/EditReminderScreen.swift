@@ -13,10 +13,14 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
+    // TODO: Validateを無視して保存できないようにする
+    // TODO:ValidationSummaryViewをよりわかりやすく表示する
+    
     // MARK: - EditView
     var body: some View {
         NavigationView {
             Form {
+                ValidationSummaryView(errorMessages: editFormErrors)
                 ReminderFormView(text: $reminderItem.text, isNotificationEnabled: $reminderItem.isNotificationEnable)
             }
             .onChange(of: reminderItem.text) { _, _ in
@@ -29,6 +33,13 @@ struct EditReminderScreen: View {
         }
         .notificationErrorAlert()
         
+    }
+    
+    private var editFormErrors: [ReminderFormError] {
+        var result: [ReminderFormError] = []
+        if reminderItem.text.isOver200Characters { result.append(.overChar) }
+        if reminderItem.text.isEmptyOrWhiteSpace { result.append(.empty) }
+        return result
     }
 }
 

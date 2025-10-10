@@ -19,7 +19,7 @@ enum ReminderFormError: LocalizedError, Identifiable {
         case .empty:
             return NSLocalizedString("テキストは空白にできません", comment: "")
         case .overChar:
-            return NSLocalizedString("テキストの文字数制限を超過しています", comment: "")
+            return NSLocalizedString("テキストは200文字までです", comment: "")
         }
     }
 }
