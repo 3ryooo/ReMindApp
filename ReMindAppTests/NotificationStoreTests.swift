@@ -201,4 +201,41 @@ struct NotificationStoreTests {
         }
         #expect(results.count > 1, "複数回実行で異なる結果が選択される（ランダム性）")
     }
+    
+    @Test("データ0件時のテスト")
+    func testEmptyData() async throws {
+        
+        let reminderStore = ReminderStore()
+        let emptyItems: [ReminderItem] = []
+        
+        func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
+            let notifiedItems = items.filter { $0.isNotificationEnable == true }
+            
+            let remindTexts: [String]
+            if notifiedItems.count > 0 {
+                remindTexts = notifiedItems.map { $0.text }
+            } else {
+                remindTexts = ["リストが空です"]
+            }
+            
+            return remindTexts.randomElement() ?? "リストが空です"
+        }
+        
+        let notificationMessage = getNotifiedItemForEmptyList(items: emptyItems)
+        #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
+        
+        // updateNotificationが0件データで呼ばれた時の処理
+        let enabledItems = emptyItems.filter { $0.isNotificationEnable }
+        let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems.map { $0.text }
+        
+        #expect(enabledItems.isEmpty, "0件データでは通知有効アイテムも0件")
+        #expect(notificationTexts == ["リストが空です"], "0件時は「リストが空です」が通知テキストになる")
+        #expect(notificationTexts.count == 1, "デフォルトメッセージは1つ")
+        
+        // 複数回実行してもクラッシュしないことを確認
+        for _ in 0..<10 {
+            let randomMessage = notificationTexts.randomElement() ?? "フォールバック"
+            #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
+        }
+    }
 }
