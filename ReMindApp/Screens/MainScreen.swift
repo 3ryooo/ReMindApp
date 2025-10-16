@@ -8,8 +8,6 @@ import SwiftData
 
 struct MainScreen: View {
     
-    // TODO: デザイン修正（ダークモード時のコントラスト）
-    
     // MARK: - プロパティ
     @Environment(\.modelContext) private var modelContext
     @Environment(ReminderStore.self) private var reminderStore
