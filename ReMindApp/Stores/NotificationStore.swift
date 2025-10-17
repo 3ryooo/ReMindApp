@@ -36,7 +36,7 @@ class NotificationStore {
     }
     
 
-//  TODO: （保留）本番用の値に変更（現在はテスト用で少なめ）
+//  TODO: （待ち）本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = 5
     
     
@@ -71,9 +71,8 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
-    //    TODO: （保留）トリガーを変更する
+    //    TODO: （転記）トリガーを変更する(20251017_153722)
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
-        
         // エラー状態をリセット
         showingNotificationErrorAlert = false
         notificationErrorMessage = ""

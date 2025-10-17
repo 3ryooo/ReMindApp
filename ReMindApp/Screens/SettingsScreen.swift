@@ -54,7 +54,7 @@ struct SettingsScreen: View {
                             notificationStore.requestAuthorization()
                         }
                     }
-                    // TODO: （保留）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
+                    // TODO: （転記予定）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？
                     frequencyPicker
                     HStack {
                         DatePicker("基準時間", selection: $tempBaseTime, displayedComponents: .hourAndMinute)
@@ -81,8 +81,6 @@ struct SettingsScreen: View {
                         .buttonStyle(PlainButtonStyle())
                     }
                 }
-                // TODO: (保留)CloudKitにてDeploy Scheme Changesを行う
-               // TODO: （保留）デフォルトのプリセットリスト
                 Section("アプリについて"){
                     Button("評価する") {
                         requestReview()
@@ -91,7 +89,7 @@ struct SettingsScreen: View {
                         if MFMailComposeViewController.canSendMail() {
                             isShowingMailView = true
                         } else {
-                            // TODO: （保留）実際のアドレスを入力
+                            // TODO: （待ち）実際のアドレスを入力
                             let email = "a@example.com"
                             let subject = "問い合わせ"
                             let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""

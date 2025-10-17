@@ -13,8 +13,8 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
-    // TODO: （保留）Validateを無視して保存できないようにする→再度挙動確認
-    // TODO: (保留)ValidationSummaryViewをよりわかりやすく表示する
+    // TODO: （転記）Validateを無視して保存できないようにする→再度挙動確認(20251017_153247)
+    // TODO: （転記）ValidationSummaryViewをよりわかりやすく表示する(20251017_152953)
     
     // MARK: - EditView
     var body: some View {
