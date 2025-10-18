@@ -71,7 +71,7 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
-    //    TODO: （転記）トリガーを変更する(20251017_153722)
+    //    TODO: （転記済）トリガーを変更する(20251017_153722)
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
@@ -110,7 +110,6 @@ class NotificationStore {
     func removeAllNotification(_ context: ModelContext) {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         scheduler.removeAllPendingNotificationRequests()
-        
         do {
             let existingNotifications = try context.fetch(FetchDescriptor<NotificationList>())
             

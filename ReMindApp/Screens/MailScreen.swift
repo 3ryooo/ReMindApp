@@ -15,7 +15,7 @@ struct MailScreen: UIViewControllerRepresentable {
         let vc = MFMailComposeViewController()
         vc.mailComposeDelegate = context.coordinator
         
-        // TODO: （待ち）実際のアドレスを入力
+        // TODO: （転記済）アドレス変更(202510190708_02)
         vc.setToRecipients(["a@exaple.com"])
         vc.setSubject("お問い合わせ")
         vc.setMessageBody("", isHTML: false)

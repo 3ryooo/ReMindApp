@@ -37,9 +37,4 @@ final class ReMindAppUITests: XCTestCase {
         }
     }
     
-    // TODO:（転記予定）テスト内容
-    // Instruments:Time Profiler→非同期処理を先に確認　Leaks→挙動が怪しいので先に修正
-    // 大量のデータと0件のデータ
-    // OSの日時変更での挙動
-    
 }
