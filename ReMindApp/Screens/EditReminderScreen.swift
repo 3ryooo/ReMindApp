@@ -13,9 +13,7 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
-    // TODO: （転記済）ValidateによるDisable追加(20251017_153247)
     // TODO: （転記済）ValidationSummaryViewをよりわかりやすく表示する(20251017_152953)
-    
     // MARK: - EditView
     var body: some View {
         NavigationView {
@@ -32,6 +30,21 @@ struct EditReminderScreen: View {
             .navigationTitle("編集")
         }
         .notificationErrorAlert()
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack(spacing: 2) {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.semibold)
+                        Text("戻る")
+                    }
+                }
+                .disabled(!editFormErrors.isEmpty)
+            }
+        }
         
     }
     
