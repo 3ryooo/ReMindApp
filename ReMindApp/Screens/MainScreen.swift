@@ -41,9 +41,17 @@ struct MainScreen: View {
                         Text(item.text)
                             .opacity(item.isNotificationEnable ? 1 : 0.2)
                     }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            if let index = items.firstIndex(where: { $0.id == item.id }) {
+                                deleteItems(offsets: IndexSet(integer: index))
+                            }
+                        } label: {
+                            Label("削除", systemImage: "trash")
+                        }
+                    }
                 }
                 .onDelete(perform: deleteItems)
-                
             }
             .overlay {
                 if items.isEmpty {
