@@ -72,6 +72,7 @@ class NotificationStore {
     
     // MARK: - リマインド設定
     //    TODO: （転記済）トリガーを変更する(20251017_153722)
+    //    ZennととSwift公式ドキュメントから引用
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
