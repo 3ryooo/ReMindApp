@@ -71,7 +71,7 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
-    func setNotificationList(for items: [ReminderItem], context: ModelContext) {
+    func setNotificationList(for items: [ReminderItem], context: ModelContext) async {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
         notificationErrorMessage = ""
@@ -87,6 +87,11 @@ class NotificationStore {
         
         removeAllNotification(context)
         
+        let center = UNUserNotificationCenter.current()
+        let pending = await center.pendingNotificationRequests()
+        let pendingIDs = Set(pending.map {$0.identifier})
+        let capacity = max(0, pending.count)
+        guard capacity > 0 else { return }
         
         
         var failedCount = 0
