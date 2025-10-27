@@ -145,6 +145,9 @@ class NotificationStore {
         let newItem = NotificationList(id: originID, content: item, notificationDate: notificationDate)
         context.insert(newItem)
         
+//        recentNotificationList
+//        scheduleNotification
+        
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
         content.body = id == lastNotificationId ? "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください" : item
@@ -168,6 +171,14 @@ class NotificationStore {
             }
         }
         return true
+    }
+    
+    private func recentNotificationList (_ context: ModelContext) {
+        // TODO: 直近のリスト取得→再考のため停止中(202510261844_42)
+    }
+    
+    private func scheduleNotification () {
+        
     }
     
     private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
