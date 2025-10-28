@@ -57,6 +57,7 @@ struct SettingsScreen: View {
                     // TODO: （転記済）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？(202510190715_51)
                     frequencyPicker
                     HStack {
+                        // TODO: PickerをCaseに変更(202510281930_58)
                         DatePicker("基準時間", selection: $tempBaseTime, displayedComponents: .hourAndMinute)
                         Button(action: {
                             showingBaseTimeHelp = true
