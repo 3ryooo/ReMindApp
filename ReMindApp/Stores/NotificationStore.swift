@@ -71,6 +71,14 @@ class NotificationStore {
     }
     
     // MARK: - リマインド設定
+    
+    
+    private func setNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: <#T##[String]#>)
+    }
+    
+    
+    
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
