@@ -21,6 +21,7 @@ struct SettingsScreen: View {
     @State private var showingBaseTimeHelp = false
     @State private var showingRandomTimeHelp = false
     @State private var isShowingMailView = false
+    @State private var mode: NotificationStore.FrequencyMode = .w1
     @State private var tempIsNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     @State private var tempIsRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
     @State private var tempSelectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")

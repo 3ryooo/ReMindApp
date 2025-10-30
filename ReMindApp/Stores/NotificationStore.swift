@@ -23,6 +23,8 @@ class NotificationStore {
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
     
+    enum FrequencyMode: String {case h1, h3, h6, h9, h12, d1, d2, d3, d5, w1, w2, m1, m3, m6, y1}
+    
     init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
         self.scheduler = scheduler
         if selectedFrequency == 0 {
