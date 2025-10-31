@@ -13,11 +13,11 @@ class NotificationStore {
     
     // MARK: - プロパティ
     private let scheduler: NotificationScheduling
-    var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
-    var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
-    var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    var countForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
-    var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+    var isNotificationEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+    var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
+    var selectedFrequency = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+    var countForReviewRequest = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
+    var baseTime = UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date ?? Date()
     
     var showingAuthorizationAlert = false
     var showingNotificationErrorAlert = false
@@ -25,15 +25,18 @@ class NotificationStore {
     
     init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
         self.scheduler = scheduler
-        if UserDefaults.standard.object(forKey: "baseTime") == nil {
+        if UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) == nil {
             baseTime = Date()
-            UserDefaults.standard.set(baseTime, forKey: "baseTime")
+            UserDefaults.standard.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
         }
     }
     
+    private var isDailyFrequency: Bool {
+        selectedFrequency >= 24
+    }
 
 //  TODO: （待ち）本番用の値に変更（現在はテスト用で少なめ）
-    private let lastNotificationId = 5
+    private let lastNotificationId = AppConstants.notificationCount
     
     
     // MARK: - 通知（認証）
@@ -59,11 +62,11 @@ class NotificationStore {
         
         countForReviewRequest += 1
 
-        UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
-        UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
-        UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
-        UserDefaults.standard.set(baseTime, forKey: "baseTime")
-        UserDefaults.standard.set(countForReviewRequest, forKey: "countForReviewRequest")
+        UserDefaults.standard.set(isNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        UserDefaults.standard.set(isRandomTimeEnabled, forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
+        UserDefaults.standard.set(selectedFrequency, forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+        UserDefaults.standard.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
+        UserDefaults.standard.set(countForReviewRequest, forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
     }
     
     // MARK: - リマインド設定
@@ -183,7 +186,7 @@ class NotificationStore {
     
     private func getFirstNotificationDate() -> Date? {
         let now = Date()
-        let baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
+        let baseTime = UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date ?? Date()
         
         let calendar = Calendar(identifier: .gregorian)
         
@@ -205,7 +208,7 @@ class NotificationStore {
         
         var components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
         
-        if isRandomTimeEnabled && selectedFrequency >= 24 {
+        if isRandomTimeEnabled && isDailyFrequency {
             components.hour = Int.random(in: 0..<24)
             components.minute = Int.random(in: 0..<59)
         }
