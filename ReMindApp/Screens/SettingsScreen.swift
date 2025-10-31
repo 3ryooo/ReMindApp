@@ -17,15 +17,19 @@ struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.requestReview) private var requestReview
     @Query private var items: [ReminderItem]
+    @AppStorage("isNotificationEnabled") private var appIsNotificationEnabled: Bool = false
+    @AppStorage("isRandomTimeEnabled") private var appIsRandomTimeEnabled: Bool = false
+    @AppStorage("frequencyKey") private var appSelectedFrequency: Int = 24
+    @AppStorage("countForReviewRequest") private var appCountForReviewRequest: Int = 0
     @State private var randomRemind = false
     @State private var showingBaseTimeHelp = false
     @State private var showingRandomTimeHelp = false
     @State private var isShowingMailView = false
     @State private var mode: NotificationStore.FrequencyMode = .w1
-    @State private var tempIsNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
-    @State private var tempIsRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
-    @State private var tempSelectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
-    @State private var tempCountForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
+    @State private var tempIsNotificationEnabled: Bool = false
+    @State private var tempIsRandomTimeEnabled: Bool = false
+    @State private var tempSelectedFrequency: Int = 24
+    @State private var tempCountForReviewRequest: Int = 0
     @State private var tempBaseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
     @State private var showingSaveAlert = false
     
@@ -150,6 +154,12 @@ struct SettingsScreen: View {
                         dismiss()
                     }
                 }
+            }
+            .onAppear {
+                tempIsNotificationEnabled = appIsNotificationEnabled
+                tempIsRandomTimeEnabled = appIsRandomTimeEnabled
+                tempSelectedFrequency = appSelectedFrequency
+                tempCountForReviewRequest = appCountForReviewRequest
             }
             .alert("通知がオフになっています", isPresented: bindableNotificationStore.showingAuthorizationAlert) {
                 Button("キャンセル", role: .cancel) { }

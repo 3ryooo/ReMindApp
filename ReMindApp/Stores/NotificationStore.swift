@@ -27,10 +27,6 @@ class NotificationStore {
     
     init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
         self.scheduler = scheduler
-        if selectedFrequency == 0 {
-            selectedFrequency = 24
-            UserDefaults.standard.set(24, forKey: "frequencyKey")
-        }
         if UserDefaults.standard.object(forKey: "baseTime") == nil {
             baseTime = Date()
             UserDefaults.standard.set(baseTime, forKey: "baseTime")
