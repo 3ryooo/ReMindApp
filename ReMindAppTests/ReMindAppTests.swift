@@ -88,16 +88,16 @@ struct ReMindAppTests {
     func testNotificationStoreInitialization() async throws {
         
         // テスト実行前の元の値を保存
-        let originalFrequency = UserDefaults.standard.object(forKey: "frequencyKey")
+        let originalFrequency = UserDefaults.standard.object(forKey: "recurring.mode")
         let originalBaseTime = UserDefaults.standard.object(forKey: "baseTime")
         
         // テスト後にクリーンアップするため、deferを使用
         defer {
             // 元の値を復元（テストがアプリに影響しないように）
             if let freq = originalFrequency {
-                UserDefaults.standard.set(freq, forKey: "frequencyKey")
+                UserDefaults.standard.set(freq, forKey: "recurring.mode")
             } else {
-                UserDefaults.standard.removeObject(forKey: "frequencyKey")
+                UserDefaults.standard.removeObject(forKey: "recurring.mode")
             }
             
             if let baseTime = originalBaseTime {
@@ -108,7 +108,7 @@ struct ReMindAppTests {
         }
         
         // テスト用にUserDefaultsをクリア
-        UserDefaults.standard.removeObject(forKey: "frequencyKey")
+        UserDefaults.standard.removeObject(forKey: "recurring.mode")
         UserDefaults.standard.removeObject(forKey: "baseTime")
         
         // NotificationStoreを初期化（初回起動をシミュレート）
@@ -118,8 +118,8 @@ struct ReMindAppTests {
         #expect(notificationStore.selectedFrequency == 24, 
                 "デフォルト頻度（24時間）")
         
-        #expect(UserDefaults.standard.integer(forKey: "frequencyKey") == 24, 
-                "UserDefaultsにfrequencyKeyが保存される")
+        #expect(UserDefaults.standard.integer(forKey: "recurring.mode") == 24, 
+                "UserDefaultsにrecurring.modeが保存される")
         
         // 基準時刻が現在時刻の近くに設定されているかテスト
         let now = Date()
@@ -139,7 +139,7 @@ struct ReMindAppTests {
         }
         
         // 既存の値がある場合のテスト（アプリ再起動をシミュレート）
-        UserDefaults.standard.set(12, forKey: "frequencyKey")
+        UserDefaults.standard.set(12, forKey: "recurring.mode")
         let testDate = Date().addingTimeInterval(-3600)
         UserDefaults.standard.set(testDate, forKey: "baseTime")
         

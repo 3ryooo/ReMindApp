@@ -12,6 +12,8 @@ import UserNotifications
 struct SettingsScreen: View {
     
     // MARK: - プロパティ
+    
+
     @Environment(NotificationStore.self) private var notificationStore
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -19,13 +21,13 @@ struct SettingsScreen: View {
     @Query private var items: [ReminderItem]
     @AppStorage("isNotificationEnabled") private var appIsNotificationEnabled: Bool = false
     @AppStorage("isRandomTimeEnabled") private var appIsRandomTimeEnabled: Bool = false
-    @AppStorage("frequencyKey") private var appSelectedFrequency: Int = 24
+//    @AppStorage("recurring.mode") private var appSelectedFrequency: Int = 24
+    @AppStorage("recurring.mode") private var appSelectedFrequency: String = NotificationStore.FrequencyMode.d1.rawValue
     @AppStorage("countForReviewRequest") private var appCountForReviewRequest: Int = 0
     @State private var randomRemind = false
     @State private var showingBaseTimeHelp = false
     @State private var showingRandomTimeHelp = false
     @State private var isShowingMailView = false
-    @State private var mode: NotificationStore.FrequencyMode = .w1
     @State private var tempIsNotificationEnabled: Bool = false
     @State private var tempIsRandomTimeEnabled: Bool = false
     @State private var tempSelectedFrequency: Int = 24

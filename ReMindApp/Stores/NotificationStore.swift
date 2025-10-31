@@ -15,7 +15,7 @@ class NotificationStore {
     private let scheduler: NotificationScheduling
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
-    var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
+    var selectedFrequency = UserDefaults.standard.string(forKey: "recurring.mode")
     var countForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
     
@@ -24,6 +24,7 @@ class NotificationStore {
     var notificationErrorMessage = ""
     
     enum FrequencyMode: String {case h1, h3, h6, h9, h12, d1, d2, d3, d5, w1, w2, m1, m3, m6, y1}
+    
     
     init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
         self.scheduler = scheduler
@@ -57,13 +58,13 @@ class NotificationStore {
     }
     
     // MARK: - 設定保存
-    func saveSettings() {
+    func saveSettings(_ mode: FrequencyMode) {
         
         countForReviewRequest += 1
 
         UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
         UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
-        UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
+        UserDefaults.standard.set(mode.rawValue, forKey: "recurring.mode")
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
         UserDefaults.standard.set(countForReviewRequest, forKey: "countForReviewRequest")
     }
