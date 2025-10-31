@@ -15,16 +15,13 @@ class NotificationStore {
     private let scheduler: NotificationScheduling
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: "isNotificationEnabled")
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: "isRandomTimeEnabled")
-    var selectedFrequency = UserDefaults.standard.string(forKey: "recurring.mode")
+    var selectedFrequency = UserDefaults.standard.integer(forKey: "frequencyKey")
     var countForReviewRequest = UserDefaults.standard.integer(forKey: "countForReviewRequest")
     var baseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date ?? Date()
     
     var showingAuthorizationAlert = false
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
-    
-    enum FrequencyMode: String {case h1, h3, h6, h9, h12, d1, d2, d3, d5, w1, w2, m1, m3, m6, y1}
-    
     
     init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
         self.scheduler = scheduler
@@ -58,25 +55,18 @@ class NotificationStore {
     }
     
     // MARK: - 設定保存
-    func saveSettings(_ mode: FrequencyMode) {
+    func saveSettings() {
         
         countForReviewRequest += 1
 
         UserDefaults.standard.set(isNotificationEnabled, forKey: "isNotificationEnabled")
         UserDefaults.standard.set(isRandomTimeEnabled, forKey: "isRandomTimeEnabled")
-        UserDefaults.standard.set(mode.rawValue, forKey: "recurring.mode")
+        UserDefaults.standard.set(selectedFrequency, forKey: "frequencyKey")
         UserDefaults.standard.set(baseTime, forKey: "baseTime")
         UserDefaults.standard.set(countForReviewRequest, forKey: "countForReviewRequest")
     }
     
     // MARK: - リマインド設定
-    
-    
-    private func setNotification() {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: <#T##[String]#>)
-    }
-    
-    
     
     func setNotificationList(for items: [ReminderItem], context: ModelContext) {
         // エラー状態をリセット
@@ -152,9 +142,6 @@ class NotificationStore {
         let newItem = NotificationList(id: originID, content: item, notificationDate: notificationDate)
         context.insert(newItem)
         
-//        recentNotificationList
-//        scheduleNotification
-        
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
         content.body = id == lastNotificationId ? "\(item)\n通知の上限に達しました。設定より再度「保存」をタップしてください" : item
@@ -178,14 +165,6 @@ class NotificationStore {
             }
         }
         return true
-    }
-    
-    private func recentNotificationList (_ context: ModelContext) {
-        // TODO: 直近のリスト取得→再考のため停止中(202510261844_42)
-    }
-    
-    private func scheduleNotification () {
-        
     }
     
     private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
