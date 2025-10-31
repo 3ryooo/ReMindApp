@@ -12,7 +12,6 @@ struct MainScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(ReminderStore.self) private var reminderStore
     @Environment(NotificationStore.self) private var notificationStore
-    @AppStorage("firstStart") var firstStart  = true
     @Query private var items: [ReminderItem]
     
     private var bindableReminderStore: Bindable<ReminderStore> {
@@ -60,16 +59,6 @@ struct MainScreen: View {
                     } description: {
                         Text("右上の＋から新しく追加してください")
                     }
-                }
-            }
-            .onAppear {
-                if firstStart {
-                    UserDefaults.standard.set(24, forKey: "frequencyKey")
-                    UserDefaults.standard.set(0, forKey: "countForReviewRequest")
-                    UserDefaults.standard.set(Date.now, forKey: "baseTime")
-                    UserDefaults.standard.set(false, forKey: "isNotificationEnabled")
-                    UserDefaults.standard.set(false, forKey: "isRandomTimeEnabled")
-                    firstStart = false
                 }
             }
             .navigationTitle("Re:Mind")

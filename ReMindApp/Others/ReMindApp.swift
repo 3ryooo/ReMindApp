@@ -12,6 +12,15 @@ struct ReMindApp: App {
     
     @State private var reminderStore = ReminderStore()
     @State private var notificationStore = NotificationStore()
+    init() {
+        UserDefaults.standard.register(defaults: [
+            "frequencyKey": 24,
+            "countForReviewRequest": 0,
+            "baseTime": Date.now,
+            "isNotificationEnabled": false,
+            "isRandomTimeEnabled": false
+        ])
+    }
     
     var body: some Scene {
         WindowGroup {
