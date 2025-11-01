@@ -76,6 +76,11 @@ class NotificationStore {
         showingNotificationErrorAlert = false
         notificationErrorMessage = ""
         
+        if !isNotificationEnabled {
+            removeAllNotification(context)
+            return
+        }
+        
         // 基準日時の作成をテスト
         guard getFirstNotificationDate() != nil else {
             DispatchQueue.main.async {
