@@ -176,17 +176,13 @@ class NotificationStore {
     }
     
     private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
-                
-        let notifiedItems = items.filter { $0.isNotificationEnable == true }
+        let notifiedTexts = items.compactMap { $0.isNotificationEnable ? $0.text : nil }
         
-        let remindTexts: [String]
-        if notifiedItems.count > 0 {
-            remindTexts = notifiedItems.map { $0.text }
+        if let randomText = notifiedTexts.randomElement() {
+            return randomText
         } else {
-            remindTexts = ["リストが空です"]
+            return "リストが空です"
         }
-        
-        return remindTexts.randomElement() ?? "リストが空です"
     }
     
     private func getFirstNotificationDate() -> Date? {
