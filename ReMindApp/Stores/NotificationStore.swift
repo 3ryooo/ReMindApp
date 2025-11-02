@@ -177,8 +177,22 @@ class NotificationStore {
         let hour = calendar.component(.hour, from: baseTime)
         let minute = calendar.component(.minute, from: baseTime)
         
-        return calendar.date(from: DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: 0))
-    
+        guard var firstDate = calendar.date(from: DateComponents(
+            year: year, 
+            month: month, 
+            day: day, 
+            hour: hour, 
+            minute: minute, 
+            second: 0
+        )) else {
+            return nil
+        }
+        
+        while firstDate <= now {
+            firstDate = firstDate.addingTimeInterval(TimeInterval(60 * 60 * selectedFrequency))
+        }
+        
+        return firstDate
     }
     
     private func notificationTimeConverter(_ setDate: Date, _ id: Int) -> Date? {
