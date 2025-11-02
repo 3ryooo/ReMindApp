@@ -42,11 +42,13 @@ class NotificationStore {
     // MARK: - 通知（認証）
     func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            #if DEBUG
             if success {
                 print("許可")
             } else if let error = error {
                 print("失敗：\(error.localizedDescription)")
             }
+            #endif
             
             if !success {
                 DispatchQueue.main.async {
@@ -111,19 +113,25 @@ class NotificationStore {
     
     func removeAllNotification() {
         scheduler.removeAllPendingNotificationRequests()
+        #if DEBUG
         print("通知全消去")
+        #endif
     }
     
     private func createNotification(_ id : Int, items: [ReminderItem]) -> Bool {
         let item = getNotifiedItem(items: items)
         
         guard let firstNotificationDate = getFirstNotificationDate() else {
+            #if DEBUG
             print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
+            #endif
             return false
         }
         
         guard let notificationDate = notificationTimeConverter(firstNotificationDate, id) else {
+            #if DEBUG
             print("通知の基準日時のコンバートに失敗しました。通知ID: \(id)")
+            #endif
             return false
         }
         
@@ -141,14 +149,18 @@ class NotificationStore {
         
         scheduler.add(request) { error in
             if let error = error {
+                #if DEBUG
                 print("スケジューリング失敗：\(error.localizedDescription)")
+                #endif
                 DispatchQueue.main.async {
                     self.notificationErrorMessage = "通知のスケジューリングに失敗しました。アプリを再起動してお試しください。"
                     self.showingNotificationErrorAlert = true
                 }
             } else {
+                #if DEBUG
                 let japanTime = DateConverter().japanTime(notificationDate)
                 print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
+                #endif
             }
         }
         return true
