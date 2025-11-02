@@ -64,6 +64,6 @@ struct AddReminderScreen: View {
 // MARK: - プレビュー
 #Preview {
     AddReminderScreen()
-        .modelContainer(for: [ReminderItem.self, NotificationList.self])
+        .modelContainer(for: [ReminderItem.self])
         .environment(NotificationStore())
 }

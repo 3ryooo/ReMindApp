@@ -71,13 +71,13 @@ class NotificationStore {
     
     // MARK: - リマインド設定
     
-    func setNotificationList(for items: [ReminderItem], context: ModelContext) {
+    func setNotificationList(for items: [ReminderItem]) {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
         notificationErrorMessage = ""
         
         if !isNotificationEnabled {
-            removeAllNotification(context)
+            removeAllNotification()
             return
         }
         
@@ -90,11 +90,11 @@ class NotificationStore {
             return
         }
         
-        removeAllNotification(context)
+        removeAllNotification()
         
         var failedCount = 0
         for i in 1...lastNotificationId {
-            if !createNotification(i, items: items, context: context) {
+            if !createNotification(i, items: items) {
                 failedCount += 1
             }
         }
@@ -109,31 +109,14 @@ class NotificationStore {
         
     }
     
-    func removeAllNotification(_ context: ModelContext) {
+    func removeAllNotification() {
         //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         scheduler.removeAllPendingNotificationRequests()
-        do {
-            let existingNotifications = try context.fetch(FetchDescriptor<NotificationList>())
-            
-            for notification in existingNotifications {
-                context.delete(notification)
-            }
-            
-            try context.save()
-            
-        } catch {
-            print("error: \(error.localizedDescription)")
-            DispatchQueue.main.async {
-                self.notificationErrorMessage = "通知の削除に失敗しました。アプリを再起動してお試しください。"
-                self.showingNotificationErrorAlert = true
-            }
-        }
-        
         print("通知全消去")
     }
     
-    private func createNotification(_ id : Int, items: [ReminderItem], context: ModelContext) -> Bool {
-        let item = getNotifiedItem(context, items: items)
+    private func createNotification(_ id : Int, items: [ReminderItem]) -> Bool {
+        let item = getNotifiedItem(items: items)
         
         guard let firstNotificationDate = getFirstNotificationDate() else {
             print("通知の基準日時の作成に失敗しました。通知ID: \(id)")
@@ -146,9 +129,6 @@ class NotificationStore {
         }
         
         let originID = UUID().uuidString
-        
-        let newItem = NotificationList(id: originID, content: item, notificationDate: notificationDate)
-        context.insert(newItem)
         
         let content = UNMutableNotificationContent()
         content.title = "Re:Mind"
@@ -175,7 +155,7 @@ class NotificationStore {
         return true
     }
     
-    private func getNotifiedItem(_ context: ModelContext, items: [ReminderItem]) -> String {
+    private func getNotifiedItem(items: [ReminderItem]) -> String {
         let notifiedTexts = items.compactMap { $0.isNotificationEnable ? $0.text : nil }
         
         if let randomText = notifiedTexts.randomElement() {
@@ -220,44 +200,64 @@ class NotificationStore {
 
     
     // MARK: - 通知更新
+
     func updateNotification(context: ModelContext) {
-
         if !isNotificationEnabled { return }
-        do {
-            let existingNotifications = try context.fetch(
-                FetchDescriptor<NotificationList>(
-                    sortBy: [SortDescriptor(\.notificationDate, order: .forward)]
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            guard !requests.isEmpty else {
+                print("更新する通知がありません")
+                return
+            }
+            
+            do {
+                let items = try context.fetch(
+                    FetchDescriptor<ReminderItem>(
+                        sortBy: [SortDescriptor(\.createdAt, order: .forward)]
+                    )
                 )
-            )
-
-            let items = try context.fetch(
-                FetchDescriptor<ReminderItem>(
-                    sortBy: [SortDescriptor(\.createdAt, order: .forward)]
-                )
-            )
-            let texts: [String] = {
-                let enabled = items.filter { $0.isNotificationEnable }.map { $0.text }
-                return enabled.isEmpty ? ["リストが空です"] : enabled
-            }()
-
-            for (index, notification) in existingNotifications.enumerated() {
-                let baseBody = texts.randomElement() ?? "リストが空です"
-                let isLast = index == existingNotifications.count - 1
-                let newBody = isLast
-                ? "\(baseBody)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
-                : baseBody
-                notification.content = newBody
-
-                if notification.notificationDate > Date() {
+                
+                let texts: [String] = {
+                    let enabled = items.filter { $0.isNotificationEnable }.map { $0.text }
+                    return enabled.isEmpty ? ["リストが空です"] : enabled
+                }()
+                
+                // 通知日時でソート
+                let sortedRequests = requests.sorted { req1, req2 in
+                    guard let trigger1 = req1.trigger as? UNCalendarNotificationTrigger,
+                          let trigger2 = req2.trigger as? UNCalendarNotificationTrigger,
+                          let date1 = trigger1.nextTriggerDate(),
+                          let date2 = trigger2.nextTriggerDate() else {
+                        return false
+                    }
+                    return date1 < date2
+                }
+                
+                for (index, request) in sortedRequests.enumerated() {
+                    guard let trigger = request.trigger as? UNCalendarNotificationTrigger,
+                          let notificationDate = trigger.nextTriggerDate() else {
+                        continue
+                    }
+                    
+                    // 未来の通知のみ更新
+                    guard notificationDate > Date() else { continue }
+                    
+                    let baseBody = texts.randomElement() ?? "リストが空です"
+                    let isLast = index == sortedRequests.count - 1
+                    let newBody = isLast
+                        ? "\(baseBody)\n通知の上限に達しました。設定より再度「保存」をタップしてください"
+                        : baseBody
+                    
                     let content = UNMutableNotificationContent()
                     content.title = "Re:Mind"
                     content.body = newBody
                     content.sound = .default
-
-                    let dc = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notification.notificationDate)
-                    let trigger = UNCalendarNotificationTrigger(dateMatching: dc, repeats: false)
-                    let req = UNNotificationRequest(identifier: notification.id, content: content, trigger: trigger)
-                    UNUserNotificationCenter.current().add(req) { error in
+                    
+                    let dc = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
+                    let newTrigger = UNCalendarNotificationTrigger(dateMatching: dc, repeats: false)
+                    let newRequest = UNNotificationRequest(identifier: request.identifier, content: content, trigger: newTrigger)
+                    
+                    UNUserNotificationCenter.current().add(newRequest) { error in
                         if let error = error {
                             print("通知更新時のスケジューリング失敗: \(error.localizedDescription)")
                             DispatchQueue.main.async {
@@ -267,14 +267,12 @@ class NotificationStore {
                         }
                     }
                 }
-            }
-
-            try context.save()
-        } catch {
-            print("通知内容一括更新エラー: \(error.localizedDescription)")
-            DispatchQueue.main.async {
-                self.notificationErrorMessage = "通知の更新に失敗しました。アプリを再起動してお試しください。"
-                self.showingNotificationErrorAlert = true
+            } catch {
+                print("通知内容一括更新エラー: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.notificationErrorMessage = "通知の更新に失敗しました。アプリを再起動してお試しください。"
+                    self.showingNotificationErrorAlert = true
+                }
             }
         }
     }

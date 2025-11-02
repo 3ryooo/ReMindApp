@@ -59,6 +59,6 @@ struct EditReminderScreen: View {
 // MARK: - プレビュー
 #Preview {
     EditReminderScreen(reminderItem: ReminderItem(text: "aaa", isNotificationEnable: true, createdAt: Date.now))
-        .modelContainer(for: [ReminderItem.self, NotificationList.self])
+        .modelContainer(for: [ReminderItem.self])
         .environment(NotificationStore())
 }

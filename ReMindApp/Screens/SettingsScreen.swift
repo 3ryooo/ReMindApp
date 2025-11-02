@@ -146,9 +146,9 @@ struct SettingsScreen: View {
                         
                         notificationStore.saveSettings()
                         if notificationStore.isNotificationEnabled {
-                            notificationStore.setNotificationList(for: items, context: modelContext)
+                            notificationStore.setNotificationList(for: items)
                         } else {
-                            notificationStore.removeAllNotification(modelContext)
+                            notificationStore.removeAllNotification()
                         }
                         
                         dismiss()
@@ -226,6 +226,6 @@ struct SettingsScreen: View {
 // MARK: - プレビュー
 #Preview {
     SettingsScreen()
-        .modelContainer(for: [ReminderItem.self, NotificationList.self])
+        .modelContainer(for: [ReminderItem.self])
         .environment(NotificationStore())
 }

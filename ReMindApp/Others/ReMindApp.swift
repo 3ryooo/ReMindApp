@@ -25,7 +25,7 @@ struct ReMindApp: App {
     var body: some Scene {
         WindowGroup {
             MainScreen()
-                .modelContainer(for: [ReminderItem.self, NotificationList.self])
+                .modelContainer(for: [ReminderItem.self])
                 .environment(reminderStore)
                 .environment(notificationStore)
                 .onAppear {
