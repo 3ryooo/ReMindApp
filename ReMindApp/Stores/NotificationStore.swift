@@ -110,7 +110,6 @@ class NotificationStore {
     }
     
     func removeAllNotification() {
-        //        トリガーは保存時のみ？→長期的なリマインドが毎回消えてしまう
         scheduler.removeAllPendingNotificationRequests()
         print("通知全消去")
     }
