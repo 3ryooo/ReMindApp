@@ -178,16 +178,14 @@ class NotificationStore {
     
     private func getFirstNotificationDate() -> Date? {
         let now = Date()
-        let baseTime = UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date ?? Date()
-        
         let calendar = Calendar(identifier: .gregorian)
         
         let year = calendar.component(.year, from: now)
         let month = calendar.component(.month, from: now)
         let day = calendar.component(.day, from: now)
         
-        let hour = calendar.component(.hour, from: baseTime)
-        let minute = calendar.component(.minute, from: baseTime)
+        let hour = calendar.component(.hour, from: self.baseTime)
+        let minute = calendar.component(.minute, from: self.baseTime)
         
         guard var firstDate = calendar.date(from: DateComponents(
             year: year, 
