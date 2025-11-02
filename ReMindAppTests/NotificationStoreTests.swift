@@ -26,7 +26,6 @@ struct NotificationStoreTests {
     func schedulingFailureSetsAlert() async throws {
         let container = try ModelContainer(
             for: ReminderItem.self,
-                 NotificationList.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
@@ -38,7 +37,7 @@ struct NotificationStoreTests {
         store.isNotificationEnabled = true
         store.selectedFrequency = 24
         
-        store.setNotificationList(for: [item], context: context)
+        store.setNotificationList(for: [item])
         
         // DispatchQueue.main.asyncを待機
         try await Task.sleep(nanoseconds: 20_000_000) // 20ms 程度
