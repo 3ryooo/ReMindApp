@@ -57,7 +57,6 @@ struct NotificationStoreTests {
         
         let allItems = [enabledItem1, disabledItem1, enabledItem2, disabledItem2]
         
-        // 通知有効なアイテムのみをフィルタリング（updateNotificationの実際のロジック）
         let enabledItems = allItems.filter { $0.isNotificationEnable }.map { $0.text }
         let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems
         
@@ -223,7 +222,7 @@ struct NotificationStoreTests {
         let notificationMessage = getNotifiedItemForEmptyList(items: emptyItems)
         #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
         
-        // updateNotificationが0件データで呼ばれた時の処理
+        // 0件データでの通知作成時の処理
         let enabledItems = emptyItems.filter { $0.isNotificationEnable }
         let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems.map { $0.text }
         

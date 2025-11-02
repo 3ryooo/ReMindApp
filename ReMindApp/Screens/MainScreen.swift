@@ -63,21 +63,21 @@ struct MainScreen: View {
             }
             .navigationTitle("Re:Mind")
             .toolbar {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    EditButton()
-                    Button {
-                        reminderStore.showingAddReminderSheet = true
-                    } label: {
-                        Label("リマインド追加", systemImage: "plus")
-                    }
-                    Menu("並び順", systemImage: "arrow.up.arrow.down") {
-                        Picker("並び順", selection: bindableReminderStore.sortOption) {
-                            Text(SortOption.name.displayTitle).tag(SortOption.name)
-                            Text(SortOption.timestamp.displayTitle).tag(SortOption.timestamp)
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        EditButton()
+                        Button {
+                            reminderStore.showingAddReminderSheet = true
+                        } label: {
+                            Label("リマインド追加", systemImage: "plus")
+                        }
+                        Menu("並び順", systemImage: "arrow.up.arrow.down") {
+                            Picker("並び順", selection: bindableReminderStore.sortOption) {
+                                Text(SortOption.name.displayTitle).tag(SortOption.name)
+                                Text(SortOption.timestamp.displayTitle).tag(SortOption.timestamp)
+                            }
                         }
                     }
-                }
-                
+                    
                 ToolbarItemGroup(placement: .topBarLeading) {
                     NavigationLink {
                         SettingsScreen()
@@ -101,9 +101,6 @@ struct MainScreen: View {
     // MARK: - メソッド
     func deleteItems(offsets: IndexSet) {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
-        
-        // アイテム削除後に通知を更新
-        notificationStore.updateNotification(context: modelContext)
     }
 
     // TODO: （待ち）検証後削除

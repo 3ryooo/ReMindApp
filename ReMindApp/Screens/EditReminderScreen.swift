@@ -21,12 +21,6 @@ struct EditReminderScreen: View {
                 ValidationSummaryView(errorMessages: editFormErrors)
                 ReminderFormView(text: $reminderItem.text, isNotificationEnabled: $reminderItem.isNotificationEnable)
             }
-            .onChange(of: reminderItem.text) { _, _ in
-                notificationStore.updateNotification(context: modelContext)
-            }
-            .onChange(of: reminderItem.isNotificationEnable) { _, _ in
-                notificationStore.updateNotification(context: modelContext)
-            }
             .navigationTitle("編集")
         }
         .notificationErrorAlert()

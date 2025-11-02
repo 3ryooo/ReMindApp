@@ -47,9 +47,6 @@ struct AddReminderScreen: View {
     func addProduct() {
         let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification, createdAt: Date.now)
         modelContext.insert(newReminder)
-        
-        // アイテム追加後に通知を更新
-        notificationStore.updateNotification(context: modelContext)
     }
     
     private var addFormErrors: [ReminderFormError] {
