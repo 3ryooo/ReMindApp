@@ -11,8 +11,6 @@ import UserNotifications
 @MainActor
 struct NotificationStoreTests {
     
-    // TODO: Coverage設定確認(202511041927_24)
-    
     enum MockError: Error { case fail }
     
     struct FailingScheduler: NotificationScheduling {
