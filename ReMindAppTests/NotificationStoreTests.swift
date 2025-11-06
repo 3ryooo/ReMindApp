@@ -11,6 +11,8 @@ import UserNotifications
 @MainActor
 struct NotificationStoreTests {
     
+    // TODO: Instrumentsのパフォーマンスチェックを反映(202511061919_30)
+    
     enum MockError: Error { case fail }
     
     struct FailingScheduler: NotificationScheduling {
