@@ -11,7 +11,7 @@ import UserNotifications
 @MainActor
 struct NotificationStoreTests {
     
-    // TODO: Instrumentsのパフォーマンスチェックを反映(202511061919_30)
+    // TODO: Instrumentsのパフォーマンスチェックを反映→テストコードの反映後に変更(202511061919_30)
     
     enum MockError: Error { case fail }
     
