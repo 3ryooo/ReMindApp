@@ -56,6 +56,7 @@
 				Tests/UnitTests/NotificationStoreTests.swift,
 				Tests/UnitTests/ReMindAppTests.swift,
 				Tests/UnitTests/ReminderStoreTests.swift,
+				Tests/UnitTests/StringExtensionsTests.swift,
 			);
 			target = 864404D52DEECCE6007AA15B /* ReMindApp */;
 		};
@@ -68,6 +69,7 @@
 				Tests/UnitTests/NotificationStoreTests.swift,
 				Tests/UnitTests/ReMindAppTests.swift,
 				Tests/UnitTests/ReminderStoreTests.swift,
+				Tests/UnitTests/StringExtensionsTests.swift,
 			);
 			target = 865B90FF2E5339130010B485 /* ReMindAppTests */;
 		};
