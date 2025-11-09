@@ -53,11 +53,11 @@
 				Tests/UnitTests/.cursorindexingignore,
 				Tests/UnitTests/.specstory/.gitignore,
 				"Tests/UnitTests/.specstory/.what-is-this.md",
-				Tests/UnitTests/DateConverterTests.swift,
-				Tests/UnitTests/NotificationStoreTests.swift,
-				Tests/UnitTests/ReMindAppTests.swift,
-				Tests/UnitTests/ReminderStoreTests.swift,
-				Tests/UnitTests/StringExtensionsTests.swift,
+				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
+				Tests/UnitTests/Others/ReMindAppTests.swift,
+				Tests/UnitTests/Stores/NotificationStoreTests.swift,
+				Tests/UnitTests/Stores/ReminderStoreTests.swift,
+				Tests/UnitTests/Utils/DateConverterTests.swift,
 			);
 			target = 864404D52DEECCE6007AA15B /* ReMindApp */;
 		};
@@ -67,11 +67,11 @@
 				Tests/UnitTests/.cursorindexingignore,
 				Tests/UnitTests/.specstory/.gitignore,
 				"Tests/UnitTests/.specstory/.what-is-this.md",
-				Tests/UnitTests/DateConverterTests.swift,
-				Tests/UnitTests/NotificationStoreTests.swift,
-				Tests/UnitTests/ReMindAppTests.swift,
-				Tests/UnitTests/ReminderStoreTests.swift,
-				Tests/UnitTests/StringExtensionsTests.swift,
+				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
+				Tests/UnitTests/Others/ReMindAppTests.swift,
+				Tests/UnitTests/Stores/NotificationStoreTests.swift,
+				Tests/UnitTests/Stores/ReminderStoreTests.swift,
+				Tests/UnitTests/Utils/DateConverterTests.swift,
 			);
 			target = 865B90FF2E5339130010B485 /* ReMindAppTests */;
 		};
