@@ -44,7 +44,6 @@ struct AddReminderScreen: View {
     }
     
     // MARK: - メソッド
-    // TODO: メソッドを分離？（202511081709_13）
     func addProduct() {
         let newReminder = ReminderItem(text: newReminderText, isNotificationEnable: newReminderNotification, createdAt: Date.now)
         modelContext.insert(newReminder)
