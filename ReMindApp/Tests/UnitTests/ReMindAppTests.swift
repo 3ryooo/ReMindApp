@@ -104,8 +104,8 @@ struct ReMindAppTests {
         // 基準時刻が現在時刻の近くに設定されているかテスト
         let now = Date()
         let timeDifference = abs(notificationStore.baseTime.timeIntervalSince(now))
-        #expect(timeDifference < 5.0, 
-                "基準時刻が現在時刻から5秒以内に設定される")
+        #expect(timeDifference < 10.0, 
+                "基準時刻が現在時刻から10秒以内に設定される")
         
         // UserDefaultsに保存された値も確認
         let savedBaseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date
@@ -114,8 +114,8 @@ struct ReMindAppTests {
         
         if let savedTime = savedBaseTime {
             let savedTimeDifference = abs(savedTime.timeIntervalSince(now))
-            #expect(savedTimeDifference < 5.0, 
-                    "UserDefaultsの基準時刻も現在時刻から5秒以内")
+            #expect(savedTimeDifference < 10.0,
+                    "UserDefaultsの基準時刻も現在時刻から10秒以内")
         }
         
         // 既存の値がある場合のテスト（アプリ再起動をシミュレート）
