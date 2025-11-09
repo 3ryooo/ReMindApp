@@ -46,9 +46,45 @@
 		86272C2D2E29058E0098A802 /* Exceptions for "ReMindApp" folder in "ReMindApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Sources/Info.plist,
+				Tests/IntegrationTests/ReMindAppIntegrationTests.swift,
+				Tests/UITests/ReMindAppUITests.swift,
+				Tests/UITests/ReMindAppUITestsLaunchTests.swift,
+				Tests/UnitTests/.cursorindexingignore,
+				Tests/UnitTests/.specstory/.gitignore,
+				"Tests/UnitTests/.specstory/.what-is-this.md",
+				Tests/UnitTests/NotificationStoreTests.swift,
+				Tests/UnitTests/ReMindAppTests.swift,
+				Tests/UnitTests/ReminderStoreTests.swift,
 			);
 			target = 864404D52DEECCE6007AA15B /* ReMindApp */;
+		};
+		86FAA1622EC01FBA00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/UnitTests/.cursorindexingignore,
+				Tests/UnitTests/.specstory/.gitignore,
+				"Tests/UnitTests/.specstory/.what-is-this.md",
+				Tests/UnitTests/NotificationStoreTests.swift,
+				Tests/UnitTests/ReMindAppTests.swift,
+				Tests/UnitTests/ReminderStoreTests.swift,
+			);
+			target = 865B90FF2E5339130010B485 /* ReMindAppTests */;
+		};
+		86FAA1682EC01FBC00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/UITests/ReMindAppUITests.swift,
+				Tests/UITests/ReMindAppUITestsLaunchTests.swift,
+			);
+			target = 864B46492E546B5700A49863 /* ReMindAppUITests */;
+		};
+		86FAA16C2EC01FBE00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppIntegrationTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/IntegrationTests/ReMindAppIntegrationTests.swift,
+			);
+			target = 866918CA2E6AF81200530112 /* ReMindAppIntegrationTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -57,23 +93,11 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				86272C2D2E29058E0098A802 /* Exceptions for "ReMindApp" folder in "ReMindApp" target */,
+				86FAA1622EC01FBA00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppTests" target */,
+				86FAA1682EC01FBC00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppUITests" target */,
+				86FAA16C2EC01FBE00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppIntegrationTests" target */,
 			);
 			path = ReMindApp;
-			sourceTree = "<group>";
-		};
-		864B464B2E546B5700A49863 /* ReMindAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ReMindAppUITests;
-			sourceTree = "<group>";
-		};
-		865B91012E5339140010B485 /* ReMindAppTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ReMindAppTests;
-			sourceTree = "<group>";
-		};
-		866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ReMindAppIntegrationTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -115,9 +139,6 @@
 			children = (
 				864404EB2DEECE78007AA15B /* README.md */,
 				864404D82DEECCE6007AA15B /* ReMindApp */,
-				865B91012E5339140010B485 /* ReMindAppTests */,
-				864B464B2E546B5700A49863 /* ReMindAppUITests */,
-				866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */,
 				864404D72DEECCE6007AA15B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -171,9 +192,6 @@
 			dependencies = (
 				864B46512E546B5700A49863 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				864B464B2E546B5700A49863 /* ReMindAppUITests */,
-			);
 			name = ReMindAppUITests;
 			packageProductDependencies = (
 			);
@@ -194,9 +212,6 @@
 			dependencies = (
 				865B91052E5339140010B485 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				865B91012E5339140010B485 /* ReMindAppTests */,
-			);
 			name = ReMindAppTests;
 			packageProductDependencies = (
 			);
@@ -216,9 +231,6 @@
 			);
 			dependencies = (
 				866918D02E6AF81200530112 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				866918CC2E6AF81200530112 /* ReMindAppIntegrationTests */,
 			);
 			name = ReMindAppIntegrationTests;
 			packageProductDependencies = (
@@ -485,15 +497,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ReMindApp/ReMindApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ReMindApp/Sources/ReMindApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ReMindApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ReMindApp/Sources/Preview Content\"";
 				DEVELOPMENT_TEAM = 2CZ55LYX22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ReMindApp/Info.plist;
+				INFOPLIST_FILE = ReMindApp/Sources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Re:Mind";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -518,15 +530,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ReMindApp/ReMindApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ReMindApp/Sources/ReMindApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"ReMindApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ReMindApp/Sources/Preview Content\"";
 				DEVELOPMENT_TEAM = 2CZ55LYX22;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ReMindApp/Info.plist;
+				INFOPLIST_FILE = ReMindApp/Sources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Re:Mind";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
