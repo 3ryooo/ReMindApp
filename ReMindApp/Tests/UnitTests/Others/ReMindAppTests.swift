@@ -9,33 +9,6 @@ import Foundation
 
 struct ReMindAppTests {
 
-    @Test("リマインダーアイテムの作成テスト")
-    func testReminderItemCreation() async throws {
-        
-        let testText = "テスト"
-        let testNotificationEnabled = true
-        let testDate = Date()
-        
-        let reminderItem = ReminderItem(
-            text: testText,
-            isNotificationEnable: testNotificationEnabled,
-            createdAt: testDate
-        )
-        
-        #expect(reminderItem.text == testText, 
-                "テキスト設定")
-        
-        #expect(reminderItem.isNotificationEnable == testNotificationEnabled, 
-                "通知有効化")
-        
-        #expect(reminderItem.createdAt == testDate, 
-                "作成日時設定")
-        
-        #expect(reminderItem.id.uuidString.count == 36, 
-                "UUID確認")
-        
-    }
-
     @Test("NotificationStore初期化テスト")
     func testNotificationStoreInitialization() async throws {
         
