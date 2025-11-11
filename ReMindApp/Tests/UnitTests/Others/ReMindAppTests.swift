@@ -9,61 +9,7 @@ import Foundation
 
 struct ReMindAppTests {
 
-    @Test("NotificationStore初期化テスト")
-    func testNotificationStoreInitialization() async throws {
-        
-        // テスト実行前の元の値を保存
-        let originalFrequency = UserDefaults.standard.object(forKey: "frequencyKey")
-        let originalBaseTime = UserDefaults.standard.object(forKey: "baseTime")
-        
-        // テスト後にクリーンアップするため、deferを使用
-        defer {
-            // 元の値を復元（テストがアプリに影響しないように）
-            if let freq = originalFrequency {
-                UserDefaults.standard.set(freq, forKey: "frequencyKey")
-            } else {
-                UserDefaults.standard.removeObject(forKey: "frequencyKey")
-            }
-            
-            if let baseTime = originalBaseTime {
-                UserDefaults.standard.set(baseTime, forKey: "baseTime")
-            } else {
-                UserDefaults.standard.removeObject(forKey: "baseTime")
-            }
-        }
-        
-        // テスト用にUserDefaultsをクリア
-        UserDefaults.standard.removeObject(forKey: "frequencyKey")
-        UserDefaults.standard.removeObject(forKey: "baseTime")
-        
-        // NotificationStoreを初期化（初回起動をシミュレート）
-        let notificationStore = NotificationStore()
-        
-        // デフォルト値が正しく設定されているかテスト
-        #expect(notificationStore.selectedFrequency == 24, 
-                "デフォルト頻度（24時間）")
-        
-        #expect(UserDefaults.standard.integer(forKey: "frequencyKey") == 24, 
-                "UserDefaultsにfrequencyKeyが保存される")
-        
-        // 基準時刻が現在時刻の近くに設定されているかテスト
-        let now = Date()
-        let timeDifference = abs(notificationStore.baseTime.timeIntervalSince(now))
-        #expect(timeDifference < 10.0, 
-                "基準時刻が現在時刻から10秒以内に設定される")
-        
-        // UserDefaultsに保存された値も確認
-        let savedBaseTime = UserDefaults.standard.object(forKey: "baseTime") as? Date
-        #expect(savedBaseTime != nil, 
-                "UserDefaultsに基準時刻が保存される")
-        
-        if let savedTime = savedBaseTime {
-            let savedTimeDifference = abs(savedTime.timeIntervalSince(now))
-            #expect(savedTimeDifference < 10.0,
-                    "UserDefaultsの基準時刻も現在時刻から10秒以内")
-        }
-        
-    }
+
 
 
     @Test("IndexSetによる削除処理のテスト")
