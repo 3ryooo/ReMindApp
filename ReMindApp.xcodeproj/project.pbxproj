@@ -50,9 +50,6 @@
 				Tests/IntegrationTests/ReMindAppIntegrationTests.swift,
 				Tests/UITests/ReMindAppUITests.swift,
 				Tests/UITests/ReMindAppUITestsLaunchTests.swift,
-				Tests/UnitTests/.cursorindexingignore,
-				Tests/UnitTests/.specstory/.gitignore,
-				"Tests/UnitTests/.specstory/.what-is-this.md",
 				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
 				Tests/UnitTests/Stores/NotificationStoreTests.swift,
 				Tests/UnitTests/Stores/ReminderStoreTests.swift,
@@ -63,9 +60,6 @@
 		86FAA1622EC01FBA00B3E114 /* Exceptions for "ReMindApp" folder in "ReMindAppTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Tests/UnitTests/.cursorindexingignore,
-				Tests/UnitTests/.specstory/.gitignore,
-				"Tests/UnitTests/.specstory/.what-is-this.md",
 				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
 				Tests/UnitTests/Stores/NotificationStoreTests.swift,
 				Tests/UnitTests/Stores/ReminderStoreTests.swift,
