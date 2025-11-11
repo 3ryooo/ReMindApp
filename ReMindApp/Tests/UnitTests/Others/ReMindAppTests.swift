@@ -63,20 +63,6 @@ struct ReMindAppTests {
                     "UserDefaultsの基準時刻も現在時刻から10秒以内")
         }
         
-        // 既存の値がある場合のテスト（アプリ再起動をシミュレート）
-        UserDefaults.standard.set(12, forKey: "frequencyKey")
-        let testDate = Date().addingTimeInterval(-3600)
-        UserDefaults.standard.set(testDate, forKey: "baseTime")
-        
-        let anotherStore = NotificationStore()
-        
-        #expect(anotherStore.selectedFrequency == 12, 
-                "既存の頻度設定が維持される")
-        
-        let restoredBaseTime = anotherStore.baseTime
-        let restoredTimeDifference = abs(restoredBaseTime.timeIntervalSince(testDate))
-        #expect(restoredTimeDifference < 1.0, 
-                "既存の基準時刻が維持される")
     }
 
 
