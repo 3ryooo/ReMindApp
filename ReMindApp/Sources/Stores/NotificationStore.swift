@@ -13,6 +13,7 @@ class NotificationStore {
     
     // MARK: - プロパティ
     private let scheduler: NotificationScheduling
+    
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
     var selectedFrequency = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
@@ -73,6 +74,7 @@ class NotificationStore {
     
     // MARK: - リマインド設定
     
+    // TODO: コード分割（20251112_1745_29）
     func setNotificationList(for items: [ReminderItem]) {
         // エラー状態をリセット
         showingNotificationErrorAlert = false
