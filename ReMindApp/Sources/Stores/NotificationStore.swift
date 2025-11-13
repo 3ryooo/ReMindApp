@@ -14,6 +14,7 @@ class NotificationStore {
     // MARK: - プロパティ
     private let scheduler: NotificationScheduling
     
+    // TODO: プロトコル化（20251113_1850_17）
     var isNotificationEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
     var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
     var selectedFrequency = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
