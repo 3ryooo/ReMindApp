@@ -13,23 +13,36 @@ class NotificationStore {
     
     // MARK: - プロパティ
     private let scheduler: NotificationScheduling
+    private let userDefaults: UserDefaultsProtocol
     
-    // TODO: プロトコル化（20251113_1850_17）
-    var isNotificationEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
-    var isRandomTimeEnabled = UserDefaults.standard.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
-    var selectedFrequency = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
-    var countForReviewRequest = UserDefaults.standard.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
-    var baseTime = UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date ?? Date()
+    var isNotificationEnabled: Bool
+    var isRandomTimeEnabled: Bool
+    var selectedFrequency: Int
+    var countForReviewRequest: Int
+    var baseTime: Date
     
     var showingAuthorizationAlert = false
     var showingNotificationErrorAlert = false
     var notificationErrorMessage = ""
     
-    init(scheduler: NotificationScheduling = DefaultNotificationScheduler()) {
+    init(
+        scheduler: NotificationScheduling = DefaultNotificationScheduler(),
+        userDefaults: UserDefaultsProtocol = UserDefaults.standard
+    ) {
         self.scheduler = scheduler
-        if UserDefaults.standard.object(forKey: AppConstants.UserDefaultsKeys.baseTime) == nil {
-            baseTime = Date()
-            UserDefaults.standard.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
+        self.userDefaults = userDefaults
+        
+        // UserDefaultsから初期値を読み込み
+        self.isNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        self.isRandomTimeEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
+        self.selectedFrequency = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+        self.countForReviewRequest = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
+        
+        if let savedBaseTime = userDefaults.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date {
+            self.baseTime = savedBaseTime
+        } else {
+            self.baseTime = Date()
+            userDefaults.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
         }
     }
     
@@ -66,11 +79,11 @@ class NotificationStore {
         
         countForReviewRequest += 1
 
-        UserDefaults.standard.set(isNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
-        UserDefaults.standard.set(isRandomTimeEnabled, forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
-        UserDefaults.standard.set(selectedFrequency, forKey: AppConstants.UserDefaultsKeys.frequencyKey)
-        UserDefaults.standard.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
-        UserDefaults.standard.set(countForReviewRequest, forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
+        userDefaults.set(isNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        userDefaults.set(isRandomTimeEnabled, forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
+        userDefaults.set(selectedFrequency, forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+        userDefaults.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
+        userDefaults.set(countForReviewRequest, forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
     }
     
     // MARK: - リマインド設定
