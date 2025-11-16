@@ -88,43 +88,57 @@ class NotificationStore {
     
     // MARK: - リマインド設定
     
-    // TODO: コード分割（20251112_1745_29）
     func setNotificationList(for items: [ReminderItem]) {
-        // エラー状態をリセット
-        showingNotificationErrorAlert = false
-        notificationErrorMessage = ""
+        resetErrorState()
         
-        if !isNotificationEnabled {
+        guard isNotificationEnabled else {
             removeAllNotification()
             return
         }
         
-        // 基準日時の作成をテスト
-        guard getFirstNotificationDate() != nil else {
-            DispatchQueue.main.async {
-                self.notificationErrorMessage = "通知の設定に失敗しました。時刻設定を確認してください。"
-                self.showingNotificationErrorAlert = true
-            }
+        guard validateNotificationSettings() else {
             return
         }
         
         removeAllNotification()
-        
+        let failedCount = createAllNotifications(for: items)
+        handleNotificationErrors(failedCount: failedCount)
+    }
+    
+    private func resetErrorState() {
+        showingNotificationErrorAlert = false
+        notificationErrorMessage = ""
+    }
+    
+    private func validateNotificationSettings() -> Bool {
+        guard getFirstNotificationDate() != nil else {
+            showError("通知の設定に失敗しました。時刻設定を確認してください。")
+            return false
+        }
+        return true
+    }
+    
+    private func createAllNotifications(for items: [ReminderItem]) -> Int {
         var failedCount = 0
         for i in 1...lastNotificationId {
             if !createNotification(i, items: items) {
                 failedCount += 1
             }
         }
-        
-        // 一部の通知設定に失敗した場合の警告
+        return failedCount
+    }
+    
+    private func handleNotificationErrors(failedCount: Int) {
         if failedCount > 0 {
-            DispatchQueue.main.async {
-                self.notificationErrorMessage = "一部の通知設定に失敗しました（\(failedCount)件）。アプリを再起動してお試しください。"
-                self.showingNotificationErrorAlert = true
-            }
+            showError("一部の通知設定に失敗しました（\(failedCount)件）。アプリを再起動してお試しください。")
         }
-        
+    }
+    
+    private func showError(_ message: String) {
+        DispatchQueue.main.async {
+            self.notificationErrorMessage = message
+            self.showingNotificationErrorAlert = true
+        }
     }
     
     func removeAllNotification() {
