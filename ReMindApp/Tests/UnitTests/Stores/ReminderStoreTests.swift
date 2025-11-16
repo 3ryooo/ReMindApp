@@ -34,7 +34,7 @@ struct ReminderStoreTests {
         #expect(sortedByTime[2].text == "タスクC", "新しい順(3番目)")
     }
     
-    // TODO: テストコードの削除
+    // TODO: （待ち）テストコードの削除
     @Test("IndexSetによる削除処理のテスト")
     func testIndexSetDeletion() async throws {
         
