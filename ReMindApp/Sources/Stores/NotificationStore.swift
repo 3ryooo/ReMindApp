@@ -14,6 +14,7 @@ class NotificationStore {
     // MARK: - プロパティ
     private let scheduler: NotificationScheduling
     private let userDefaults: UserDefaultsProtocol
+    private let timeProvider: TimeProvider
     
     var isNotificationEnabled: Bool
     var isRandomTimeEnabled: Bool
@@ -27,10 +28,12 @@ class NotificationStore {
     
     init(
         scheduler: NotificationScheduling = DefaultNotificationScheduler(),
-        userDefaults: UserDefaultsProtocol = UserDefaults.standard
+        userDefaults: UserDefaultsProtocol = UserDefaults.standard,
+        timeProvider: TimeProvider = DefaultTimeProvider()
     ) {
         self.scheduler = scheduler
         self.userDefaults = userDefaults
+        self.timeProvider = timeProvider
         
         // UserDefaultsから初期値を読み込み
         self.isNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
@@ -41,7 +44,7 @@ class NotificationStore {
         if let savedBaseTime = userDefaults.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date {
             self.baseTime = savedBaseTime
         } else {
-            self.baseTime = Date()
+            self.baseTime = timeProvider.now()
             userDefaults.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
         }
     }
@@ -207,7 +210,7 @@ class NotificationStore {
     }
     
     private func getFirstNotificationDate() -> Date? {
-        let now = Date()
+        let now = timeProvider.now()
         let calendar = Calendar(identifier: .gregorian)
         
         let year = calendar.component(.year, from: now)

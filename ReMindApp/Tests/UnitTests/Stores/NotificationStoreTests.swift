@@ -237,4 +237,23 @@ struct NotificationStoreTests {
             #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
         }
     }
+    
+    @Test("TimeProvider注入テスト")
+    func testTimeProviderInjection() async throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let fixedDate = calendar.date(from: DateComponents(
+            year: 2024, month: 12, day: 25,
+            hour: 14, minute: 30, second: 0
+        ))!
+        
+        let mockTime = MockTimeProvider(currentTime: fixedDate)
+        let mockDefaults = MockUserDefaults()
+        
+        // TimeProviderを注入
+        let store = NotificationStore(userDefaults: mockDefaults, timeProvider: mockTime)
+        
+        // baseTimeが固定時刻で初期化されることを確認
+        #expect(abs(store.baseTime.timeIntervalSince(fixedDate)) < 1.0,
+                "baseTimeが指定した固定時刻で初期化される")
+    }
 }
