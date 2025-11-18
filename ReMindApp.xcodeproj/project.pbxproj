@@ -51,6 +51,7 @@
 				Tests/UITests/ReMindAppUITests.swift,
 				Tests/UITests/ReMindAppUITestsLaunchTests.swift,
 				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
+				Tests/UnitTests/Stores/MockUserDefaults.swift,
 				Tests/UnitTests/Stores/NotificationStoreTests.swift,
 				Tests/UnitTests/Stores/ReminderStoreTests.swift,
 				Tests/UnitTests/Utils/DateConverterTests.swift,
@@ -61,6 +62,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Tests/UnitTests/Extentions/StringExtensionsTests.swift,
+				Tests/UnitTests/Stores/MockUserDefaults.swift,
 				Tests/UnitTests/Stores/NotificationStoreTests.swift,
 				Tests/UnitTests/Stores/ReminderStoreTests.swift,
 				Tests/UnitTests/Utils/DateConverterTests.swift,
