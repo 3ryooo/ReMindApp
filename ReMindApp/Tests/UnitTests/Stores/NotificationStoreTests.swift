@@ -24,11 +24,6 @@ struct NotificationStoreTests {
     
     @Test
     func schedulingFailureSetsAlert() async throws {
-        let container = try ModelContainer(
-            for: ReminderItem.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
-        let context = container.mainContext
         
         let item = ReminderItem(text: "テスト", isNotificationEnable: true, createdAt: .now)
         
@@ -204,7 +199,6 @@ struct NotificationStoreTests {
     @Test("データ0件時のテスト")
     func testEmptyData() async throws {
         
-        let reminderStore = ReminderStore()
         let emptyItems: [ReminderItem] = []
         
         func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
