@@ -25,6 +25,11 @@ struct NotificationStoreTests {
     }
     
     @Test
+    func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
+        <#body#>
+    }
+    
+    @Test
     func schedulingFailureSetsAlert() async throws {
         
         let item = ReminderItem(text: "テスト", isNotificationEnable: true, createdAt: .now)
