@@ -193,4 +193,18 @@ Memo
 # temp/
 # logs/
 
+#==============================================================================
+# IDE・エディタ設定
+#==============================================================================
+
+# Build Server Protocol (SweetPad等で使用)
+buildServer.json
+
+# VS Code個人設定
+.vscode/
+
+# プロジェクト設定のみ除外したい場合
+# .vscode/*.code-workspace
+# .vscode/.history/
+
 # End of https://www.toptal.com/developers/gitignore/api/swift
