@@ -221,11 +221,11 @@ class NotificationStore {
         let minute = calendar.component(.minute, from: self.baseTime)
         
         guard var firstDate = calendar.date(from: DateComponents(
-            year: year, 
-            month: month, 
-            day: day, 
-            hour: hour, 
-            minute: minute, 
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
             second: 0
         )) else {
             return nil

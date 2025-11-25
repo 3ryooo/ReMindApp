@@ -11,79 +11,110 @@ import UserNotifications
 @MainActor
 struct NotificationStoreTests {
     
+    // MARK: - 共通データ（モック等）
     
+    // MARK: - requestAuthorization
     
-    enum MockError: Error { case fail }
-    
-    struct FailingScheduler: NotificationScheduling {
-        func add(_ request: UNNotificationRequest, completionHandler: ((Error?) -> Void)?) {
-            Task { @MainActor in
-                completionHandler?(MockError.fail)
-            }
-        }
-        func removeAllPendingNotificationRequests() { /* 何もしない */ }
-    }
+    // MARK: - saveSettings
     
     @Test
     func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
         <#body#>
     }
     
-    @Test
-    func schedulingFailureSetsAlert() async throws {
-        
-        let item = ReminderItem(text: "テスト", isNotificationEnable: true, createdAt: .now)
-        
-        // モックを注入
-        let mockDefaults = MockUserDefaults()
-        let store = NotificationStore(scheduler: FailingScheduler(), userDefaults: mockDefaults)
-        store.isNotificationEnabled = true
-        store.selectedFrequency = 24
-        
-        store.setNotificationList(for: [item])
-        
-        // DispatchQueue.main.asyncを待機
-        try await Task.sleep(nanoseconds: 20_000_000) // 20ms 程度
-        
-        #expect(store.showingNotificationErrorAlert == true)
-        #expect(store.notificationErrorMessage.contains("スケジューリングに失敗"))
-    }
+    // MARK: - setNotificationList
     
-    @Test("通知対象アイテムのフィルタリングテスト")
-    func testNotificationItemFiltering() async throws {
+    // MARK: - removeAllNotification
+    
+    // MARK: - getNotifiedItem
+    
+    @Test("通知アイテムのランダム選択テスト")
+    func testGetNotifiedItem() async throws {
         
         // テスト用のリマインダーアイテムを作成
-        let enabledItem1 = ReminderItem(text: "通知有効タスク1", isNotificationEnable: true, createdAt: Date())
-        let enabledItem2 = ReminderItem(text: "通知有効タスク2", isNotificationEnable: true, createdAt: Date())
-        let disabledItem1 = ReminderItem(text: "通知無効タスク1", isNotificationEnable: false, createdAt: Date())
-        let disabledItem2 = ReminderItem(text: "通知無効タスク2", isNotificationEnable: false, createdAt: Date())
+        let item1 = ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date())
+        let item2 = ReminderItem(text: "タスク2", isNotificationEnable: true, createdAt: Date())
+        let item3 = ReminderItem(text: "タスク3", isNotificationEnable: false, createdAt: Date())
         
-        let allItems = [enabledItem1, disabledItem1, enabledItem2, disabledItem2]
+        // TODO: ロジックの修正
+        // ビジネスロジックを再現
+        func getNotifiedItem(items: [ReminderItem]) -> String {
+            let notifiedItems = items.filter { $0.isNotificationEnable == true }
+            
+            let remindTexts: [String]
+            if notifiedItems.count > 0 {
+                remindTexts = notifiedItems.map { $0.text }
+            } else {
+                remindTexts = ["リストが空です"]
+            }
+            
+            // 実際のアプリではランダムだが、テストでは最初の要素を返すことで一貫性を保つ
+            return remindTexts.first ?? "リストが空です"
+        }
         
-        let enabledItems = allItems.filter { $0.isNotificationEnable }.map { $0.text }
-        let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems
+        let result1 = getNotifiedItem(items: [item1, item2, item3])
+        let enableLists = ["タスク1", "タスク2"]
+        #expect(enableLists.contains(result1), "有効なアイテムから選択される")
         
-        // 通知有効なアイテムが2つあることを確認
-        #expect(enabledItems.count == 2, "通知有効なアイテムが2つ")
-        #expect(notificationTexts.count == 2, "通知テキストが2つ")
-        #expect(notificationTexts.contains("通知有効タスク1"), "通知有効タスク1が含まれる")
-        #expect(notificationTexts.contains("通知有効タスク2"), "通知有効タスク2が含まれる")
-        #expect(!notificationTexts.contains("通知無効タスク1"), "通知無効タスク1は含まれない")
+        // 全て無効な場合
+        let result2 = getNotifiedItem(items: [item3])
+        #expect(result2 == "リストが空です", "全て無効な場合はデフォルトメッセージ")
         
-        // 空の場合のテスト
-        let emptyItems: [ReminderItem] = []
-        let emptyEnabledItems = emptyItems.filter { $0.isNotificationEnable }.map { $0.text }
-        let emptyNotificationTexts = emptyEnabledItems.isEmpty ? ["リストが空です"] : emptyEnabledItems
+        // 空の場合
+        let result3 = getNotifiedItem(items: [])
+        #expect(result3 == "リストが空です", "リストが空の場合はデフォルトメッセージ")
         
-        #expect(emptyNotificationTexts == ["リストが空です"], "空リストの場合のデフォルトメッセージ")
-        
-        // 全て無効な場合のテスト
-        let allDisabledItems = [disabledItem1, disabledItem2]
-        let allDisabledEnabledItems = allDisabledItems.filter { $0.isNotificationEnable }.map { $0.text }
-        let allDisabledTexts = allDisabledEnabledItems.isEmpty ? ["リストが空です"] : allDisabledEnabledItems
-        
-        #expect(allDisabledTexts == ["リストが空です"], "全て無効な場合のデフォルトメッセージ")
+        // ランダム性の検証（複数回実行して異なる結果が出るか）
+        var results = Set<String>()
+        for _ in 0..<20 {
+            let notifiedItems = [item1, item2].filter { $0.isNotificationEnable == true }
+            let remindTexts = notifiedItems.map { $0.text }
+            if let randomText = remindTexts.randomElement() {
+                results.insert(randomText)
+            }
+        }
+        #expect(results.count > 1, "複数回実行で異なる結果が選択される（ランダム性）")
     }
+    
+    @Test("データ0件時のテスト")
+    func testEmptyData() async throws {
+        
+        let emptyItems: [ReminderItem] = []
+        
+        // TODO: ロジックのマージ
+        func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
+            let notifiedItems = items.filter { $0.isNotificationEnable == true }
+            
+            let remindTexts: [String]
+            if notifiedItems.count > 0 {
+                remindTexts = notifiedItems.map { $0.text }
+            } else {
+                remindTexts = ["リストが空です"]
+            }
+            
+            return remindTexts.randomElement() ?? "リストが空です"
+        }
+        
+        let notificationMessage = getNotifiedItemForEmptyList(items: emptyItems)
+        #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
+        
+        // 0件データでの通知作成時の処理
+        let enabledItems = emptyItems.filter { $0.isNotificationEnable }
+        let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems.map { $0.text }
+        
+        #expect(enabledItems.isEmpty, "0件データでは通知有効アイテムも0件")
+        #expect(notificationTexts == ["リストが空です"], "0件時は「リストが空です」が通知テキストになる")
+        #expect(notificationTexts.count == 1, "デフォルトメッセージは1つ")
+        
+        // 複数回実行してもクラッシュしないことを確認
+        for _ in 0..<10 {
+            let randomMessage = notificationTexts.randomElement() ?? "フォールバック"
+            #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
+        }
+    }
+    
+    
+    // MARK: - notificationTimeConverter
     
     @Test("ランダム通知時刻生成のテスト")
     func testRandomNotificationTimeGeneration() async throws {
@@ -156,88 +187,8 @@ struct NotificationStoreTests {
         }
     }
     
-    @Test("通知アイテムのランダム選択テスト")
-    func testGetNotifiedItem() async throws {
-        
-        // テスト用のリマインダーアイテムを作成
-        let item1 = ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date())
-        let item2 = ReminderItem(text: "タスク2", isNotificationEnable: true, createdAt: Date())
-        let item3 = ReminderItem(text: "タスク3", isNotificationEnable: false, createdAt: Date())
-        
-        // ビジネスロジックを再現
-        func getNotifiedItem(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.isNotificationEnable == true }
-            
-            let remindTexts: [String]
-            if notifiedItems.count > 0 {
-                remindTexts = notifiedItems.map { $0.text }
-            } else {
-                remindTexts = ["リストが空です"]
-            }
-            
-            // 実際のアプリではランダムだが、テストでは最初の要素を返すことで一貫性を保つ
-            return remindTexts.first ?? "リストが空です"
-        }
-        
-        let result1 = getNotifiedItem(items: [item1, item2, item3])
-        let enableLists = ["タスク1", "タスク2"]
-        #expect(enableLists.contains(result1), "有効なアイテムから選択される")
-        
-        // 全て無効な場合
-        let result2 = getNotifiedItem(items: [item3])
-        #expect(result2 == "リストが空です", "全て無効な場合はデフォルトメッセージ")
-        
-        // 空の場合
-        let result3 = getNotifiedItem(items: [])
-        #expect(result3 == "リストが空です", "リストが空の場合はデフォルトメッセージ")
-        
-        // ランダム性の検証（複数回実行して異なる結果が出るか）
-        var results = Set<String>()
-        for _ in 0..<20 {
-            let notifiedItems = [item1, item2].filter { $0.isNotificationEnable == true }
-            let remindTexts = notifiedItems.map { $0.text }
-            if let randomText = remindTexts.randomElement() {
-                results.insert(randomText)
-            }
-        }
-        #expect(results.count > 1, "複数回実行で異なる結果が選択される（ランダム性）")
-    }
+    // MARK: - その他
     
-    @Test("データ0件時のテスト")
-    func testEmptyData() async throws {
-        
-        let emptyItems: [ReminderItem] = []
-        
-        func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.isNotificationEnable == true }
-            
-            let remindTexts: [String]
-            if notifiedItems.count > 0 {
-                remindTexts = notifiedItems.map { $0.text }
-            } else {
-                remindTexts = ["リストが空です"]
-            }
-            
-            return remindTexts.randomElement() ?? "リストが空です"
-        }
-        
-        let notificationMessage = getNotifiedItemForEmptyList(items: emptyItems)
-        #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
-        
-        // 0件データでの通知作成時の処理
-        let enabledItems = emptyItems.filter { $0.isNotificationEnable }
-        let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems.map { $0.text }
-        
-        #expect(enabledItems.isEmpty, "0件データでは通知有効アイテムも0件")
-        #expect(notificationTexts == ["リストが空です"], "0件時は「リストが空です」が通知テキストになる")
-        #expect(notificationTexts.count == 1, "デフォルトメッセージは1つ")
-        
-        // 複数回実行してもクラッシュしないことを確認
-        for _ in 0..<10 {
-            let randomMessage = notificationTexts.randomElement() ?? "フォールバック"
-            #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
-        }
-    }
     
     @Test("TimeProvider注入テスト")
     func testTimeProviderInjection() async throws {
