@@ -17,9 +17,9 @@ struct NotificationStoreTests {
     
     // MARK: - saveSettings
     
-    @Test
+    @Test("saveSettingsの保存テスト")
     func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
-        <#body#>
+        // MockUserDefaultsの挙動を修正
     }
     
     // MARK: - setNotificationList
