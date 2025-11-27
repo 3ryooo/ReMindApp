@@ -26,6 +26,10 @@ struct NotificationStoreTests {
     
     // MARK: - removeAllNotification
     
+    @Test func testRemoveAllNotification() async throws {
+        <#body#>
+    }
+    
     // MARK: - getNotifiedItem
     
     @Test("通知アイテムのランダム選択テスト")
