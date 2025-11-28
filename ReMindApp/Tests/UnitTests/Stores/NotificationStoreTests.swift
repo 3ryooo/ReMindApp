@@ -19,7 +19,7 @@ struct NotificationStoreTests {
     
     @Test("saveSettingsの保存テスト")
     func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
-        // MockUserDefaultsの挙動を修正
+        // MockUserDefaultsの挙動を修正→Obsidianのメモから引用(20251128_1954_07)
     }
     
     // MARK: - setNotificationList
