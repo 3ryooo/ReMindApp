@@ -116,6 +116,12 @@ struct NotificationStoreTests {
         }
     }
     
+    // MARK: - getFirstNotificationDate
+    
+    @Test func testGetFirstNotificationDate() async throws {
+        <#body#>
+    }
+    
     
     // MARK: - notificationTimeConverter
     
