@@ -1,7 +1,7 @@
 import Foundation
 
 struct AppConstants {
-    // TODO: （待ち）本番用の値に変更
+    // TODO: （待ち）本番用の値に変更→変更後の挙動をテスト
     static let notificationCount = 60
 
     struct UserDefaultsKeys {

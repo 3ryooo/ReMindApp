@@ -53,7 +53,6 @@ class NotificationStore {
         selectedFrequency >= 24
     }
 
-//  TODO: （待ち）本番用の値に変更（現在はテスト用で少なめ）
     private let lastNotificationId = AppConstants.notificationCount
     
     
