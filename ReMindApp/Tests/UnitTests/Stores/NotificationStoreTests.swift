@@ -25,9 +25,6 @@ struct NotificationStoreTests {
     
     // MARK: - removeAllNotification
     
-    @Test func testRemoveAllNotification() async throws {
-        <#body#>
-    }
     
     // MARK: - getNotifiedItem
     
