@@ -19,6 +19,52 @@ struct NotificationStoreTests {
     
     @Test("saveSettingsの保存テスト")
     func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
+        
+        // 初期値の保存
+        store.isNotificationEnabled = true
+        store.isRandomTimeEnabled = false
+        store.selectedFrequency = 24
+        let testDate = Date()
+        store.baseTime = testDate
+        
+        store.saveSettings()
+        
+        // 保存された値を検証
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled) == true,
+                "isNotificationEnabledが正しく保存される")
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled) == false,
+                "isRandomTimeEnabledが正しく保存される")
+        #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey) == 24,
+                "selectedFrequencyが正しく保存される")
+        
+        if let savedBaseTime = mockDefaults.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date {
+            #expect(abs(savedBaseTime.timeIntervalSince(testDate)) < 1.0,
+                    "baseTimeが正しく保存される")
+        }
+        
+        #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest) == 1,
+                "countForReviewRequestが1回目の呼び出しでインクリメントされる")
+        
+        // 値を変更し、保存
+        store.isNotificationEnabled = false
+        store.isRandomTimeEnabled = true
+        store.selectedFrequency = 48
+        
+        store.saveSettings()
+        
+        // 変更後の値を検証
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled) == false,
+                "変更後のisNotificationEnabledが正しく保存される")
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled) == true,
+                "変更後のisRandomTimeEnabledが正しく保存される")
+        #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey) == 48,
+                "変更後のselectedFrequencyが正しく保存される")
+        
+        #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest) == 2,
+                "countForReviewRequestが2回目の呼び出しでインクリメントされる")
+        
     }
     
     // MARK: - setNotificationList
