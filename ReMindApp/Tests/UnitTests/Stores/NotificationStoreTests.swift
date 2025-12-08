@@ -69,6 +69,10 @@ struct NotificationStoreTests {
     
     // MARK: - setNotificationList
     
+    @Test func testNotificationCount() async throws {
+        <#body#>
+    }
+    
     // MARK: - removeAllNotification
     
     @Test func testNotificationsDeletedifNotificationDisabled() async throws {
