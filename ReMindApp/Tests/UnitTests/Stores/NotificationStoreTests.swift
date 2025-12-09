@@ -70,7 +70,7 @@ struct NotificationStoreTests {
     // MARK: - setNotificationList
     
     @Test func testNotificationCount() async throws {
-        <#body#>
+        // TODO: 最後の通知メッセージは別のメソッドを用意(20251209_2106_40)
     }
     
     // MARK: - removeAllNotification
