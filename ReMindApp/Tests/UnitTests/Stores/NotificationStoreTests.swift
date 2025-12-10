@@ -71,6 +71,7 @@ struct NotificationStoreTests {
     
     @Test func testNotificationCount() async throws {
         // TODO: 最後の通知メッセージは別のメソッドを用意(20251209_2106_40)
+        // TODO: 失敗メソッドのカウントも同様に別メソッドを用意(20251209_2106_40)
     }
     
     // MARK: - removeAllNotification
