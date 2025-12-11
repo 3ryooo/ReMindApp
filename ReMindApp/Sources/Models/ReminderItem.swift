@@ -13,6 +13,8 @@ final class ReminderItem: Identifiable {
     var isNotificationEnable: Bool = false
     var createdAt: Date = Date()
     
+    // TODO: 感情ログの再設計(20251211_2345_43)
+    
     @Transient
     var errorMessages: [ReminderFormError] = []
     
