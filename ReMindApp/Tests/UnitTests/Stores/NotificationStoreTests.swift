@@ -21,7 +21,7 @@ struct NotificationStoreTests {
     func testUserDefaultsSavedCorrectlyWithSaveSettings() async throws {
         
         
-        // TODO: テストコード作業用を再確認して修正(20251224_2246_08)
+        // TODO: テストコード作業用を再確認して修正→分割(20251224_2246_08)
         
         
         let mockDefaults = MockUserDefaults()
