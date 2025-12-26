@@ -56,11 +56,11 @@ struct ReMindAppIntegrationTests {
         let savedItems = try context.fetch(FetchDescriptor<ReminderItem>())
         #expect(savedItems.count == 1, "リマインダーが1つ保存される")
         #expect(savedItems.first?.text == testReminderText, "保存されたテキストが正しい")
-        #expect(savedItems.first?.isNotificationEnable == true, "通知が有効になっている")
+        #expect(savedItems.first?.itemNotificationEnabled == true, "通知が有効になっている")
         
         print("通知設定")
         
-        notificationStore.isNotificationEnabled = true
+        notificationStore.appNotificationEnabled = true
         notificationStore.selectedFrequency = 24
         notificationStore.isRandomTimeEnabled = false
         notificationStore.baseTime = Date()
@@ -92,7 +92,7 @@ struct ReMindAppIntegrationTests {
         print("データ整合性確認")
         
         // リマインダーと通知の関連性をチェック
-        let enabledReminders = savedItems.filter { $0.isNotificationEnable }
+        let enabledReminders = savedItems.filter { $0.itemNotificationEnabled }
         #expect(enabledReminders.count > 0, "通知有効なリマインダーが存在")
 
         let notificationContents = pendingNotifications.map { $0.content.body }
@@ -110,14 +110,14 @@ struct ReMindAppIntegrationTests {
         // 非同期処理の完了を待つ
         try await Task.sleep(for: .milliseconds(300))
         
-        notificationStore.isNotificationEnabled = false
+        notificationStore.appNotificationEnabled = false
         
         // 削除前の通知数を確認
         let beforeDeleteNotifications = await UNUserNotificationCenter.current().pendingNotificationRequests()
         print("通知数（削除前）: \(beforeDeleteNotifications.count)")
         
         // 実際のアプリでの動作をシミュレート（SettingsScreenの処理と同じ）
-        if notificationStore.isNotificationEnabled {
+        if notificationStore.appNotificationEnabled {
             notificationStore.setNotificationList(for: savedItems)
         } else {
             notificationStore.removeAllNotification()

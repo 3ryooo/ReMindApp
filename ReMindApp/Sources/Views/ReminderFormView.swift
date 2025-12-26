@@ -10,13 +10,13 @@ import SwiftUI
 struct ReminderFormView: View {
     // MARK: - Bindings
     @Binding var text: String
-    @Binding var isNotificationEnabled: Bool
+    @Binding var itemNotificationEnabled: Bool
 
     // MARK: - Body
     var body: some View {
         Group {
             TextField("リマインドテキスト", text: $text, axis: .vertical)
-            Toggle(isOn: $isNotificationEnabled) {
+            Toggle(isOn: $itemNotificationEnabled) {
                 Text("リマインド対象")
             }
         }

@@ -21,7 +21,7 @@ struct AddReminderScreen: View {
         NavigationView {
             Form {
                 ValidationSummaryView(errorMessages: addFormErrors)
-                ReminderFormView(text: $newReminderText, isNotificationEnabled: $newReminderNotification)
+                ReminderFormView(text: $newReminderText, itemNotificationEnabled: $newReminderNotification)
                 Button("追加") {
                     attemptedSubmit = true
                     guard addFormErrors.isEmpty else { return }

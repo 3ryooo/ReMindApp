@@ -19,7 +19,7 @@ struct EditReminderScreen: View {
         NavigationView {
             Form {
                 ValidationSummaryView(errorMessages: editFormErrors)
-                ReminderFormView(text: $reminderItem.text, isNotificationEnabled: $reminderItem.isNotificationEnable)
+                ReminderFormView(text: $reminderItem.text, itemNotificationEnabled: $reminderItem.itemNotificationEnabled)
             }
             .navigationTitle("編集")
         }

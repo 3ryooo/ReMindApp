@@ -24,7 +24,7 @@ struct NotificationStoreTests {
         let store = NotificationStore(userDefaults: mockDefaults)
         
         // 初期値の保存
-        store.isNotificationEnabled = true
+        store.appNotificationEnabled = true
         store.isRandomTimeEnabled = false
         store.selectedFrequency = 24
         let testDate = Date()
@@ -49,7 +49,7 @@ struct NotificationStoreTests {
                 "countForReviewRequestが1回目の呼び出しでインクリメントされる")
         
         // 値を変更し、保存
-        store.isNotificationEnabled = false
+        store.appNotificationEnabled = false
         store.isRandomTimeEnabled = true
         store.selectedFrequency = 48
         
@@ -103,7 +103,7 @@ struct NotificationStoreTests {
         // TODO: ロジックの修正
         // ビジネスロジックを再現
         func getNotifiedItem(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.isNotificationEnable == true }
+            let notifiedItems = items.filter { $0.itemNotificationEnabled == true }
             
             let remindTexts: [String]
             if notifiedItems.count > 0 {
@@ -131,7 +131,7 @@ struct NotificationStoreTests {
         // ランダム性の検証（複数回実行して異なる結果が出るか）
         var results = Set<String>()
         for _ in 0..<20 {
-            let notifiedItems = [item1, item2].filter { $0.isNotificationEnable == true }
+            let notifiedItems = [item1, item2].filter { $0.itemNotificationEnabled == true }
             let remindTexts = notifiedItems.map { $0.text }
             if let randomText = remindTexts.randomElement() {
                 results.insert(randomText)
@@ -147,7 +147,7 @@ struct NotificationStoreTests {
         
         // TODO: ロジックのマージ
         func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.isNotificationEnable == true }
+            let notifiedItems = items.filter { $0.itemNotificationEnabled == true }
             
             let remindTexts: [String]
             if notifiedItems.count > 0 {
@@ -163,7 +163,7 @@ struct NotificationStoreTests {
         #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
         
         // 0件データでの通知作成時の処理
-        let enabledItems = emptyItems.filter { $0.isNotificationEnable }
+        let enabledItems = emptyItems.filter { $0.itemNotificationEnabled }
         let notificationTexts = enabledItems.isEmpty ? ["リストが空です"] : enabledItems.map { $0.text }
         
         #expect(enabledItems.isEmpty, "0件データでは通知有効アイテムも0件")

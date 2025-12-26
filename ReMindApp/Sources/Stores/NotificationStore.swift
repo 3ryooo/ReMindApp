@@ -16,7 +16,7 @@ class NotificationStore {
     private let userDefaults: UserDefaultsProtocol
     private let timeProvider: TimeProvider
     
-    var isNotificationEnabled: Bool
+    var appNotificationEnabled: Bool
     var isRandomTimeEnabled: Bool
     var selectedFrequency: Int
     var countForReviewRequest: Int
@@ -36,7 +36,7 @@ class NotificationStore {
         self.timeProvider = timeProvider
         
         // UserDefaultsから初期値を読み込み
-        self.isNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        self.appNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
         self.isRandomTimeEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
         self.selectedFrequency = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
         self.countForReviewRequest = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
@@ -81,7 +81,7 @@ class NotificationStore {
         
         countForReviewRequest += 1
 
-        userDefaults.set(isNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        userDefaults.set(appNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
         userDefaults.set(isRandomTimeEnabled, forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
         userDefaults.set(selectedFrequency, forKey: AppConstants.UserDefaultsKeys.frequencyKey)
         userDefaults.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)
@@ -93,7 +93,7 @@ class NotificationStore {
     func setNotificationList(for items: [ReminderItem]) {
         resetErrorState()
         
-        guard isNotificationEnabled else {
+        guard appNotificationEnabled else {
             removeAllNotification()
             return
         }
@@ -199,7 +199,7 @@ class NotificationStore {
     }
     
     private func getNotifiedItem(items: [ReminderItem]) -> String {
-        let notifiedTexts = items.compactMap { $0.isNotificationEnable ? $0.text : nil }
+        let notifiedTexts = items.compactMap { $0.itemNotificationEnabled ? $0.text : nil }
         
         if let randomText = notifiedTexts.randomElement() {
             return randomText

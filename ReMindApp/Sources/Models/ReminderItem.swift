@@ -10,7 +10,7 @@ import SwiftData
 final class ReminderItem: Identifiable {
     var id: UUID = UUID()
     var text: String = ""
-    var isNotificationEnable: Bool = false
+    var itemNotificationEnabled: Bool = false
     var createdAt: Date = Date()
     
     
@@ -20,7 +20,7 @@ final class ReminderItem: Identifiable {
     
     init(text: String, isNotificationEnable: Bool, createdAt: Date) {
         self.text = text
-        self.isNotificationEnable = isNotificationEnable
+        self.itemNotificationEnabled = isNotificationEnable
         self.createdAt = createdAt
     }
     

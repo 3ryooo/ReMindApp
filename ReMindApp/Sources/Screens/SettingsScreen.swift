@@ -36,7 +36,7 @@ struct SettingsScreen: View {
     
     private var isChanged: Bool {
         return !(
-            notificationStore.isNotificationEnabled == tempIsNotificationEnabled &&
+            notificationStore.appNotificationEnabled == tempIsNotificationEnabled &&
             notificationStore.isRandomTimeEnabled == tempIsRandomTimeEnabled &&
             notificationStore.selectedFrequency == tempSelectedFrequency &&
             notificationStore.baseTime == tempBaseTime
@@ -139,13 +139,13 @@ struct SettingsScreen: View {
                             requestReview()
                         }
                         
-                        notificationStore.isNotificationEnabled = tempIsNotificationEnabled
+                        notificationStore.appNotificationEnabled = tempIsNotificationEnabled
                         notificationStore.isRandomTimeEnabled = tempIsRandomTimeEnabled
                         notificationStore.selectedFrequency = tempSelectedFrequency
                         notificationStore.baseTime = tempBaseTime
                         
                         notificationStore.saveSettings()
-                        if notificationStore.isNotificationEnabled {
+                        if notificationStore.appNotificationEnabled {
                             notificationStore.setNotificationList(for: items)
                         } else {
                             notificationStore.removeAllNotification()

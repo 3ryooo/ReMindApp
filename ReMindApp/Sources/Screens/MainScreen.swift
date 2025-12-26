@@ -38,7 +38,7 @@ struct MainScreen: View {
                 ForEach(displayedItems) { item in
                     NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
                         Text(item.text)
-                            .opacity(item.isNotificationEnable ? 1 : 0.2)
+                            .opacity(item.itemNotificationEnabled ? 1 : 0.2)
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
