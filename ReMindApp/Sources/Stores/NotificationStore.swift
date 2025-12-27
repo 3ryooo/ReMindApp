@@ -36,7 +36,7 @@ class NotificationStore {
         self.timeProvider = timeProvider
         
         // UserDefaultsから初期値を読み込み
-        self.appNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        self.appNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.appNotificationEnabled)
         self.isRandomTimeEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
         self.selectedFrequency = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
         self.countForReviewRequest = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
@@ -81,7 +81,7 @@ class NotificationStore {
         
         countForReviewRequest += 1
 
-        userDefaults.set(appNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled)
+        userDefaults.set(appNotificationEnabled, forKey: AppConstants.UserDefaultsKeys.appNotificationEnabled)
         userDefaults.set(isRandomTimeEnabled, forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
         userDefaults.set(selectedFrequency, forKey: AppConstants.UserDefaultsKeys.frequencyKey)
         userDefaults.set(baseTime, forKey: AppConstants.UserDefaultsKeys.baseTime)

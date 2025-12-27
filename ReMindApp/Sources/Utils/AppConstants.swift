@@ -5,7 +5,7 @@ struct AppConstants {
     static let notificationCount = 5
 
     struct UserDefaultsKeys {
-        static let isNotificationEnabled = "isNotificationEnabled"
+        static let appNotificationEnabled = "appNotificationEnabled"
         static let isRandomTimeEnabled = "isRandomTimeEnabled"
         static let frequencyKey = "frequencyKey"
         static let baseTime = "baseTime"

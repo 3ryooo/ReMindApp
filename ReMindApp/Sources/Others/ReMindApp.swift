@@ -17,7 +17,7 @@ struct ReMindApp: App {
             "frequencyKey": 24,
             "countForReviewRequest": 0,
             "baseTime": Date.now,
-            "isNotificationEnabled": false,
+            "appNotificationEnabled": false,
             "isRandomTimeEnabled": false
         ])
     }

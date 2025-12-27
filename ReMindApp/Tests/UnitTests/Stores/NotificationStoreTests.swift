@@ -33,8 +33,8 @@ struct NotificationStoreTests {
         store.saveSettings()
         
         // 保存された値を検証
-        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled) == true,
-                "isNotificationEnabledが正しく保存される")
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.appNotificationEnabled) == true,
+                "appNotificationEnabledが正しく保存される")
         #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled) == false,
                 "isRandomTimeEnabledが正しく保存される")
         #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey) == 24,
@@ -56,8 +56,8 @@ struct NotificationStoreTests {
         store.saveSettings()
         
         // 変更後の値を検証
-        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isNotificationEnabled) == false,
-                "変更後のisNotificationEnabledが正しく保存される")
+        #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.appNotificationEnabled) == false,
+                "変更後のappNotificationEnabledが正しく保存される")
         #expect(mockDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled) == true,
                 "変更後のisRandomTimeEnabledが正しく保存される")
         #expect(mockDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey) == 48,

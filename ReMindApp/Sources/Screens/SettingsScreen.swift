@@ -19,7 +19,7 @@ struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.requestReview) private var requestReview
     @Query private var items: [ReminderItem]
-    @AppStorage("isNotificationEnabled") private var appIsNotificationEnabled: Bool = false
+    @AppStorage("appNotificationEnabled") private var appIsNotificationEnabled: Bool = false
     @AppStorage("isRandomTimeEnabled") private var appIsRandomTimeEnabled: Bool = false
     @AppStorage("frequencyKey") private var appSelectedFrequency: Int = 24
     @AppStorage("countForReviewRequest") private var appCountForReviewRequest: Int = 0
