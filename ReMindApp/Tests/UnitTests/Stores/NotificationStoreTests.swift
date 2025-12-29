@@ -101,42 +101,28 @@ struct NotificationStoreTests {
         let item2 = ReminderItem(text: "タスク2", isNotificationEnable: true, createdAt: Date())
         let item3 = ReminderItem(text: "タスク3", isNotificationEnable: false, createdAt: Date())
         
-        // TODO: ロジックの修正
-        // ビジネスロジックを再現
-        func getNotifiedItem(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.itemNotificationEnabled == true }
-            
-            let remindTexts: [String]
-            if notifiedItems.count > 0 {
-                remindTexts = notifiedItems.map { $0.text }
-            } else {
-                remindTexts = ["リストが空です"]
-            }
-            
-            // 実際のアプリではランダムだが、テストでは最初の要素を返すことで一貫性を保つ
-            return remindTexts.first ?? "リストが空です"
-        }
+        // 本物のNotificationStoreを使用
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
         
-        let result1 = getNotifiedItem(items: [item1, item2, item3])
+        // 有効なアイテムから選択されることを確認
+        let result1 = store.getNotifiedItem(items: [item1, item2, item3])
         let enableLists = ["タスク1", "タスク2"]
         #expect(enableLists.contains(result1), "有効なアイテムから選択される")
         
         // 全て無効な場合
-        let result2 = getNotifiedItem(items: [item3])
+        let result2 = store.getNotifiedItem(items: [item3])
         #expect(result2 == "リストが空です", "全て無効な場合はデフォルトメッセージ")
         
         // 空の場合
-        let result3 = getNotifiedItem(items: [])
+        let result3 = store.getNotifiedItem(items: [])
         #expect(result3 == "リストが空です", "リストが空の場合はデフォルトメッセージ")
         
         // ランダム性の検証（複数回実行して異なる結果が出るか）
         var results = Set<String>()
         for _ in 0..<20 {
-            let notifiedItems = [item1, item2].filter { $0.itemNotificationEnabled == true }
-            let remindTexts = notifiedItems.map { $0.text }
-            if let randomText = remindTexts.randomElement() {
-                results.insert(randomText)
-            }
+            let randomResult = store.getNotifiedItem(items: [item1, item2])
+            results.insert(randomResult)
         }
         #expect(results.count > 1, "複数回実行で異なる結果が選択される（ランダム性）")
     }
@@ -181,7 +167,6 @@ struct NotificationStoreTests {
     // MARK: - getFirstNotificationDate
     
     @Test func testGetFirstNotificationDate() async throws {
-        <#body#>
     }
     
     
