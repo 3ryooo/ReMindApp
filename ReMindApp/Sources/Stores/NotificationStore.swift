@@ -198,7 +198,7 @@ class NotificationStore {
         return true
     }
     
-    private func getNotifiedItem(items: [ReminderItem]) -> String {
+    func getNotifiedItem(items: [ReminderItem]) -> String {
         let notifiedTexts = items.compactMap { $0.itemNotificationEnabled ? $0.text : nil }
         
         if let randomText = notifiedTexts.randomElement() {
