@@ -132,21 +132,12 @@ struct NotificationStoreTests {
         
         let emptyItems: [ReminderItem] = []
         
-        // TODO: ロジックのマージ
-        func getNotifiedItemForEmptyList(items: [ReminderItem]) -> String {
-            let notifiedItems = items.filter { $0.itemNotificationEnabled == true }
-            
-            let remindTexts: [String]
-            if notifiedItems.count > 0 {
-                remindTexts = notifiedItems.map { $0.text }
-            } else {
-                remindTexts = ["リストが空です"]
-            }
-            
-            return remindTexts.randomElement() ?? "リストが空です"
-        }
+        // 本物のNotificationStoreを使用
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
         
-        let notificationMessage = getNotifiedItemForEmptyList(items: emptyItems)
+        // 0件時にデフォルトメッセージが返されることを確認
+        let notificationMessage = store.getNotifiedItem(items: emptyItems)
         #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
         
         // 0件データでの通知作成時の処理
@@ -159,7 +150,7 @@ struct NotificationStoreTests {
         
         // 複数回実行してもクラッシュしないことを確認
         for _ in 0..<10 {
-            let randomMessage = notificationTexts.randomElement() ?? "フォールバック"
+            let randomMessage = store.getNotifiedItem(items: emptyItems)
             #expect(randomMessage == "リストが空です", "0件データでのランダム選択は常にデフォルトメッセージ")
         }
     }
