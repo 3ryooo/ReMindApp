@@ -197,7 +197,6 @@ class NotificationStore {
         }
         return true
     }
-    
     func getNotifiedItem(items: [ReminderItem]) -> String {
         let notifiedTexts = items.compactMap { $0.itemNotificationEnabled ? $0.text : nil }
         
@@ -237,7 +236,7 @@ class NotificationStore {
         return firstDate
     }
     
-    private func notificationTimeConverter(_ setDate: Date, _ id: Int) -> Date? {
+    func notificationTimeConverter(_ setDate: Date, _ id: Int) -> Date? {
         let notificationDate = setDate.addingTimeInterval(TimeInterval(60 * 60 * selectedFrequency * id)) // 本番用
         
         let calendar = Calendar(identifier: .gregorian)

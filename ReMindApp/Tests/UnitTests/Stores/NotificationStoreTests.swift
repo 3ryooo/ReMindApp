@@ -135,7 +135,7 @@ struct NotificationStoreTests {
         // 本物のNotificationStoreを使用
         let mockDefaults = MockUserDefaults()
         let store = NotificationStore(userDefaults: mockDefaults)
-        
+    
         // 0件時にデフォルトメッセージが返されることを確認
         let notificationMessage = store.getNotifiedItem(items: emptyItems)
         #expect(notificationMessage == "リストが空です", "0件時にデフォルトメッセージが生成される")
@@ -181,22 +181,16 @@ struct NotificationStoreTests {
             return
         }
         
-        // ランダム時刻生成
-        func generateRandomNotificationDate(setDate: Date, frequency: Int, isRandomEnabled: Bool) -> Date? {
-            let notificationDate = setDate.addingTimeInterval(TimeInterval(60 * 60 * frequency))
-            
-            var components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: notificationDate)
-            
-            if isRandomEnabled && frequency >= 24 {
-                components.hour = Int.random(in: 0..<24)
-                components.minute = Int.random(in: 0..<59)
-            }
-            
-            return calendar.date(from: components)
-        }
+        // NotificationStoreのインスタンス作成（モック使用）
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
         
         // ランダム無効
-        let nonRandomDate = generateRandomNotificationDate(setDate: baseDate, frequency: 24, isRandomEnabled: false)
+        store.selectedFrequency = 24
+        store.isRandomTimeEnabled = false
+        
+        // 1回目の通知（ID=1） → 24時間後
+        let nonRandomDate = store.notificationTimeConverter(baseDate, 1)
         if let date = nonRandomDate {
             let components = calendar.dateComponents([.hour, .minute], from: date)
             #expect(components.hour == 14, "時が変わらない")
@@ -204,7 +198,9 @@ struct NotificationStoreTests {
         }
         
         // ランダム有効
-        let randomDate = generateRandomNotificationDate(setDate: baseDate, frequency: 24, isRandomEnabled: true)
+        store.isRandomTimeEnabled = true
+        
+        let randomDate = store.notificationTimeConverter(baseDate, 1)
         if let date = randomDate {
             let components = calendar.dateComponents([.hour, .minute], from: date)
             #expect(components.hour! >= 0 && components.hour! < 24, "時が0-23の範囲")
@@ -213,15 +209,21 @@ struct NotificationStoreTests {
         }
         
         // 頻度が24未満の場合：ランダムが適用されない
-        let lowFrequencyDate = generateRandomNotificationDate(setDate: baseDate, frequency: 12, isRandomEnabled: true)
+        store.selectedFrequency = 12
+        store.isRandomTimeEnabled = true
+        
+        let lowFrequencyDate = store.notificationTimeConverter(baseDate, 1)
         if let date = lowFrequencyDate {
             let components = calendar.dateComponents([.hour, .minute], from: date)
             #expect(components.hour == 2, "12時間後は2時（14+12=26, 24時超え）")
             #expect(components.minute == 30, "分は変わらない")
         }
         
-        //　頻度が24の場合
-        let exact24Date = generateRandomNotificationDate(setDate: baseDate, frequency: 24, isRandomEnabled: true)
+        // 頻度が24の場合の検証
+        store.selectedFrequency = 24
+        store.isRandomTimeEnabled = true
+        
+        let exact24Date = store.notificationTimeConverter(baseDate, 1)
         if let date = exact24Date {
             let baseComponents = calendar.dateComponents([.year, .month, .day], from: baseDate)
             let resultComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
