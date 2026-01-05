@@ -4,7 +4,6 @@
 //
 
 import Foundation
-@testable import ReMindApp
 
 /// テスト用のUserDefaultsモック
 class MockUserDefaults: UserDefaultsProtocol {
