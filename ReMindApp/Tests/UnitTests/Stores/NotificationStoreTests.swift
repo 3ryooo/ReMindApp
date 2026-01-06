@@ -177,6 +177,23 @@ struct NotificationStoreTests {
     // MARK: - getFirstNotificationDate
     
     @Test func testGetFirstNotificationDate() async throws {
+        
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
+        
+        let nowDate = Date()
+        let oneHourAgo = try #require(Calendar.current.date(byAdding: .hour, value: -1, to: nowDate))
+                
+        store.baseTime = oneHourAgo
+        store.selectedFrequency = 24
+        
+        
+        store.saveSettings()
+        
+        let firstDate = store.getFirstNotificationDate()
+        let oneDayAgo = try #require(Calendar.current.date(byAdding: .day, value: 1, to: nowDate))
+        
+        
     }
     
     

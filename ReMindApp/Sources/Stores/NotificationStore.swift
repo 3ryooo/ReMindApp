@@ -207,7 +207,7 @@ class NotificationStore {
         }
     }
     
-    private func getFirstNotificationDate() -> Date? {
+    func getFirstNotificationDate() -> Date? {
         let now = timeProvider.now()
         let calendar = Calendar(identifier: .gregorian)
         
