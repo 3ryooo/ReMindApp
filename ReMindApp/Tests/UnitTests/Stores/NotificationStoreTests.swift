@@ -193,6 +193,8 @@ struct NotificationStoreTests {
         let firstDate = store.getFirstNotificationDate()
         let oneDayAgo = try #require(Calendar.current.date(byAdding: .day, value: 1, to: nowDate))
         
+        // TODO: 別パターンのテストコードも用意(20260107_2009_53)
+        
         
     }
     
