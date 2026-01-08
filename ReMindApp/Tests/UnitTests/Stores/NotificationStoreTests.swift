@@ -190,11 +190,12 @@ struct NotificationStoreTests {
         
         store.saveSettings()
         
-        let firstDate = store.getFirstNotificationDate()
+        let firstDate = try #require(store.getFirstNotificationDate())
         let oneDayAgo = try #require(Calendar.current.date(byAdding: .day, value: 1, to: nowDate))
         
-        // TODO: 別パターンのテストコードも用意(20260107_2009_53)
+        let dateSubtraction: Int = Int(oneDayAgo.timeIntervalSince(firstDate))
         
+        print("test:\(dateSubtraction)")
         
     }
     
