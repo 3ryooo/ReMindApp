@@ -15,6 +15,8 @@ struct NotificationStoreTests {
     
     // MARK: - requestAuthorization
     
+    // TODO: 認証テストをモックで再現(20260109_2221_30)
+    
     // MARK: - saveSettings
     
     @Test("saveSettingsの保存テスト")
