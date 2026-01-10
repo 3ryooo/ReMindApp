@@ -184,20 +184,20 @@ struct NotificationStoreTests {
         let store = NotificationStore(userDefaults: mockDefaults)
         
         let nowDate = Date()
+        
+        // baseTimeの設定
         let oneHourAgo = try #require(Calendar.current.date(byAdding: .hour, value: -1, to: nowDate))
-                
         store.baseTime = oneHourAgo
+        
         store.selectedFrequency = 24
-        
-        
         store.saveSettings()
         
         let firstDate = try #require(store.getFirstNotificationDate())
-        let oneDayAgo = try #require(Calendar.current.date(byAdding: .day, value: 1, to: nowDate))
+        let nextTime = try #require(Calendar.current.date(byAdding: .day, value: 1, to: oneHourAgo))
         
-        let dateSubtraction: Int = Int(oneDayAgo.timeIntervalSince(firstDate))
+        let dateSubtraction: Int = Int(firstDate.timeIntervalSince(nextTime))
         
-        print("test:\(dateSubtraction)")
+        #expect(abs(dateSubtraction) < 150, "翌日のbasetimeに日付が設定される")
         
     }
     
