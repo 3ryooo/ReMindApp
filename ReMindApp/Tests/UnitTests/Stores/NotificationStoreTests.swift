@@ -180,24 +180,49 @@ struct NotificationStoreTests {
     
     @Test func testGetFirstNotificationDate() async throws {
         
+        var actualNotificationDate: Date
+        
+        func calculateFirstNotification(baseTime: Date, frequency: Int) -> Date {
+            store.baseTime = baseTime
+            store.selectedFrequency = frequency
+            store.saveSettings()
+            
+            // TODO: アンラップ調査
+            return store.getFirstNotificationDate()!
+        }
+        
         let mockDefaults = MockUserDefaults()
         let store = NotificationStore(userDefaults: mockDefaults)
         
-        let nowDate = Date()
+        let now = Date()
         
-        // baseTimeの設定
-        let oneHourAgo = try #require(Calendar.current.date(byAdding: .hour, value: -1, to: nowDate))
-        store.baseTime = oneHourAgo
+        // テストケース1: baseTimeが現在時刻の1時間前の場合
+        let baseTimeInPast = try #require(Calendar.current.date(byAdding: .hour, value: -1, to: now))
+        store.baseTime = baseTimeInPast
         
-        store.selectedFrequency = 24
-        store.saveSettings()
+
+        actualNotificationDate = calculateFirstNotification(baseTime: baseTimeInPast, frequency: 24)
         
-        let firstDate = try #require(store.getFirstNotificationDate())
-        let nextTime = try #require(Calendar.current.date(byAdding: .day, value: 1, to: oneHourAgo))
+        var expectedNotificationDate = try #require(Calendar.current.date(byAdding: .day, value: 1, to: baseTimeInPast))
         
-        let dateSubtraction: Int = Int(firstDate.timeIntervalSince(nextTime))
+        var timeDifferenceInSeconds = Int(actualNotificationDate.timeIntervalSince(expectedNotificationDate))
         
-        #expect(abs(dateSubtraction) < 150, "翌日のbasetimeに日付が設定される")
+        #expect(abs(timeDifferenceInSeconds) < 150, "翌日のbasetimeに日付が設定される")
+        
+        // -----
+        
+        
+        // テストケース2: baseTimeが現在時刻の1分後の場合
+        let baseTimeInFuture = try #require(Calendar.current.date(byAdding: .minute, value: 1, to: now))
+        
+        actualNotificationDate = calculateFirstNotification(baseTime: baseTimeInFuture, frequency: 24)
+        expectedNotificationDate = try #require(Calendar.current.date(byAdding: .day, value: 0, to: baseTimeInFuture))
+        
+        
+        timeDifferenceInSeconds = Int(actualNotificationDate.timeIntervalSince(expectedNotificationDate))
+        
+        #expect(abs(timeDifferenceInSeconds) < 150, "翌日のbasetimeに日付が設定される")
+        
         
     }
     
