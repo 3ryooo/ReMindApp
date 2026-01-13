@@ -180,9 +180,17 @@ struct NotificationStoreTests {
     
     @Test func testGetFirstNotificationDate() async throws {
         
-        let mockDefaults = MockUserDefaults()
-        let store = NotificationStore(userDefaults: mockDefaults)
-        let now = Date()
+        let calendar = Calendar(identifier: .gregorian)
+        let fixedDate = calendar.date(from: DateComponents(
+            year: 2024, month: 12, day: 25,
+            hour: 14, minute: 30, second: 0
+        ))!
+        
+        let mockTime = MockTimeProvider(currentTime: fixedDate)
+            let mockDefaults = MockUserDefaults()
+        
+        let store = NotificationStore(userDefaults: mockDefaults, timeProvider: mockTime)
+        let now = mockTime.now()
         
         func calculateFirstNotification(baseTime: Date, frequency: Int) throws -> Date {
             store.baseTime = baseTime
@@ -195,14 +203,13 @@ struct NotificationStoreTests {
         // テストケース1: baseTimeが現在時刻の1時間前の場合
         let baseTimeInPast = try #require(Calendar.current.date(byAdding: .hour, value: -1, to: now))
         
-
         let actualNotificationDate1 = try calculateFirstNotification(baseTime: baseTimeInPast, frequency: 24)
-        
         let expectedNotificationDate1 = try #require(Calendar.current.date(byAdding: .day, value: 1, to: baseTimeInPast))
         
         let timeDifference1 = Int(actualNotificationDate1.timeIntervalSince(expectedNotificationDate1))
         
         #expect(abs(timeDifference1) < 150, "翌日のbaseTimeに日付が設定される")
+        #expect(actualNotificationDate1 > now, "未来に日時が設定される")
         
         // -----
         
@@ -214,8 +221,53 @@ struct NotificationStoreTests {
         let expectedNotificationDate2 = try #require(Calendar.current.date(byAdding: .day, value: 0, to: baseTimeInFuture))
         
         let timeDifference2 = Int(actualNotificationDate2.timeIntervalSince(expectedNotificationDate2))
-        #expect(abs(timeDifference2) < 150, "当日のbaseTimeに日付が設定される")
         
+        #expect(abs(timeDifference2) < 150, "当日のbaseTimeに日付が設定される")
+        #expect(actualNotificationDate2 > now, "未来に日時が設定される")
+        
+        
+        
+        // テストケース3: frequencyが1の場合
+        
+        let actualNotificationDate3 = try calculateFirstNotification(baseTime: baseTimeInPast, frequency: 1)
+        
+        // baseTimeから1時間ずつ加算してnowを超える最初の時刻
+        let expectedNotificationDate3 = try #require(Calendar.current.date(byAdding: .hour, value: 1, to: now))
+        
+        let timeDifference3 = Int(actualNotificationDate3.timeIntervalSince(expectedNotificationDate3))
+        
+        #expect(abs(timeDifference3) < 150, "nowから1時間後に日付が設定される")
+        #expect(actualNotificationDate3 > now, "未来に日時が設定される")
+        
+        // テストケース4: frequencyが6の場合
+        
+        let actualNotificationDate4 = try calculateFirstNotification(baseTime: baseTimeInPast, frequency: 6)
+        let expectedNotificationDate4 = try #require(Calendar.current.date(byAdding: .hour, value: 6, to: baseTimeInPast))
+        
+        let timeDifference4 = Int(actualNotificationDate4.timeIntervalSince(expectedNotificationDate4))
+        
+        #expect(abs(timeDifference4) < 150, "6時間後に日時が設定される")
+        #expect(actualNotificationDate4 > now, "未来に日時が設定される")
+        
+        // テストケース5: frequencyが12の場合
+        
+        let actualNotificationDate5 = try calculateFirstNotification(baseTime: baseTimeInPast, frequency: 12)
+        let expectedNotificationDate5 = try #require(Calendar.current.date(byAdding: .hour, value: 12, to: baseTimeInPast))
+        
+        let timeDifference5 = Int(actualNotificationDate5.timeIntervalSince(expectedNotificationDate5))
+        
+        #expect(abs(timeDifference5) < 150, "12時間後に日時が設定される")
+        #expect(actualNotificationDate5 > now, "未来に日時が設定される")
+        
+        // テストケース6: frequencyが48の場合
+        
+        let actualNotificationDate6 = try calculateFirstNotification(baseTime: baseTimeInPast, frequency: 48)
+        let expectedNotificationDate6 = try #require(Calendar.current.date(byAdding: .day, value: 2, to: baseTimeInPast))
+        
+        let timeDifference6 = Int(actualNotificationDate6.timeIntervalSince(expectedNotificationDate6))
+        
+        #expect(abs(timeDifference6) < 150, "2日後に日時が設定される")
+        #expect(actualNotificationDate6 > now, "未来に日時が設定される")
         
     }
     
