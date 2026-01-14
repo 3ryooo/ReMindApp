@@ -13,6 +13,14 @@ struct NotificationStoreTests {
     
     // MARK: - 共通データ（モック等）
     
+    private var testDate: Date {
+        Calendar(identifier: .gregorian).date(from: DateComponents(
+            year: 2024, month: 12, day: 25,
+            hour: 14, minute: 30, second: 0
+        ))!
+    }
+
+    
     // MARK: - requestAuthorization
     
     // TODO: 認証テストをモックで再現(20260109_2221_30)
@@ -180,11 +188,7 @@ struct NotificationStoreTests {
     
     @Test func testGetFirstNotificationDate() async throws {
         
-        let calendar = Calendar(identifier: .gregorian)
-        let fixedDate = calendar.date(from: DateComponents(
-            year: 2024, month: 12, day: 25,
-            hour: 14, minute: 30, second: 0
-        ))!
+        let fixedDate = testDate
         
         let mockTime = MockTimeProvider(currentTime: fixedDate)
             let mockDefaults = MockUserDefaults()
@@ -277,20 +281,8 @@ struct NotificationStoreTests {
     @Test("ランダム通知時刻生成のテスト")
     func testRandomNotificationTimeGeneration() async throws {
         
-        // 基準日時を設定（2024/12/25 14:30:00）
+        let baseDate = testDate
         let calendar = Calendar(identifier: .gregorian)
-        var baseComponents = DateComponents()
-        baseComponents.year = 2024
-        baseComponents.month = 12
-        baseComponents.day = 25
-        baseComponents.hour = 14
-        baseComponents.minute = 30
-        baseComponents.second = 0
-        
-        guard let baseDate = calendar.date(from: baseComponents) else {
-            Issue.record("基準日時の作成に失敗")
-            return
-        }
         
         // NotificationStoreのインスタンス作成（モック使用）
         let mockDefaults = MockUserDefaults()
@@ -352,11 +344,7 @@ struct NotificationStoreTests {
     
     @Test("TimeProvider注入テスト")
     func testTimeProviderInjection() async throws {
-        let calendar = Calendar(identifier: .gregorian)
-        let fixedDate = calendar.date(from: DateComponents(
-            year: 2024, month: 12, day: 25,
-            hour: 14, minute: 30, second: 0
-        ))!
+        let fixedDate = testDate
         
         let mockTime = MockTimeProvider(currentTime: fixedDate)
         let mockDefaults = MockUserDefaults()
