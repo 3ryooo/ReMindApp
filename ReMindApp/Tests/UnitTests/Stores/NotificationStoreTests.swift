@@ -278,6 +278,41 @@ struct NotificationStoreTests {
     
     // MARK: - notificationTimeConverter
     
+    @Test("複数通知の通知時間の加算テスト")
+    func testNotificationTimeAddition() async throws {
+        
+        let basedate = testDate
+        let calender  = Calendar(identifier: .gregorian)
+        
+        // TODO: ランダム無効を集約
+        
+        let mockDefaults = MockUserDefaults()
+        let store = NotificationStore(userDefaults: mockDefaults)
+        
+        store.selectedFrequency = 24
+        store.isRandomTimeEnabled = false
+        
+        // ID=1の場合（1日後）
+        let notificationId1 = store.notificationTimeConverter(basedate, 1)
+        if let date = notificationId1 {
+            let components = calender.dateComponents([.day, .hour, .minute], from: date)
+            #expect(components.day == 26, "日付が1日後")
+            #expect(components.hour == 14, "時が変わらない")
+            #expect(components.minute == 30, "分が変わらない")
+        }
+        
+        // ID=50の場合（50日後）
+        let notificationId50 = store.notificationTimeConverter(basedate, 50)
+        if let date = notificationId50 {
+            let components = calender.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+            #expect(components.year == 2025, "日付が50日後")
+            #expect(components.month == 2, "日付が50日後")
+            #expect(components.day == 13, "日付が50日後")
+            #expect(components.hour == 14, "時が変わらない")
+            #expect(components.minute == 30, "分が変わらない")
+        }
+    }
+    
     @Test("ランダム通知時刻生成のテスト")
     func testRandomNotificationTimeGeneration() async throws {
         
@@ -287,18 +322,6 @@ struct NotificationStoreTests {
         // NotificationStoreのインスタンス作成（モック使用）
         let mockDefaults = MockUserDefaults()
         let store = NotificationStore(userDefaults: mockDefaults)
-        
-        // ランダム無効
-        store.selectedFrequency = 24
-        store.isRandomTimeEnabled = false
-        
-        // 1回目の通知（ID=1） → 24時間後
-        let nonRandomDate = store.notificationTimeConverter(baseDate, 1)
-        if let date = nonRandomDate {
-            let components = calendar.dateComponents([.hour, .minute], from: date)
-            #expect(components.hour == 14, "時が変わらない")
-            #expect(components.minute == 30, "分が変わらない")
-        }
         
         // ランダム有効
         store.isRandomTimeEnabled = true
