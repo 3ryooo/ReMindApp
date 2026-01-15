@@ -245,7 +245,7 @@ class NotificationStore {
         
         if isRandomTimeEnabled && isDailyFrequency {
             components.hour = Int.random(in: 0..<24)
-            components.minute = Int.random(in: 0..<59)
+            components.minute = Int.random(in: 0..<60)
         }
         
         return calendar.date(from: components)

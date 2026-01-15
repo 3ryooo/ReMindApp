@@ -307,7 +307,7 @@ struct NotificationStoreTests {
         if let date = randomDate {
             let components = calendar.dateComponents([.hour, .minute], from: date)
             #expect(components.hour! >= 0 && components.hour! < 24, "時が0-23の範囲")
-            #expect(components.minute! >= 0 && components.minute! < 59, "分が0-58の範囲")
+            #expect(components.minute! >= 0 && components.minute! < 60, "分が0-59の範囲")
             #expect(components.hour != 14 || components.minute != 30, "ランダムで時刻が変わる")
         }
         
