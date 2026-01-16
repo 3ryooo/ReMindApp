@@ -313,8 +313,8 @@ struct NotificationStoreTests {
         }
     }
     
-    @Test("ランダム通知時刻生成のテスト")
-    func testRandomNotificationTimeGeneration() async throws {
+    @Test("isDailyFrequencyの境界値テスト")
+    func testDailyFrequencyBounds() async throws {
         
         let baseDate = testDate
         let calendar = Calendar(identifier: .gregorian)
@@ -323,29 +323,18 @@ struct NotificationStoreTests {
         let mockDefaults = MockUserDefaults()
         let store = NotificationStore(userDefaults: mockDefaults)
         
-        // ランダム有効
+        // 境界値テスト（Frequency=23 → 実行されない）
+        store.selectedFrequency = 23
         store.isRandomTimeEnabled = true
         
-        let randomDate = store.notificationTimeConverter(baseDate, 1)
-        if let date = randomDate {
+        let exact23Date = store.notificationTimeConverter(baseDate, 1)
+        if let date = exact23Date {
             let components = calendar.dateComponents([.hour, .minute], from: date)
-            #expect(components.hour! >= 0 && components.hour! < 24, "時が0-23の範囲")
-            #expect(components.minute! >= 0 && components.minute! < 60, "分が0-59の範囲")
-            #expect(components.hour != 14 || components.minute != 30, "ランダムで時刻が変わる")
-        }
-        
-        // 頻度が24未満の場合：ランダムが適用されない
-        store.selectedFrequency = 12
-        store.isRandomTimeEnabled = true
-        
-        let lowFrequencyDate = store.notificationTimeConverter(baseDate, 1)
-        if let date = lowFrequencyDate {
-            let components = calendar.dateComponents([.hour, .minute], from: date)
-            #expect(components.hour == 2, "12時間後は2時（14+12=26, 24時超え）")
+            #expect(components.hour == 13, "23時間後は13時")
             #expect(components.minute == 30, "分は変わらない")
         }
         
-        // 頻度が24の場合の検証
+        // 境界値テスト（Frequency=24 → 実行される）
         store.selectedFrequency = 24
         store.isRandomTimeEnabled = true
         
@@ -357,6 +346,22 @@ struct NotificationStoreTests {
             #expect(resultComponents.year == baseComponents.year, "年は同じ")
             #expect(resultComponents.month == baseComponents.month, "月は同じ")
             #expect(resultComponents.day == (baseComponents.day! + 1), "1日後")
+            #expect(resultComponents.hour != 14, "時ランダム")
+            #expect(resultComponents.minute != 30, "分ランダム")
+        }
+        
+        // 境界値テスト（Frequency=48 → 実行される）
+        store.selectedFrequency = 48
+        store.isRandomTimeEnabled = true
+        
+        let exact48Date = store.notificationTimeConverter(baseDate, 1)
+        if let date = exact48Date {
+            let baseComponents = calendar.dateComponents([.year, .month, .day], from: baseDate)
+            let resultComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+            
+            #expect(resultComponents.year == baseComponents.year, "年は同じ")
+            #expect(resultComponents.month == baseComponents.month, "月は同じ")
+            #expect(resultComponents.day == (baseComponents.day! + 2), "2日後")
             #expect(resultComponents.hour != 14, "時ランダム")
             #expect(resultComponents.minute != 30, "分ランダム")
         }
