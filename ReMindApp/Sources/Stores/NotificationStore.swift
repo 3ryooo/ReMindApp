@@ -151,6 +151,9 @@ class NotificationStore {
     }
     
     private func createNotification(_ id : Int, items: [ReminderItem]) -> Bool {
+        
+        // TODO: エラーの処理修正(20260117_2217_26)
+        
         let item = getNotifiedItem(items: items)
         
         guard let firstNotificationDate = getFirstNotificationDate() else {
