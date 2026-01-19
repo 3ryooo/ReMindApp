@@ -80,15 +80,17 @@ struct NotificationStoreTests {
     
     // MARK: - setNotificationList
     
-    @Test func testNotificationCount() async throws {
-       
+    @Test("通知の作成上限数")
+    func testNotificationShouldCreateAllNotifications() async throws {
         
     }
     
-    @Test func testNotificationLimitMessage() async throws {
+    @Test("最後の通知メッセージの上限メッセージ")
+    func testNotificationLimitMessage() async throws {
     }
     
-    @Test func testNotificationListSetFailureCount() async throws {
+    @Test("通知が失敗した場合のメッセージと件数のテスト")
+    func testNotificationListSetFailureCount() async throws {
     }
     
     // MARK: - removeAllNotification
