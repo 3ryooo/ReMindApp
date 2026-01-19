@@ -12,6 +12,7 @@ class MockNotificationScheduler: NotificationScheduling {
     var addCallCount = 0
     
     var addedRequests: [UNNotificationRequest] = []
+    var errorToReturn: Error?
     
     func removeAllPendingNotificationRequests() {
         removeAllCallCount += 1
@@ -20,6 +21,6 @@ class MockNotificationScheduler: NotificationScheduling {
     func add(_ request: UNNotificationRequest, completionHandler: ((Error?) -> Void)?) {
         addCallCount += 1
         addedRequests.append(request)
-        completionHandler?(nil)  // エラーなしで完了
+        completionHandler?(errorToReturn)
     }
 }
