@@ -82,7 +82,7 @@ struct NotificationStoreTests {
     
     @Test("通知の作成上限数")
     func testNotificationShouldCreateAllNotifications() async throws {
-        
+        // TODO: ローカル通知の上限数を別途変数に設定(20260120_1928_22)
     }
     
     @Test("最後の通知メッセージの上限メッセージ")
