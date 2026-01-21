@@ -82,7 +82,25 @@ struct NotificationStoreTests {
     
     @Test("通知の作成上限数")
     func testNotificationShouldCreateAllNotifications() async throws {
-        // TODO: ローカル通知の上限数を別途変数に設定(20260120_1928_22)
+        
+        // TODO: createNotificationに移動
+        
+        let mockScheduler = MockNotificationScheduler()
+        let mockDefaults = MockUserDefaults()
+        
+        let store = NotificationStore(scheduler: mockScheduler, userDefaults: mockDefaults)
+        
+        let testItems = [
+            ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date())
+        ]
+        
+        
+        store.appNotificationEnabled = true
+        store.selectedFrequency = 24
+        store.setNotificationList(for: testItems)
+        
+        #expect(mockScheduler.addCallCount == 5, "通知の作成数がnotificationCountと同じである")
+        
     }
     
     @Test("最後の通知メッセージの上限メッセージ")
@@ -99,10 +117,7 @@ struct NotificationStoreTests {
         let mockScheduler = MockNotificationScheduler()
         let mockDefaults = MockUserDefaults()
         
-        let store = NotificationStore(
-            scheduler: mockScheduler,
-            userDefaults: mockDefaults
-        )
+        let store = NotificationStore(scheduler: mockScheduler, userDefaults: mockDefaults)
         
         let testItems = [
             ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date()),
