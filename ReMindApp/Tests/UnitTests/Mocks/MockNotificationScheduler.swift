@@ -12,7 +12,7 @@ class MockNotificationScheduler: NotificationScheduling {
     var addCallCount = 0
     
     var addedRequests: [UNNotificationRequest] = []
-    var errorToReturn: Error?
+    var errorToReturn: Error? = NSError(domain: "test", code: 1)
     
     func removeAllPendingNotificationRequests() {
         removeAllCallCount += 1
@@ -21,6 +21,11 @@ class MockNotificationScheduler: NotificationScheduling {
     func add(_ request: UNNotificationRequest, completionHandler: ((Error?) -> Void)?) {
         addCallCount += 1
         addedRequests.append(request)
-        completionHandler?(errorToReturn)
+        
+        if addCallCount == 2 {
+            completionHandler?(errorToReturn)
+        } else {
+            completionHandler?(nil)
+        }
     }
 }
