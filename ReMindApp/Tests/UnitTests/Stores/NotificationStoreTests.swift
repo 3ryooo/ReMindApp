@@ -130,6 +130,24 @@ struct NotificationStoreTests {
     
     @Test("通知が失敗した場合のメッセージと件数のテスト")
     func testNotificationListSetFailureCount() async throws {
+        let mockScheduler = MockNotificationScheduler()
+        let mockDefaults = MockUserDefaults()
+        
+        let store = NotificationStore(scheduler: mockScheduler, userDefaults: mockDefaults)
+        
+        let testItems = [
+            ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date())
+        ]
+        
+        
+        store.appNotificationEnabled = true
+        store.selectedFrequency = 24
+        store.setNotificationList(for: testItems)
+        
+        
+        
+        // ここから追記（エラーのExpect）
+        
     }
     
     // MARK: - removeAllNotification
