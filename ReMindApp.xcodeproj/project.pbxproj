@@ -369,6 +369,8 @@
 /* Begin XCBuildConfiguration section */
 		864404E22DEECCE8007AA15B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 864404D82DEECCE6007AA15B /* ReMindApp */;
+			baseConfigurationReferenceRelativePath = Sources/Configurations/Shared.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -433,6 +435,8 @@
 		};
 		864404E32DEECCE8007AA15B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 864404D82DEECCE6007AA15B /* ReMindApp */;
+			baseConfigurationReferenceRelativePath = Sources/Configurations/Shared.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

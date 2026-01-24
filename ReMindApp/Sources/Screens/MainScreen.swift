@@ -107,6 +107,8 @@ struct MainScreen: View {
     func debugFunc() {
 //        reminderStore.addSampleReminder(context: modelContext)
         
+        print(Bundle.main.object(forInfoDictionaryKey: "SupportEmail") ?? "Not found")
+        
         
     }
     

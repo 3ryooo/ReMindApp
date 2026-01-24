@@ -8,5 +8,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>SupportEmail</key>
+	<string>$(SUPPORT_EMAIL)</string>
 </dict>
 </plist>
