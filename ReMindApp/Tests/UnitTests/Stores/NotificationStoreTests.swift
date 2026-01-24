@@ -144,10 +144,11 @@ struct NotificationStoreTests {
         store.selectedFrequency = 24
         store.setNotificationList(for: testItems)
         
+        #expect(mockScheduler.addCallCount == 5, "通知が5回作成される")
+        #expect(store.showingNotificationErrorAlert == true, "エラーアラートが表示される")
         
-        
-        // ここから追記（エラーのExpect）
-        
+        #expect(store.notificationErrorMessage == "一部の通知設定に失敗しました（1件）。アプリを再起動してお試しください。",
+                "正しいエラーメッセージが表示される")
     }
     
     // MARK: - removeAllNotification
