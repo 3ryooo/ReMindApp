@@ -137,10 +137,8 @@ class NotificationStore {
     }
     
     private func showError(_ message: String) {
-        DispatchQueue.main.async {
-            self.notificationErrorMessage = message
-            self.showingNotificationErrorAlert = true
-        }
+        self.notificationErrorMessage = message
+        self.showingNotificationErrorAlert = true
     }
     
     func removeAllNotification() {
@@ -181,23 +179,27 @@ class NotificationStore {
         let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
         let request = UNNotificationRequest(identifier: originID, content: content, trigger: trigger)
         
+        let semaphore = DispatchSemaphore(value: 0)
+        var schedulingSucceeded = true
+        
         scheduler.add(request) { error in
             if let error = error {
+                schedulingSucceeded = false
                 #if DEBUG
                 print("スケジューリング失敗：\(error.localizedDescription)")
                 #endif
-                DispatchQueue.main.async {
-                    self.notificationErrorMessage = "通知のスケジューリングに失敗しました。アプリを再起動してお試しください。"
-                    self.showingNotificationErrorAlert = true
-                }
             } else {
                 #if DEBUG
                 let japanTime = DateConverter().japanTime(notificationDate)
                 print("スケジューリング成功： id:\(id) 通知予定：\(japanTime)")
                 #endif
             }
+            semaphore.signal()
         }
-        return true
+        
+        semaphore.wait()
+        
+        return schedulingSucceeded
     }
     func getNotifiedItem(items: [ReminderItem]) -> String {
         let notifiedTexts = items.compactMap { $0.itemNotificationEnabled ? $0.text : nil }
