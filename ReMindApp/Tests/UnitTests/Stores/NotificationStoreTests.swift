@@ -80,6 +80,32 @@ struct NotificationStoreTests {
     
     // MARK: - setNotificationList
     
+    
+    
+    // MARK: - removeAllNotification
+    
+    @Test func testNotificationsDeletedifNotificationDisabled() async throws {
+        let mockScheduler = MockNotificationScheduler()
+        let mockDefaults = MockUserDefaults()
+        
+        let store = NotificationStore(scheduler: mockScheduler, userDefaults: mockDefaults)
+        
+        let testItems = [
+            ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date()),
+            ReminderItem(text: "タスク2", isNotificationEnable: true, createdAt: Date())
+        ]
+
+        store.appNotificationEnabled = false
+        store.setNotificationList(for: testItems)
+        
+        #expect(mockScheduler.removeAllCallCount == 1, "通知無効時に削除処理が1回呼ばれる")
+        #expect(mockScheduler.addCallCount == 0, "通知無効時には通知作成がスキップされる")
+        #expect(store.showingNotificationErrorAlert == false, "通知無効時にはエラーアラートが表示されない")
+        #expect(store.notificationErrorMessage == "", "通知無効時にはエラーメッセージが空")
+    }
+    
+    // MARK: - createNotification
+    
     @Test("通知の作成上限数")
     func testNotificationShouldCreateAllNotifications() async throws {
         
@@ -149,28 +175,6 @@ struct NotificationStoreTests {
         
         #expect(store.notificationErrorMessage == "一部の通知設定に失敗しました（1件）。アプリを再起動してお試しください。",
                 "正しいエラーメッセージが表示される")
-    }
-    
-    // MARK: - removeAllNotification
-    
-    @Test func testNotificationsDeletedifNotificationDisabled() async throws {
-        let mockScheduler = MockNotificationScheduler()
-        let mockDefaults = MockUserDefaults()
-        
-        let store = NotificationStore(scheduler: mockScheduler, userDefaults: mockDefaults)
-        
-        let testItems = [
-            ReminderItem(text: "タスク1", isNotificationEnable: true, createdAt: Date()),
-            ReminderItem(text: "タスク2", isNotificationEnable: true, createdAt: Date())
-        ]
-
-        store.appNotificationEnabled = false
-        store.setNotificationList(for: testItems)
-        
-        #expect(mockScheduler.removeAllCallCount == 1, "通知無効時に削除処理が1回呼ばれる")
-        #expect(mockScheduler.addCallCount == 0, "通知無効時には通知作成がスキップされる")
-        #expect(store.showingNotificationErrorAlert == false, "通知無効時にはエラーアラートが表示されない")
-        #expect(store.notificationErrorMessage == "", "通知無効時にはエラーメッセージが空")
     }
 
     
