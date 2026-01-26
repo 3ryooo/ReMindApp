@@ -23,7 +23,7 @@ struct NotificationStoreTests {
     
     // MARK: - requestAuthorization
     
-    // TODO: 認証テストをモックで再現(20260109_2221_30)
+    // TODO（待ち）: 認証テストをモックで再現(20260109_2221_30)
     
     // MARK: - saveSettings
     
@@ -109,7 +109,6 @@ struct NotificationStoreTests {
     @Test("通知の作成上限数")
     func testNotificationShouldCreateAllNotifications() async throws {
         
-        // TODO: createNotificationに移動
         
         let mockScheduler = MockNotificationScheduler()
         let mockDefaults = MockUserDefaults()
@@ -133,7 +132,7 @@ struct NotificationStoreTests {
     func testNotificationLimitMessage() async throws {
         
         
-        // TODO: 重複コードのマージ
+        // TODO（待ち）: 重複コードのマージ
         
         let mockScheduler = MockNotificationScheduler()
         let mockDefaults = MockUserDefaults()
@@ -343,7 +342,6 @@ struct NotificationStoreTests {
         let basedate = testDate
         let calender  = Calendar(identifier: .gregorian)
         
-        // TODO: ランダム無効を集約
         
         let mockDefaults = MockUserDefaults()
         let store = NotificationStore(userDefaults: mockDefaults)

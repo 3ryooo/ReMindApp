@@ -103,11 +103,7 @@ struct MainScreen: View {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
     }
 
-    // TODO: （待ち）検証後削除
     func debugFunc() {
-//        reminderStore.addSampleReminder(context: modelContext)
-        
-        print(Bundle.main.object(forInfoDictionaryKey: "SupportEmail") ?? "Not found")
         
         
     }
