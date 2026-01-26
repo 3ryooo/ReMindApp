@@ -95,8 +95,7 @@ struct SettingsScreen: View {
                         if MFMailComposeViewController.canSendMail() {
                             isShowingMailView = true
                         } else {
-                            // TODO: （転記済）アドレス変更(202510190708_02)
-                            let email = "a@example.com"
+                            let email = Bundle.main.object(forInfoDictionaryKey: "SupportEmail") as? String ?? ""
                             let subject = "問い合わせ"
                             let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
                             
