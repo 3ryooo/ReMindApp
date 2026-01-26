@@ -1,8 +1,7 @@
 import Foundation
 
 struct AppConstants {
-    // TODO: （待ち）本番用の値に変更
-    static let notificationCount = 5
+    static let notificationCount = 64
 
     struct UserDefaultsKeys {
         static let appNotificationEnabled = "appNotificationEnabled"
