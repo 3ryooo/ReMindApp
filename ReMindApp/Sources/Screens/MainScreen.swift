@@ -28,12 +28,14 @@ struct MainScreen: View {
     // MARK: - MainView
     var body: some View {
         NavigationStack {
+            #if DEBUG
             Button("デバッグ用") {
                 debugFunc()
             }
             Button("デバッグ用2") {
                 debugFunc2()
             }
+            #endif
             List {
                 ForEach(displayedItems) { item in
                     NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
