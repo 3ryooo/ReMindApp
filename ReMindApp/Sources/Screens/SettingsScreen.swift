@@ -50,6 +50,11 @@ struct SettingsScreen: View {
     
     // MARK: - SettingView
     var body: some View {
+        #if DEBUG
+        Button("test"){
+            test()
+        }
+        #endif
         Form {
                 Section() {
                     Toggle(isOn: $tempIsNotificationEnabled) {
@@ -219,6 +224,13 @@ struct SettingsScreen: View {
 
     }
     
+    func test(){
+        print("\(notificationStore.appNotificationEnabled), \(tempIsNotificationEnabled)")
+        print("\(notificationStore.isRandomTimeEnabled), \(tempIsRandomTimeEnabled)")
+        print("\(notificationStore.selectedFrequency), \(tempSelectedFrequency)")
+        print("\(notificationStore.baseTime), \(tempBaseTime)")
+        
+    }
 }
 
 
