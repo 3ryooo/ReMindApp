@@ -130,9 +130,7 @@ struct SettingsScreen: View {
                             dismiss()
                         }
                     }) {
-                        Image(systemName: "chevron.backward")
-                            .foregroundStyle(.primary)
-                        Text("戻る")
+                        Image(systemName: "xmark")
                             .foregroundStyle(.primary)
                     }
                 }
@@ -191,13 +189,11 @@ struct SettingsScreen: View {
             .sheet(isPresented: $isShowingMailView) {
                 MailScreen(isShowing: $isShowingMailView)
             }
-            .alert("変更を保存せず終了しますか？", isPresented: $showingSaveAlert) {
+            .alert("保存されていない変更を破棄しますか？", isPresented: $showingSaveAlert) {
                 Button("キャンセル", role: .cancel) { }
-                Button("終了", role: .destructive) {
+                Button("破棄", role: .destructive) {
                     dismiss()
                 }
-            } message: {
-                Text("変更を保存する場合、「キャンセル」後に「保存」をタップしてください")
             }
         
     }
