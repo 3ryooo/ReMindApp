@@ -38,7 +38,10 @@ class NotificationStore {
         // UserDefaultsから初期値を読み込み
         self.appNotificationEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.appNotificationEnabled)
         self.isRandomTimeEnabled = userDefaults.bool(forKey: AppConstants.UserDefaultsKeys.isRandomTimeEnabled)
-        self.selectedFrequency = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+        
+        let savedFrequency = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.frequencyKey)
+        self.selectedFrequency = savedFrequency == 0 ? 24 : savedFrequency
+        
         self.countForReviewRequest = userDefaults.integer(forKey: AppConstants.UserDefaultsKeys.countForReviewRequest)
         
         if let savedBaseTime = userDefaults.object(forKey: AppConstants.UserDefaultsKeys.baseTime) as? Date {

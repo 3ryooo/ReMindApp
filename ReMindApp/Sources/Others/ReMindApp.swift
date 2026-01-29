@@ -14,11 +14,11 @@ struct ReMindApp: App {
     @State private var notificationStore = NotificationStore()
     init() {
         UserDefaults.standard.register(defaults: [
-            "frequencyKey": 24,
-            "countForReviewRequest": 0,
-            "baseTime": Date.now,
-            "appNotificationEnabled": false,
-            "isRandomTimeEnabled": false
+            AppConstants.UserDefaultsKeys.frequencyKey: 24,
+            AppConstants.UserDefaultsKeys.countForReviewRequest: 0,
+            AppConstants.UserDefaultsKeys.appNotificationEnabled: false,
+            AppConstants.UserDefaultsKeys.isRandomTimeEnabled: false,
+            AppConstants.UserDefaultsKeys.baseTime: Date.now
         ])
     }
     
