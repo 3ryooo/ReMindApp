@@ -13,6 +13,7 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
+    // TODO: バリデーションを含めた状態でのスワイプ方法調査(20260130_1347_09)
     // TODO: （転記済）ValidationSummaryViewをよりわかりやすく表示する(20251017_152953)
     // MARK: - EditView
     var body: some View {
