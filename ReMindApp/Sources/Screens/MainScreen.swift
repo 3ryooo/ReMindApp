@@ -29,10 +29,10 @@ struct MainScreen: View {
     var body: some View {
         NavigationStack {
             #if DEBUG
-            Button("デバッグ用") {
+            Button("サンプル挿入") {
                 debugFunc()
             }
-            Button("デバッグ用2") {
+            Button("登録済通知Print") {
                 debugFunc2()
             }
             #endif
@@ -106,8 +106,7 @@ struct MainScreen: View {
     }
 
     func debugFunc() {
-        
-        
+        reminderStore.addSampleReminder(context: modelContext)
     }
     
     func debugFunc2() {

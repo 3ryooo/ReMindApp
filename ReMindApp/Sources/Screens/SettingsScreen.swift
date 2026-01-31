@@ -51,7 +51,7 @@ struct SettingsScreen: View {
     // MARK: - SettingView
     var body: some View {
         #if DEBUG
-        Button("test"){
+        Button("UserDefaults設定確認"){
             test()
         }
         #endif
