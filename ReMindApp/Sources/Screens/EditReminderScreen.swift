@@ -13,7 +13,6 @@ struct EditReminderScreen: View {
     
     @Bindable var reminderItem: ReminderItem
     
-    // TODO: バリデーションを含めた状態でのスワイプ方法調査→シート化を検証(20260130_1347_09)
     // TODO: （転記済）ValidationSummaryViewをよりわかりやすく表示する(20251017_152953)
     // MARK: - EditView
     var body: some View {
@@ -38,6 +37,7 @@ struct EditReminderScreen: View {
                 .disabled(!editFormErrors.isEmpty)
             }
         }
+        // TODO: ナビゲーション用ヘッダーを作成（20260203_0829_58）
         
     }
     
