@@ -120,9 +120,9 @@ struct SettingsScreen: View {
                 }
         }
         .navigationTitle("設定")
-        .navigationBarBackButtonHidden(true)
+        .interactiveDismissDisabled()
         .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button(action: {
                         if isChanged == true {
                             showingSaveAlert = true
@@ -130,11 +130,10 @@ struct SettingsScreen: View {
                             dismiss()
                         }
                     }) {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(.primary)
+                        Text("キャンセル")
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("保存") {
                         
                         if notificationStore.countForReviewRequest == 10 {

@@ -81,8 +81,8 @@ struct MainScreen: View {
                     }
                     
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    NavigationLink {
-                        SettingsScreen()
+                    Button {
+                        reminderStore.showingAddSettingSheet = true
                     } label: {
                         Label("設定", systemImage: "gear")
                     }
@@ -90,6 +90,11 @@ struct MainScreen: View {
             }
             .sheet(isPresented: bindableReminderStore.showingAddReminderSheet) {
                 AddReminderScreen()
+            }
+            .fullScreenCover(isPresented: bindableReminderStore.showingAddSettingSheet) {
+                NavigationStack {
+                    SettingsScreen()
+                }
             }
             .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
                 Button("OK", role: .cancel) { }

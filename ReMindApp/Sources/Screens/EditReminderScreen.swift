@@ -17,13 +17,11 @@ struct EditReminderScreen: View {
     // TODO: （転記済）ValidationSummaryViewをよりわかりやすく表示する(20251017_152953)
     // MARK: - EditView
     var body: some View {
-        NavigationView {
-            Form {
-                ValidationSummaryView(errorMessages: editFormErrors)
-                ReminderFormView(text: $reminderItem.text, itemNotificationEnabled: $reminderItem.itemNotificationEnabled)
-            }
-            .navigationTitle("編集")
+        Form {
+            ValidationSummaryView(errorMessages: editFormErrors)
+            ReminderFormView(text: $reminderItem.text, itemNotificationEnabled: $reminderItem.itemNotificationEnabled)
         }
+        .navigationTitle("編集")
         .notificationErrorAlert()
         .navigationBarBackButtonHidden(true)
         .toolbar {

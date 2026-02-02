@@ -15,6 +15,7 @@ class ReminderStore {
     // MARK: - プロパティ
     var sortOption: SortOption = .timestamp
     var showingAddReminderSheet = false
+    var showingAddSettingSheet = false
     
     // MARK: - ソートメソッド
     func getSortedItems (_ items: [ReminderItem]) -> [ReminderItem] {
