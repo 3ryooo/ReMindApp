@@ -14,6 +14,9 @@ struct MainScreen: View {
     @Environment(NotificationStore.self) private var notificationStore
     @Query private var items: [ReminderItem]
     
+    @State private var selection = Set<ReminderItem.ID>()
+    @State private var editMode: EditMode = .inactive
+    
     private var bindableReminderStore: Bindable<ReminderStore> {
         Bindable(reminderStore)
     }
@@ -36,23 +39,20 @@ struct MainScreen: View {
                 debugFunc2()
             }
             #endif
-            List {
-                ForEach(displayedItems) { item in
-                    NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
-                        Text(item.text)
-                            .opacity(item.itemNotificationEnabled ? 1 : 0.2)
-                    }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            if let index = items.firstIndex(where: { $0.id == item.id }) {
-                                deleteItems(offsets: IndexSet(integer: index))
-                            }
-                        } label: {
-                            Label("削除", systemImage: "trash")
+            List(displayedItems, id: \.id, selection: $selection) { item in
+                NavigationLink(destination: EditReminderScreen(reminderItem: item)) {
+                    Text(item.text)
+                        .opacity(item.itemNotificationEnabled ? 1 : 0.2)
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        if let index = items.firstIndex(where: { $0.id == item.id }) {
+                            deleteItems(offsets: IndexSet(integer: index))
                         }
+                    } label: {
+                        Label("削除", systemImage: "trash")
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .overlay {
                 if items.isEmpty {
@@ -65,8 +65,20 @@ struct MainScreen: View {
             }
             .navigationTitle("Re:Mind")
             .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        EditButton()
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button {
+                        reminderStore.showingAddSettingSheet = true
+                    } label: {
+                        Label("設定", systemImage: "gear")
+                    }
+                    EditButton()
+                }
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    if editMode == .active && !selection.isEmpty {
+                        Button("削除", role: .destructive) {
+                            deleteSelectedItems()
+                        }
+                    } else {
                         Button {
                             reminderStore.showingAddReminderSheet = true
                         } label: {
@@ -79,15 +91,9 @@ struct MainScreen: View {
                             }
                         }
                     }
-                    
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button {
-                        reminderStore.showingAddSettingSheet = true
-                    } label: {
-                        Label("設定", systemImage: "gear")
-                    }
                 }
             }
+            .environment(\.editMode, $editMode)
             .sheet(isPresented: bindableReminderStore.showingAddReminderSheet) {
                 AddReminderScreen()
             }
@@ -108,6 +114,20 @@ struct MainScreen: View {
     // MARK: - メソッド
     func deleteItems(offsets: IndexSet) {
         reminderStore.deleteItems(at: offsets, from: items, context: modelContext)
+    }
+    
+    private func deleteSelectedItems() {
+        withAnimation {
+            let indicesToDelete = items.enumerated().compactMap { index, item in
+                selection.contains(item.id) ? index : nil
+            }
+            
+            let indexSet = IndexSet(indicesToDelete)
+            reminderStore.deleteItems(at: indexSet, from: items, context: modelContext)
+            
+            selection.removeAll()
+            editMode = .inactive 
+        }
     }
 
     func debugFunc() {
