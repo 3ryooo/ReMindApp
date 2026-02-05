@@ -21,23 +21,24 @@ struct EditReminderScreen: View {
             ReminderFormView(text: $reminderItem.text, itemNotificationEnabled: $reminderItem.itemNotificationEnabled)
         }
         .navigationTitle("編集")
-        .notificationErrorAlert()
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(!editFormErrors.isEmpty)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    HStack(spacing: 2) {
-                        Image(systemName: "chevron.left")
-                            .fontWeight(.semibold)
-                        Text("戻る")
+            if !editFormErrors.isEmpty {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        // フォームエラー発生時のボタンのため、何もしない
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                            Text("Re:Mind")
+                        }
                     }
+                    .disabled(true)
                 }
-                .disabled(!editFormErrors.isEmpty)
             }
         }
-        // TODO: ナビゲーション用ヘッダーを作成（20260203_0829_58）
+        .notificationErrorAlert()
+        .interactiveDismissDisabled(!editFormErrors.isEmpty)
         
     }
     
