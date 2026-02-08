@@ -9,7 +9,6 @@ import SwiftData
 @Model
 final class ReminderItem: Identifiable {
     
-    // TODO: CloudKitでの同期検証(20260207_2029_10)
     
     var id: UUID = UUID()
     var text: String = ""
