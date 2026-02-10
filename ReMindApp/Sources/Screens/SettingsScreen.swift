@@ -94,6 +94,7 @@ struct SettingsScreen: View {
                 }
                 Section("アプリについて"){
                     Button("評価する") {
+                        // TODO: アイコンのLiquid Glass対応(20260210_2044_44)
                         requestReview()
                     }
                     Button("お問い合わせ") {
