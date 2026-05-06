@@ -9,8 +9,6 @@ import SwiftData
 @Model
 final class ReminderItem: Identifiable {
     
-    // TODO: CloudKitのDeploy(20260209_1953_16)
-    
     var id: UUID = UUID()
     var text: String = ""
     var itemNotificationEnabled: Bool = false
