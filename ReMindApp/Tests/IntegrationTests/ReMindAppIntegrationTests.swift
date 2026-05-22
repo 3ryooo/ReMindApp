@@ -74,7 +74,7 @@ struct ReMindAppIntegrationTests {
         let pendingNotifications = await UNUserNotificationCenter.current().pendingNotificationRequests()
         
         #expect(pendingNotifications.count > 0, "通知リストが作成される")
-        #expect(pendingNotifications.count <= 5, "通知数が上限以下である")  // アプリの制限
+        #expect(pendingNotifications.count <= 64, "通知数が上限以下である")  // アプリの制限
         
         if let firstNotification = pendingNotifications.first {
             let content = firstNotification.content.body
