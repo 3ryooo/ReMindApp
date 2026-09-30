@@ -17,12 +17,6 @@ struct MainScreen: View {
     @State private var selection = Set<ReminderItem.ID>()
     @State private var editMode: EditMode = .inactive
     
-    private var bindableReminderStore: Bindable<ReminderStore> {
-        Bindable(reminderStore)
-    }
-    private var bindableNotificationStore: Bindable<NotificationStore> {
-        Bindable(notificationStore)
-    }
     
     private var displayedItems: [ReminderItem] {
         return reminderStore.getSortedItems(items)
@@ -30,6 +24,10 @@ struct MainScreen: View {
 
     // MARK: - MainView
     var body: some View {
+        
+        @Bindable var reminderStore = reminderStore
+        @Bindable var notificationStore = notificationStore
+        
         NavigationStack {
             #if DEBUG
             Button("サンプル挿入") {
@@ -85,7 +83,7 @@ struct MainScreen: View {
                             Label("リマインド追加", systemImage: "plus")
                         }
                         Menu("並び順", systemImage: "arrow.up.arrow.down") {
-                            Picker("並び順", selection: bindableReminderStore.sortOption) {
+                            Picker("並び順", selection:$reminderStore.sortOption) {
                                 Text(SortOption.name.displayTitle).tag(SortOption.name)
                                 Text(SortOption.timestamp.displayTitle).tag(SortOption.timestamp)
                             }
@@ -94,15 +92,15 @@ struct MainScreen: View {
                 }
             }
             .environment(\.editMode, $editMode)
-            .sheet(isPresented: bindableReminderStore.showingAddReminderSheet) {
+            .sheet(isPresented: $reminderStore.showingAddReminderSheet) {
                 AddReminderScreen()
             }
-            .fullScreenCover(isPresented: bindableReminderStore.showingAddSettingSheet) {
+            .fullScreenCover(isPresented: $reminderStore.showingAddSettingSheet) {
                 NavigationStack {
                     SettingsScreen()
                 }
             }
-            .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
+            .alert("通知設定エラー", isPresented: $notificationStore.showingNotificationErrorAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(notificationStore.notificationErrorMessage)
