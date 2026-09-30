@@ -34,7 +34,7 @@ struct MainScreen: View {
                 debugFunc()
             }
             Button("登録済通知Print") {
-                debugFunc2()
+                Task { await debugFunc2() }
             }
             #endif
             List(displayedItems, id: \.id, selection: $selection) { item in
@@ -132,16 +132,17 @@ struct MainScreen: View {
         reminderStore.addSampleReminder(context: modelContext)
     }
     
-    func debugFunc2() {
-        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            for request in requests {
-                print("ID: \(request.identifier)")
-                print("Title: \(request.content.title)")
-                print("Body: \(request.content.body)")
-                print("Trigger: \(String(describing: request.trigger))")
-                print("------")
-            }
+    func debugFunc2() async {
+        let requests = await UNUserNotificationCenter.current().pendingNotificationRequests()
+        
+        for request in requests {
+            print("ID: \(request.identifier)")
+            print("Title: \(request.content.title)")
+            print("Body: \(request.content.body)")
+            print("Trigger: \(String(describing: request.trigger))")
+            print("------")
         }
+        
     }
     
 }
