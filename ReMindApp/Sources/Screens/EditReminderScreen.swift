@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EditReminderScreen: View {
     // MARK: - プロパティ
