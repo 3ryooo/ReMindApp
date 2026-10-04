@@ -43,13 +43,11 @@ struct SettingsScreen: View {
         )
     }
     
-    private var bindableNotificationStore: Bindable<NotificationStore> {
-        Bindable(notificationStore)
-    }
-    
-    
     // MARK: - SettingView
     var body: some View {
+        
+        @Bindable var notificationStore = notificationStore
+                
         #if DEBUG
         Button("UserDefaults設定確認"){
             test()
@@ -162,7 +160,7 @@ struct SettingsScreen: View {
                 tempSelectedFrequency = appSelectedFrequency
                 tempCountForReviewRequest = appCountForReviewRequest
             }
-            .alert("通知がオフになっています", isPresented: bindableNotificationStore.showingAuthorizationAlert) {
+            .alert("通知がオフになっています", isPresented: $notificationStore.showingAuthorizationAlert) {
                 Button("キャンセル", role: .cancel) { }
                 Button("設定を開く") {
                     NotificationManager().openAppSettings()
@@ -170,7 +168,7 @@ struct SettingsScreen: View {
             } message: {
                 Text("リマインド機能をオンにするには、設定アプリから「通知を許可」をオンにしてください")
             }
-        .alert("通知設定エラー", isPresented: bindableNotificationStore.showingNotificationErrorAlert) {
+        .alert("通知設定エラー", isPresented: $notificationStore.showingNotificationErrorAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(notificationStore.notificationErrorMessage)
