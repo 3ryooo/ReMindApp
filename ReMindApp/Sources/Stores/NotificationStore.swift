@@ -60,20 +60,19 @@ class NotificationStore {
     
     
     // MARK: - 通知（認証）
-    func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+    func requestAuthorization() async {
+        
+        do {
+            let success = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+            
             #if DEBUG
-            if success {
-                print("許可")
-            } else if let error = error {
-                print("失敗：\(error.localizedDescription)")
-            }
+            print(success ? "許可" : "失敗")
             #endif
             
-            if !success {
-                DispatchQueue.main.async {
-                    self.showingAuthorizationAlert = true
-                }
+        } catch {
+            
+            await MainActor.run {
+                showingAuthorizationAlert = true
             }
             
         }
