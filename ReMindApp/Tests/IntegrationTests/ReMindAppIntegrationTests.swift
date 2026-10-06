@@ -80,8 +80,7 @@ struct ReMindAppIntegrationTests {
             let content = firstNotification.content.body
             #expect(content.contains(testReminderText), "通知内容がリマインダーテキストを含む")
             
-            if let trigger = firstNotification.trigger as? UNCalendarNotificationTrigger,
-               let nextTriggerDate = trigger.nextTriggerDate() {
+            if let trigger = firstNotification.trigger as? UNCalendarNotificationTrigger, let nextTriggerDate = trigger.nextTriggerDate() {
                 #expect(nextTriggerDate > Date(), "通知日時が未来の時刻")
                 print("内容: \(content)")
                 print("予定時刻: \(nextTriggerDate)")

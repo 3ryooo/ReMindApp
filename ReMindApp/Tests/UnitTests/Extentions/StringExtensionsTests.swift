@@ -12,19 +12,15 @@ struct StringExtensionsTests {
     func testStringIsEmptyOrWhiteSpace() async throws {
         
         let emptyString = ""
-        #expect(emptyString.isEmptyOrWhiteSpace == true,
-                "空文字→true")
+        #expect(emptyString.isEmptyOrWhiteSpace == true, "空文字→true")
         
         let whitespaceString = "   "
-        #expect(whitespaceString.isEmptyOrWhiteSpace == true,
-                "空白→true")
+        #expect(whitespaceString.isEmptyOrWhiteSpace == true, "空白→true")
         
         let validString = "テスト"
-        #expect(validString.isEmptyOrWhiteSpace == false,
-                "文字列→false")
+        #expect(validString.isEmptyOrWhiteSpace == false, "文字列→false")
         
         let stringWithSpaces = "  テスト  "
-        #expect(stringWithSpaces.isEmptyOrWhiteSpace == false,
-                "文字列+空白→false")
+        #expect(stringWithSpaces.isEmptyOrWhiteSpace == false, "文字列+空白→false")
     }
 }
