@@ -63,7 +63,6 @@ struct SettingsScreen: View {
                             Task { await notificationStore.requestAuthorization()}
                         }
                     }
-                    // TODO: （転記済）短い時間は夜でも通知が来てしまう→範囲設定 or ユーザーさんの集中モードで対応？(202510190715_51)
                     frequencyPicker
                     HStack {
                         DatePicker("基準時間", selection: $tempBaseTime, displayedComponents: .hourAndMinute)
@@ -168,7 +167,7 @@ struct SettingsScreen: View {
             } message: {
                 Text("リマインド機能をオンにするには、設定アプリから「通知を許可」をオンにしてください")
             }
-        .alert("通知設定エラー", isPresented: $notificationStore.showingNotificationErrorAlert) {
+            .alert("通知設定エラー", isPresented: $notificationStore.showingNotificationErrorAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(notificationStore.notificationErrorMessage)

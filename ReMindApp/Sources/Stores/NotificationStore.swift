@@ -152,9 +152,6 @@ class NotificationStore {
     
     private func createNotification(_ id : Int, items: [ReminderItem]) -> Bool {
         
-        // TODO: （転記済）リストが0件の場合の処理(20260206_2007_51)
-        
-        
         let item = getNotifiedItem(items: items)
         
         guard let firstNotificationDate = getFirstNotificationDate() else {

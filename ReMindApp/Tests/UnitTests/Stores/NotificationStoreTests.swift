@@ -131,9 +131,6 @@ struct NotificationStoreTests {
     @Test("最後の通知メッセージの上限メッセージ")
     func testNotificationLimitMessage() async throws {
         
-        
-        // TODO（待ち）: 重複コードのマージ
-        
         let mockScheduler = MockNotificationScheduler()
         let mockDefaults = MockUserDefaults()
         
